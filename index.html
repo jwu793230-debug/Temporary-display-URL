@@ -3,177 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Temporary Display · 导航</title>
+<title>Temporary Display · 项目门户</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
-  
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #020617;
-    color: #e2e8f0;
-    font-family: 'Noto Sans SC', 'JetBrains Mono', monospace;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 20px;
+  :root{
+    --bg:#061016;
+    --panel:rgba(9,24,31,.78);
+    --panel-2:rgba(13,34,42,.9);
+    --ink:#eef7f8;
+    --muted:#9bb0b8;
+    --line:rgba(159,188,187,.22);
+    --cyan:#38bdf8;
+    --green:#2dd4bf;
+    --blue:#2563eb;
+    --amber:#facc15;
+    --shadow:0 28px 90px rgba(0,0,0,.35);
   }
-  
-  .container {
-    max-width: 600px;
-    width: 100%;
-    background: #0f172a;
-    border: 1px solid #1e293b;
-    border-radius: 20px;
-    padding: 48px 40px;
-    box-shadow: 0 0 80px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    font-family:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+      radial-gradient(circle at 12% 10%,rgba(45,212,191,.18),transparent 28%),
+      radial-gradient(circle at 88% 18%,rgba(37,99,235,.2),transparent 30%),
+      radial-gradient(circle at 70% 82%,rgba(250,204,21,.1),transparent 22%),
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px),
+      linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+      var(--bg);
+    background-size:auto,auto,auto,44px 44px,44px 44px,auto;
   }
-  .container::before {
-    content: '';
-    position: absolute;
-    top: -80%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 20%, rgba(168,85,247,0.04) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(59,130,246,0.04) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+  a{color:inherit}
+  .shell{width:calc(100vw - 36px);max-width:1120px;margin:0 auto}
+  .page{min-height:100vh;padding:46px 0 42px;display:flex;align-items:center}
+  .portal{width:100%}
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:34px;
   }
-
-  .header {
-    text-align: center;
-    margin-bottom: 36px;
-    position: relative; z-index: 1;
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{
+    width:42px;
+    height:42px;
+    border-radius:8px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--green),var(--cyan) 58%,var(--blue));
+    box-shadow:0 0 0 1px rgba(255,255,255,.2) inset,0 12px 32px rgba(56,189,248,.18);
   }
-  .header .icon {
-    font-size: 40px;
-    margin-bottom: 8px;
+  .brand-mark svg{width:25px;height:25px}
+  .brand strong{display:block;font-size:18px;letter-spacing:.02em}
+  .brand span{display:block;margin-top:2px;color:var(--muted);font-size:12px}
+  .repo-badge{
+    border:1px solid var(--line);
+    color:#cbe4e6;
+    background:rgba(255,255,255,.05);
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:12px;
+    text-decoration:none;
   }
-  .header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .hero{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 340px;
+    gap:30px;
+    align-items:stretch;
+    margin-bottom:24px;
   }
-  .header p {
-    font-size: 13px;
-    color: #64748b;
-    margin-top: 6px;
-    font-weight: 300;
+  .hero-main{
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:linear-gradient(135deg,rgba(9,24,31,.92),rgba(14,43,51,.78));
+    padding:36px;
+    box-shadow:var(--shadow);
   }
-
-  .card-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    position: relative; z-index: 1;
+  .hero-main::before{
+    content:"";
+    position:absolute;
+    inset:-45% -30% auto auto;
+    width:520px;
+    height:520px;
+    background:radial-gradient(circle,rgba(56,189,248,.18),transparent 62%);
+    pointer-events:none;
   }
-
-  .card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: rgba(30,41,59,0.5);
-    border: 1px solid #1e293b;
-    border-radius: 14px;
-    padding: 18px 20px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.25s ease;
-    cursor: pointer;
+  .eyebrow{color:#9ffcf0;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+  h1{position:relative;margin:12px 0 0;font-size:clamp(38px,6vw,72px);line-height:1.02;letter-spacing:0}
+  .lead{position:relative;margin:20px 0 0;max-width:680px;color:#c7d9dc;font-size:16px;line-height:1.8}
+  .quick-actions{position:relative;display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:42px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:8px;
+    padding:10px 15px;
+    color:#fff;
+    text-decoration:none;
+    background:rgba(255,255,255,.07);
+    transition:.22s ease;
   }
-  .card:hover {
-    background: rgba(139,92,246,0.1);
-    border-color: rgba(168,85,247,0.4);
-    transform: translateX(4px);
+  .btn.primary{border-color:transparent;background:linear-gradient(135deg,var(--green),var(--cyan));color:#001116;font-weight:900}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.26)}
+  .status-panel{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(5,15,20,.7);
+    padding:20px;
+    box-shadow:var(--shadow);
   }
-  .card:active {
-    transform: translateX(2px) scale(0.99);
+  .status-title{font-size:13px;color:#cbe4e6;margin-bottom:14px}
+  .metric{padding:15px 0;border-top:1px solid var(--line)}
+  .metric:first-of-type{border-top:0}
+  .metric strong{display:block;font-size:30px;line-height:1;color:#fff}
+  .metric span{display:block;margin-top:7px;color:var(--muted);font-size:12px}
+  .section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin:30px 0 14px;
   }
-
-  .card .card-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
+  .section-title h2{margin:0;font-size:18px}
+  .section-title span{height:1px;flex:1;background:var(--line)}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .card{
+    position:relative;
+    overflow:hidden;
+    min-height:210px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:20px;
+    background:rgba(8,23,29,.72);
+    text-decoration:none;
+    box-shadow:0 14px 46px rgba(0,0,0,.2);
+    transition:.24s ease;
   }
-  .card .card-body {
-    flex: 1;
-    min-width: 0;
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,rgba(45,212,191,.12),transparent 44%);
+    opacity:.78;
+    pointer-events:none;
   }
-  .card .card-title {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
+  .card:hover{transform:translateY(-4px);border-color:rgba(56,189,248,.52);background:rgba(10,31,39,.9)}
+  .card.featured{grid-column:span 2;background:linear-gradient(135deg,rgba(8,31,40,.94),rgba(9,24,31,.76))}
+  .card.featured::before{background:radial-gradient(circle at 78% 18%,rgba(250,204,21,.18),transparent 32%),linear-gradient(135deg,rgba(45,212,191,.18),transparent 46%)}
+  .card-top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .card-icon{
+    width:42px;
+    height:42px;
+    border-radius:8px;
+    display:grid;
+    place-items:center;
+    background:rgba(56,189,248,.12);
+    border:1px solid rgba(56,189,248,.18);
   }
-  .card .card-desc {
-    font-size: 12px;
-    color: #64748b;
-    margin-top: 3px;
-    line-height: 1.4;
+  .card-icon svg{width:22px;height:22px;stroke:#9ffcf0}
+  .tag{font-size:11px;color:#001014;background:#9ffcf0;border-radius:999px;padding:4px 8px;font-weight:800}
+  .card h3{position:relative;margin:20px 0 0;font-size:22px;line-height:1.25}
+  .card p{position:relative;margin:10px 0 0;color:#aebfc4;font-size:13px;line-height:1.65}
+  .card-link{position:absolute;left:20px;bottom:18px;color:#9ffcf0;font-size:13px;font-weight:800}
+  .arrow{position:absolute;right:18px;bottom:16px;color:#5f7f86;font-size:22px}
+  .footer{margin-top:30px;color:#60767c;font-size:12px;text-align:center}
+  @media(max-width:920px){
+    .page{align-items:flex-start;padding-top:28px}
+    .topbar,.hero{grid-template-columns:1fr;display:grid}
+    .repo-badge{justify-self:start}
+    .grid{grid-template-columns:1fr}
+    .card.featured{grid-column:auto}
   }
-  .card .card-arrow {
-    color: #334155;
-    font-size: 18px;
-    flex-shrink: 0;
-    transition: color 0.2s;
-  }
-  .card:hover .card-arrow {
-    color: #a78bfa;
-  }
-
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    color: #1e293b;
-    font-size: 11px;
-    font-family: 'JetBrains Mono', monospace;
-    position: relative; z-index: 1;
+  @media(max-width:620px){
+    .shell{width:calc(100vw - 24px);max-width:1120px}
+    .hero-main{padding:26px 20px}
+    .status-panel{padding:16px}
+    .topbar{margin-bottom:22px}
+    .grid{gap:12px}
+    .card{min-height:190px}
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <div class="icon">📂</div>
-    <h1>Temporary Display</h1>
-    <p>临时展示页面 · 点击卡片跳转</p>
+<main class="page">
+  <div class="shell portal">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 12c2.3-5.2 5.4-5.2 8 0s5.7 5.2 8 0" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M20 12c-2.3 5.2-5.4 5.2-8 0S6.3 6.8 4 12" stroke="white" stroke-width="2.4" stroke-linecap="round" opacity=".72"/>
+          </svg>
+        </div>
+        <div>
+          <strong>Temporary Display</strong>
+          <span>项目页面临时展示门户</span>
+        </div>
+      </div>
+      <a class="repo-badge" href="https://github.com/jwu793230-debug/Temporary-display-URL">GitHub Repository</a>
+    </header>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">Project Portal</div>
+        <h1>项目展示入口</h1>
+        <p class="lead">集中管理临时演示页面、方案页和工具关系图，适合快速分享、评审与远程查看。抽水蓄能项目新版 HTML 已加入门户首屏入口。</p>
+        <div class="quick-actions">
+          <a class="btn primary" href="pump-storage-intro-v1.html">打开抽水蓄能方案</a>
+          <a class="btn" href="#projects">查看全部页面</a>
+        </div>
+      </div>
+      <aside class="status-panel" aria-label="门户概览">
+        <div class="status-title">当前收录</div>
+        <div class="metric"><strong>4</strong><span>展示页面</span></div>
+        <div class="metric"><strong>1</strong><span>重点项目方案</span></div>
+        <div class="metric"><strong>HTML</strong><span>单文件可直接访问</span></div>
+      </aside>
+    </section>
+
+    <section id="projects">
+      <div class="section-title"><h2>重点项目</h2><span></span></div>
+      <div class="grid">
+        <a class="card featured" href="pump-storage-intro-v1.html">
+          <div class="card-top">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 18c4-7 4-12 8-12s4 5 8 12" stroke-width="2"/><path d="M6 18h12M8 14h8M10 10h4" stroke-width="2"/></svg>
+            </div>
+            <span class="tag">新版</span>
+          </div>
+          <h3>抽水蓄能项目智慧化系统方案</h3>
+          <p>面向地下洞室与智慧场站的完整方案页，包含数字孪生封面、五大系统、云平台、AI 大模型与现场实施参考。</p>
+          <span class="card-link">pump-storage-intro-v1.html</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="card" href="pump-storage-02-underground.html">
+          <div class="card-top">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 17c3-5 6-8 9-8s6 3 9 8" stroke-width="2"/><path d="M7 17h10M9 13h6" stroke-width="2"/></svg>
+            </div>
+          </div>
+          <h3>地下洞室专题页</h3>
+          <p>聚焦地下洞室场景的系统展示页面，适合作为抽水蓄能方案的专题补充。</p>
+          <span class="card-link">pump-storage-02-underground.html</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><h2>资料与工具</h2><span></span></div>
+      <div class="grid">
+        <a class="card" href="uniubi-intro.html">
+          <div class="card-top">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 12c2.3-5.2 5.4-5.2 8 0s5.7 5.2 8 0" stroke-width="2"/><path d="M20 12c-2.3 5.2-5.4 5.2-8 0S6.3 6.8 4 12" stroke-width="2"/></svg>
+            </div>
+          </div>
+          <h3>宇泛智能企业介绍</h3>
+          <p>公司概况、AI 2.0 技术路线、AIoT 平台与智慧建造方案。</p>
+          <span class="card-link">uniubi-intro.html</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="card" href="ai-tools-relations.html">
+          <div class="card-top">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h7" stroke-width="2"/><path d="M17 13l3 3-3 3" stroke-width="2"/></svg>
+            </div>
+          </div>
+          <h3>AI 工具关系图</h3>
+          <p>Hermes、DeepSeek、Codex、ChatGPT 与 Git 的层级和协作关系。</p>
+          <span class="card-link">ai-tools-relations.html</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">Temporary Display URL · jwu793230-debug</footer>
   </div>
-
-  <div class="card-list">
-    <a class="card" href="uniubi-intro.html">
-      <div class="card-icon" style="background:rgba(168,85,247,0.15);">
-        <span style="filter:none;">🏗</span>
-      </div>
-      <div class="card-body">
-        <div class="card-title">宇泛智能 · 企业介绍</div>
-        <div class="card-desc">UNIUBI 公司概况、AI 2.0 技术路线、AIoT 平台、智慧建造方案、硬件矩阵</div>
-      </div>
-      <div class="card-arrow">→</div>
-    </a>
-
-    <a class="card" href="ai-tools-relations.html">
-      <div class="card-icon" style="background:rgba(59,130,246,0.15);">
-        <span style="filter:none;">🛠</span>
-      </div>
-      <div class="card-body">
-        <div class="card-title">AI 工具生态关系图</div>
-        <div class="card-desc">Hermes · DeepSeek · Codex · ChatGPT · Git 之间的层次与协作关系</div>
-      </div>
-      <div class="card-arrow">→</div>
-    </a>
-  </div>
-
-  <div class="footer">Temporary Display URL · jwu793230-debug</div>
-</div>
+</main>
 </body>
 </html>
