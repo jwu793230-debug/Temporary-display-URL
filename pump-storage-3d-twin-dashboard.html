@@ -1,0 +1,1993 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>抽水蓄能电站三维数字孪生平台</title>
+  <meta name="description" content="可拖拽操作的抽水蓄能电站三维数字孪生大屏。" />
+  <style>
+    :root {
+      --bg: #041114;
+      --panel: rgba(7, 31, 38, .82);
+      --panel-strong: rgba(9, 43, 52, .92);
+      --panel-soft: rgba(10, 58, 66, .44);
+      --line: rgba(91, 230, 226, .24);
+      --line-strong: rgba(91, 230, 226, .58);
+      --text: #edfdfb;
+      --muted: #9fc3c5;
+      --soft: #cce7e7;
+      --cyan: #46f0e6;
+      --blue: #59b8ff;
+      --green: #74f0a5;
+      --yellow: #ffd966;
+      --red: #ff766d;
+      --forest: #1b6b4c;
+      --rock: #7d806f;
+      --shadow: 0 18px 60px rgba(0, 0, 0, .36);
+      --radius: 8px;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(48, 230, 225, .14), transparent 34rem),
+        radial-gradient(circle at 78% 34%, rgba(116, 240, 165, .08), transparent 26rem),
+        linear-gradient(180deg, #06141a 0%, #031014 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .12;
+      background-image:
+        linear-gradient(rgba(91, 230, 226, .18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91, 230, 226, .18) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+      z-index: -1;
+    }
+
+    button, select { font: inherit; color: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .app {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 68px 1fr;
+      padding: 0 16px 16px;
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 310px 1fr 410px;
+      gap: 20px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 150px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #eafffb;
+      font-weight: 900;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .brand-mark svg {
+      width: 42px;
+      height: 34px;
+      filter: drop-shadow(0 0 12px rgba(70, 240, 230, .36));
+    }
+
+    .brand span {
+      color: rgba(224, 249, 247, .72);
+      padding-left: 14px;
+      border-left: 1px solid rgba(255, 255, 255, .22);
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .title-frame {
+      position: relative;
+      min-width: 0;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-bottom: 1px solid rgba(91, 230, 226, .22);
+      background:
+        linear-gradient(90deg, transparent, rgba(9, 54, 68, .78) 16%, rgba(18, 77, 92, .72) 50%, rgba(9, 54, 68, .78) 84%, transparent);
+      clip-path: polygon(6% 0, 94% 0, 100% 50%, 94% 100%, 6% 100%, 0 50%);
+    }
+
+    .title-frame h1 {
+      margin: 0;
+      font-size: clamp(22px, 2.2vw, 34px);
+      letter-spacing: 0;
+      text-shadow: 0 0 24px rgba(70, 240, 230, .38);
+      white-space: nowrap;
+      overflow-wrap: anywhere;
+      word-break: keep-all;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      min-width: 0;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(116, 240, 165, .38);
+      border-radius: 8px;
+      color: #b7ffd0;
+      background: rgba(26, 145, 89, .16);
+      font-weight: 800;
+    }
+
+    .status-pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green);
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(91, 230, 226, .28);
+      border-radius: 8px;
+      background: rgba(10, 43, 52, .72);
+      cursor: pointer;
+      transition: border-color .2s ease, background .2s ease, color .2s ease;
+    }
+
+    .icon-btn:hover,
+    .icon-btn.active {
+      color: var(--cyan);
+      border-color: rgba(91, 230, 226, .62);
+      background: rgba(12, 72, 82, .76);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 376px minmax(520px, 1fr) 376px;
+      gap: 12px;
+      min-height: 0;
+      height: 100%;
+    }
+
+    .panel {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(8, 36, 44, .86), rgba(5, 24, 30, .76));
+      box-shadow: inset 0 0 30px rgba(70, 240, 230, .03), var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(70, 240, 230, .72), transparent);
+      opacity: .62;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-bottom: 1px solid rgba(91, 230, 226, .16);
+      background: rgba(9, 55, 67, .45);
+    }
+
+    .panel-head b {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+    }
+
+    .panel-head b::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
+      transform: rotate(45deg);
+    }
+
+    .panel-head span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .rail {
+      display: grid;
+      grid-auto-rows: min-content;
+      gap: 12px;
+      min-width: 0;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 2px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(91, 230, 226, .45) rgba(255, 255, 255, .06);
+    }
+
+    .overview {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .overview-model {
+      position: relative;
+      height: 106px;
+      border: 1px solid rgba(91, 230, 226, .22);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 70% 22%, rgba(89, 184, 255, .48), transparent 18%),
+        radial-gradient(circle at 24% 76%, rgba(70, 240, 230, .3), transparent 20%),
+        linear-gradient(150deg, rgba(14, 82, 70, .6), rgba(7, 31, 38, .94) 48%, rgba(34, 60, 56, .72));
+      overflow: hidden;
+    }
+
+    .overview-model::before,
+    .overview-model::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      border: 1px solid rgba(70, 240, 230, .5);
+      box-shadow: inset 0 0 22px rgba(70, 240, 230, .18), 0 0 18px rgba(70, 240, 230, .2);
+    }
+
+    .overview-model::before {
+      width: 74px;
+      height: 30px;
+      right: 8px;
+      top: 14px;
+      transform: rotate(-8deg);
+      background: rgba(89, 184, 255, .18);
+    }
+
+    .overview-model::after {
+      width: 82px;
+      height: 34px;
+      left: 6px;
+      bottom: 10px;
+      transform: rotate(-14deg);
+      background: rgba(70, 240, 230, .14);
+    }
+
+    .info-list {
+      display: grid;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .info-list div {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 8px;
+      align-items: baseline;
+      min-width: 0;
+    }
+
+    .info-list span,
+    .metric-grid span,
+    .bar-row span,
+    .alarm time,
+    .count span,
+    .gas-card b,
+    .warn-box span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .info-list strong {
+      font-size: 13px;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .progress-block {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 16px;
+      padding: 16px 14px;
+      align-items: center;
+    }
+
+    .ring {
+      width: 104px;
+      height: 104px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, rgba(6, 31, 38, .98) 0 57%, transparent 58%),
+        conic-gradient(var(--cyan) 0 72%, rgba(91, 230, 226, .12) 72% 100%);
+      box-shadow: inset 0 0 30px rgba(70, 240, 230, .12), 0 0 26px rgba(70, 240, 230, .12);
+    }
+
+    .ring strong {
+      color: var(--cyan);
+      font-size: 24px;
+    }
+
+    .bars {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 72px 1fr 42px;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .bar {
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      width: var(--value);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      box-shadow: 0 0 16px rgba(70, 240, 230, .36);
+    }
+
+    .bar-row b {
+      color: var(--soft);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .metric-grid,
+    .count-row,
+    .warn-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .metric-card,
+    .count,
+    .warn-box {
+      min-height: 78px;
+      border: 1px solid rgba(91, 230, 226, .18);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .metric-card strong,
+    .count strong,
+    .warn-box strong {
+      display: block;
+      margin: 4px 0 5px;
+      color: var(--cyan);
+      font-size: 22px;
+      line-height: 1.05;
+    }
+
+    .chart-card {
+      margin: 0 14px 14px;
+      border: 1px solid rgba(91, 230, 226, .18);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .chart {
+      width: 100%;
+      height: 132px;
+      display: block;
+    }
+
+    .chart text {
+      fill: rgba(204, 231, 231, .62);
+      font-size: 10px;
+    }
+
+    .alarm-list {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+    }
+
+    .alarm {
+      min-height: 36px;
+      display: grid;
+      grid-template-columns: 54px 1fr 42px;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(91, 230, 226, .12);
+      font-size: 12px;
+    }
+
+    .alarm:last-child { border-bottom: 0; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 23px;
+      border-radius: 8px;
+      font-weight: 800;
+    }
+
+    .tag.red { color: #ffd6d2; background: rgba(255, 118, 109, .18); border: 1px solid rgba(255, 118, 109, .32); }
+    .tag.yellow { color: #fff0b8; background: rgba(255, 217, 102, .16); border: 1px solid rgba(255, 217, 102, .3); }
+    .tag.blue { color: #cdeeff; background: rgba(89, 184, 255, .14); border: 1px solid rgba(89, 184, 255, .3); }
+
+    .map-shell {
+      position: relative;
+      height: 100%;
+      min-height: 0;
+      border: 1px solid rgba(91, 230, 226, .25);
+      border-radius: 8px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(4, 16, 21, .1), rgba(4, 16, 21, .84)),
+        radial-gradient(circle at 50% 42%, rgba(70, 240, 230, .08), transparent 42%),
+        #041218;
+      box-shadow: var(--shadow);
+      touch-action: none;
+    }
+
+    .map-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(2, 12, 17, .52), transparent 17%, transparent 83%, rgba(2, 12, 17, .46)),
+        radial-gradient(circle at 50% 42%, transparent 0 32%, rgba(3, 17, 22, .18) 58%, rgba(3, 17, 22, .62) 100%);
+    }
+
+    .map-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: .1;
+      background-image:
+        linear-gradient(rgba(91, 230, 226, .28) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91, 230, 226, .28) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(circle at 50% 50%, #000 0 52%, transparent 86%);
+    }
+
+    .three-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      cursor: grab;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(51, 131, 135, .16), transparent 36%),
+        linear-gradient(180deg, #061923, #031015 72%);
+    }
+
+    .three-stage:active { cursor: grabbing; }
+
+    #sceneCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .label-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    .scene-label {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      max-width: 160px;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(117, 240, 230, .5);
+      border-radius: 8px;
+      padding: 7px 10px;
+      background: rgba(3, 24, 30, .78);
+      color: #eafffb;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 0 24px rgba(70, 240, 230, .2);
+      white-space: nowrap;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: opacity .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+    }
+
+    .scene-label::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #dffffb;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 0 8px rgba(70, 240, 230, .12), 0 0 18px rgba(70, 240, 230, .8);
+    }
+
+    .scene-label.active {
+      color: #fff6c7;
+      border-color: rgba(255, 217, 102, .78);
+      background: rgba(36, 28, 10, .82);
+      transform: translate(-50%, -50%) scale(1.04);
+    }
+
+    .scene-label.active::before {
+      background: var(--yellow);
+      box-shadow: 0 0 0 8px rgba(255, 217, 102, .12), 0 0 18px rgba(255, 217, 102, .72);
+    }
+
+    .map-toolbar {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      top: 14px;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .select-group,
+    .tool-group {
+      display: flex;
+      gap: 10px;
+      min-width: 0;
+      pointer-events: auto;
+    }
+
+    .select {
+      min-width: 150px;
+      height: 40px;
+      border: 1px solid rgba(91, 230, 226, .22);
+      border-radius: 8px;
+      padding: 0 12px;
+      background: rgba(6, 31, 40, .88);
+      color: var(--text);
+      outline: none;
+    }
+
+    .scene-title-card {
+      position: absolute;
+      left: 16px;
+      top: 76px;
+      z-index: 7;
+      width: min(386px, calc(100% - 32px));
+      border: 1px solid rgba(91, 230, 226, .28);
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: rgba(3, 22, 28, .78);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, .28);
+      pointer-events: none;
+    }
+
+    .scene-title-card b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 17px;
+    }
+
+    .scene-title-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .scene-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .scene-chip-row span {
+      min-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(91, 230, 226, .24);
+      border-radius: 999px;
+      padding: 0 10px;
+      color: #d8fffb;
+      background: rgba(70, 240, 230, .08);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .scene-metrics {
+      position: absolute;
+      right: 16px;
+      top: 76px;
+      z-index: 7;
+      display: grid;
+      grid-template-columns: repeat(3, 112px);
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .scene-metric {
+      min-height: 74px;
+      border: 1px solid rgba(91, 230, 226, .22);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(3, 22, 28, .76);
+      backdrop-filter: blur(10px);
+    }
+
+    .scene-metric strong {
+      display: block;
+      font-size: 24px;
+      color: var(--cyan);
+      line-height: 1.05;
+    }
+
+    .scene-metric span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .scene-bottom-panel {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 112px;
+      z-index: 7;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .scene-card {
+      min-height: 86px;
+      border: 1px solid rgba(91, 230, 226, .22);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(4, 24, 30, .78);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      transform: translateX(-100%);
+      animation: sweep 3.8s ease-in-out infinite;
+    }
+
+    .scene-card b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .scene-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .mini-bar {
+      height: 6px;
+      margin-top: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+    }
+
+    .mini-bar i {
+      display: block;
+      height: 100%;
+      width: var(--v);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), #8ff4c9);
+      animation: growBar 1.2s ease both;
+    }
+
+    .scene-dock {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border: 1px solid rgba(91, 230, 226, .25);
+      border-radius: 8px;
+      background: rgba(4, 24, 30, .82);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .scene-btn {
+      min-width: 0;
+      min-height: 72px;
+      display: grid;
+      place-items: center;
+      gap: 4px;
+      border: 0;
+      border-right: 1px solid rgba(91, 230, 226, .16);
+      background: transparent;
+      color: #cce7e7;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .scene-btn:last-child { border-right: 0; }
+
+    .scene-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 1.9;
+    }
+
+    .scene-btn strong {
+      font-size: 13px;
+      line-height: 1.1;
+    }
+
+    .scene-btn:hover,
+    .scene-btn.active {
+      color: var(--cyan);
+      background: rgba(70, 240, 230, .08);
+    }
+
+    .floating-legend {
+      position: absolute;
+      right: 16px;
+      bottom: 206px;
+      z-index: 7;
+      display: grid;
+      gap: 8px;
+      width: 154px;
+      border: 1px solid rgba(91, 230, 226, .2);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(3, 22, 28, .72);
+      backdrop-filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend-row i {
+      width: 14px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .legend-row:nth-child(2) i { background: var(--blue); }
+    .legend-row:nth-child(3) i { background: var(--green); }
+    .legend-row:nth-child(4) i { background: var(--yellow); }
+
+    .gas-grid,
+    .dispatch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .gas-card {
+      min-height: 94px;
+      border: 1px solid rgba(91, 230, 226, .18);
+      border-radius: 8px;
+      padding: 11px;
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .gas-card strong {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--cyan);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .gas-card small { color: var(--muted); }
+
+    .normal {
+      margin-top: 7px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .dispatch-grid button {
+      min-height: 38px;
+      border: 1px solid rgba(91, 230, 226, .22);
+      border-radius: 8px;
+      background: rgba(8, 44, 54, .62);
+      cursor: pointer;
+      color: #dffdfa;
+      font-size: 13px;
+    }
+
+    .dispatch-grid button:hover {
+      border-color: rgba(91, 230, 226, .54);
+      background: rgba(13, 76, 86, .72);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      z-index: 30;
+      transform: translate(-50%, 18px);
+      opacity: 0;
+      pointer-events: none;
+      border: 1px solid rgba(91, 230, 226, .42);
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: rgba(3, 22, 28, .92);
+      color: #eafffb;
+      box-shadow: var(--shadow);
+      transition: opacity .24s ease, transform .24s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @keyframes sweep {
+      0%, 42% { transform: translateX(-100%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+
+    @keyframes growBar {
+      from { width: 0; }
+    }
+
+    @media (max-width: 1500px) {
+      .dashboard { grid-template-columns: 340px minmax(480px, 1fr) 340px; }
+      .topbar { grid-template-columns: 280px 1fr 360px; }
+      .scene-title-card { width: min(360px, calc(100% - 32px)); }
+      .scene-metrics {
+        top: 214px;
+        left: 16px;
+        right: auto;
+        grid-template-columns: repeat(3, 96px);
+      }
+      .scene-bottom-panel { grid-template-columns: repeat(2, 1fr); }
+      .floating-legend { display: none; }
+    }
+
+    @media (max-width: 1180px) {
+      .app {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+        grid-template-rows: auto 1fr;
+        padding: 0 12px 12px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px 0;
+      }
+
+      .brand,
+      .top-actions { justify-content: center; flex-wrap: wrap; }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+
+      .map-shell {
+        order: -1;
+        min-height: 760px;
+      }
+
+      .rail {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        overflow: visible;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .title-frame h1 { font-size: 21px; white-space: normal; text-align: center; }
+      .brand span { display: none; }
+      .map-shell { min-height: 690px; }
+      .map-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .select-group,
+      .tool-group { flex-wrap: wrap; }
+
+      .select { flex: 1 1 150px; min-width: 0; }
+      .scene-title-card { top: 120px; }
+      .scene-metrics { display: none; }
+      .scene-bottom-panel {
+        display: none;
+      }
+      .scene-dock {
+        left: 10px;
+        right: 10px;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .scene-btn {
+        min-height: 52px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(91, 230, 226, .14);
+      }
+
+      .scene-btn svg { width: 20px; height: 20px; }
+      .rail { grid-template-columns: 1fr; }
+      .overview,
+      .progress-block,
+      .metric-grid,
+      .count-row,
+      .warn-row,
+      .gas-grid,
+      .dispatch-grid { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 72px 1fr 42px; }
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-label="抽蓄智慧平台">
+          <svg viewBox="0 0 64 48" fill="none" aria-hidden="true">
+            <path d="M6 39C16 17 26 7 38 6c8-.6 14 3.8 20 12" stroke="#46f0e6" stroke-width="4" stroke-linecap="round"/>
+            <path d="M10 37c13-7 25-8 40-2" stroke="#74f0a5" stroke-width="4" stroke-linecap="round"/>
+            <path d="M35 11c2.4 9-1.8 18-10 27" stroke="#59b8ff" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="47" cy="18" r="5" fill="#46f0e6"/>
+          </svg>
+          抽蓄智控
+        </div>
+        <span>三维数字孪生</span>
+      </div>
+      <div class="title-frame">
+        <h1>抽水蓄能电站三维数字孪生平台</h1>
+      </div>
+      <div class="top-actions">
+        <span>云雾 25°C</span>
+        <span class="status-pill">系统运行正常</span>
+        <span id="clock">2026-06-17 00:00:00</span>
+        <button class="icon-btn" id="fullscreen" title="全屏" aria-label="全屏">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <aside class="rail left">
+        <section class="panel">
+          <div class="panel-head"><b>项目总览</b><span>抽蓄电站主对象</span></div>
+          <div class="overview">
+            <div class="overview-model"></div>
+            <div class="info-list">
+              <div><span>项目名称</span><strong>山地抽水蓄能电站</strong></div>
+              <div><span>建设对象</span><strong>上库 / 下库 / 厂房 / 管线</strong></div>
+              <div><span>装机容量</span><strong>1200 MW</strong></div>
+              <div><span>当前工况</span><strong id="modeText">发电待命</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><b>工程进度</b><span>总体</span></div>
+          <div class="progress-block">
+            <div class="ring"><strong>72.6%</strong></div>
+            <div class="bars">
+              <div class="bar-row"><span>主体工程</span><div class="bar"><i style="--value:72%"></i></div><b>72.6</b></div>
+              <div class="bar-row"><span>土建工程</span><div class="bar"><i style="--value:68%"></i></div><b>68.4</b></div>
+              <div class="bar-row"><span>机电安装</span><div class="bar"><i style="--value:64%"></i></div><b>64.1</b></div>
+              <div class="bar-row"><span>金结制安</span><div class="bar"><i style="--value:76%"></i></div><b>76.8</b></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><b>水位趋势</b><span>近 24 小时</span></div>
+          <div class="metric-grid">
+            <div class="metric-card"><span>上库水位</span><strong>718.4</strong><span>m</span></div>
+            <div class="metric-card"><span>下库水位</span><strong>312.6</strong><span>m</span></div>
+            <div class="metric-card"><span>可调库容</span><strong>86%</strong><span>稳定</span></div>
+          </div>
+          <div class="chart-card">
+            <svg class="chart" viewBox="0 0 320 132" role="img" aria-label="水位趋势图">
+              <defs><linearGradient id="lineFill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#46f0e6" stop-opacity=".28"/><stop offset="1" stop-color="#46f0e6" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="rgba(159,195,197,.18)" stroke-width="1">
+                <path d="M20 16H308M20 42H308M20 68H308M20 94H308M20 120H308"/>
+              </g>
+              <path d="M20 98 C56 91, 76 78, 104 83 S157 104, 188 76 S248 38, 308 46 L308 120 L20 120 Z" fill="url(#lineFill)"/>
+              <path d="M20 98 C56 91, 76 78, 104 83 S157 104, 188 76 S248 38, 308 46" fill="none" stroke="#46f0e6" stroke-width="3"/>
+              <path d="M20 122H308" stroke="rgba(159,195,197,.3)"/>
+              <text x="20" y="130">00:00</text><text x="92" y="130">06:00</text><text x="166" y="130">12:00</text><text x="252" y="130">18:00</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><b>关键告警</b><span>最近 5 条</span></div>
+          <div class="alarm-list">
+            <div class="alarm"><span class="tag red">严重</span><span>1# 压力钢管温振耦合异常</span><time>19:18</time></div>
+            <div class="alarm"><span class="tag yellow">重要</span><span>上库坝肩 GNSS 微位移预警</span><time>19:05</time></div>
+            <div class="alarm"><span class="tag yellow">重要</span><span>地下厂房 CO 传感器漂移</span><time>18:56</time></div>
+            <div class="alarm"><span class="tag blue">一般</span><span>下库进出水口摄像机离线</span><time>18:41</time></div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="map-shell" id="mapShell" aria-label="抽水蓄能电站三维场景">
+        <div class="three-stage" id="threeStage">
+          <canvas id="sceneCanvas"></canvas>
+          <div class="label-layer" id="labelLayer"></div>
+        </div>
+
+        <div class="map-toolbar">
+          <div class="select-group">
+            <select class="select" id="modeSelect" aria-label="切换视角">
+              <option value="overview">全景总览</option>
+              <option value="upper">上库与坝体</option>
+              <option value="pipe">输水系统</option>
+              <option value="powerhouse">地下厂房</option>
+              <option value="lower">下库进出水口</option>
+              <option value="ai">AI 巡检态势</option>
+            </select>
+            <select class="select" id="workMode" aria-label="运行工况">
+              <option>发电待命</option>
+              <option>抽水蓄能</option>
+              <option>满发出力</option>
+              <option>检修巡视</option>
+            </select>
+          </div>
+          <div class="tool-group">
+            <button class="icon-btn active" id="toggleFlow" title="水流" aria-label="水流">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 13c4-5 8 5 16 0"/><path d="M4 18c4-5 8 5 16 0"/><path d="M4 8c4-5 8 5 16 0"/></svg>
+            </button>
+            <button class="icon-btn active" id="toggleLabels" title="标注" aria-label="标注">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </button>
+            <button class="icon-btn" id="toggleAuto" title="自动巡航" aria-label="自动巡航">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h4M6 22v-4H2"/></svg>
+            </button>
+            <button class="icon-btn" id="resetView" title="复位" aria-label="复位">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="scene-title-card" id="sceneInfo">
+          <b>全景总览 · 抽蓄工程对象</b>
+          <p>上水库、下水库、压力管道、地下厂房、交通洞和监测网络构成一套可旋转查看的三维数字孪生场景。</p>
+          <div class="scene-chip-row"><span>上库坝体</span><span>压力管道</span><span>地下厂房</span><span>AI 巡检</span></div>
+        </div>
+
+        <div class="scene-metrics" id="sceneMetrics">
+          <div class="scene-metric"><strong>1.2GW</strong><span>装机容量</span></div>
+          <div class="scene-metric"><strong>4×300</strong><span>机组配置</span></div>
+          <div class="scene-metric"><strong>98.6%</strong><span>感知在线率</span></div>
+        </div>
+
+        <div class="floating-legend">
+          <div class="legend-row"><i></i><span>输水压力管线</span></div>
+          <div class="legend-row"><i></i><span>库区水面</span></div>
+          <div class="legend-row"><i></i><span>山体植被</span></div>
+          <div class="legend-row"><i></i><span>重点告警</span></div>
+        </div>
+
+        <div class="scene-bottom-panel" id="sceneCards">
+          <div class="scene-card"><b>上库安全</b><p>坝顶沉降、边坡位移和库水位连续监测，异常指标进入联动告警。</p><div class="mini-bar"><i style="--v:91%"></i></div></div>
+          <div class="scene-card"><b>水力通道</b><p>压力钢管、岔管、阀室与进出水口形成全链路可视化巡检对象。</p><div class="mini-bar"><i style="--v:86%"></i></div></div>
+          <div class="scene-card"><b>厂房环境</b><p>厂房气体、通风、人员定位、设备状态与应急广播联动展示。</p><div class="mini-bar"><i style="--v:78%"></i></div></div>
+          <div class="scene-card"><b>AI 识别</b><p>无人机航线、热区识别和异常目标框选叠加到三维场景。</p><div class="mini-bar"><i style="--v:83%"></i></div></div>
+        </div>
+
+        <nav class="scene-dock" aria-label="场景切换">
+          <button class="scene-btn active" data-scene="overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/><path d="M8 10h.01M16 10h.01"/></svg>
+            <strong>总览</strong>
+          </button>
+          <button class="scene-btn" data-scene="upper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19h16"/><path d="M6 19l2-10h8l2 10"/><path d="M8 9h8"/><path d="M7 14h10"/></svg>
+            <strong>上库</strong>
+          </button>
+          <button class="scene-btn" data-scene="pipe">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 17c4-8 9-12 16-10"/><path d="M5 20c4-7 8-10 15-9"/><path d="M10 15l3 3M14 10l3 3"/></svg>
+            <strong>管线</strong>
+          </button>
+          <button class="scene-btn" data-scene="powerhouse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18"/><path d="M5 21V8l7-4 7 4v13"/><path d="M8 13h8M10 21v-5h4v5"/></svg>
+            <strong>厂房</strong>
+          </button>
+          <button class="scene-btn" data-scene="lower">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 16c4-3 8 3 12 0s5-2 6-1"/><path d="M4 20c5-2 8 2 12 0s4-1 5 0"/><path d="M7 8l5-4 5 4"/></svg>
+            <strong>下库</strong>
+          </button>
+          <button class="scene-btn" data-scene="ai">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/><path d="M9 12h6"/></svg>
+            <strong>AI</strong>
+          </button>
+        </nav>
+      </section>
+
+      <aside class="rail right">
+        <section class="panel">
+          <div class="panel-head"><b>人员 / 车辆 / 设备</b><span>实时</span></div>
+          <div class="count-row">
+            <div class="count"><span>在场人员</span><strong id="peopleCount">910</strong><span>人</span></div>
+            <div class="count"><span>施工车辆</span><strong id="vehicleCount">42</strong><span>辆</span></div>
+            <div class="count"><span>在线设备</span><strong id="deviceCount">268</strong><span>台</span></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><b>厂房环境监测</b><span>更新 19:25</span></div>
+          <div class="gas-grid">
+            <div class="gas-card"><b>氧气浓度</b><strong>20.9</strong><small>%</small><div class="normal">正常</div></div>
+            <div class="gas-card"><b>一氧化碳</b><strong>8</strong><small> ppm</small><div class="normal">正常</div></div>
+            <div class="gas-card"><b>甲烷浓度</b><strong>0.12</strong><small>%</small><div class="normal">正常</div></div>
+            <div class="gas-card"><b>硫化氢</b><strong>0.5</strong><small> ppm</small><div class="normal">正常</div></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><b>安全预警</b><span>分级</span></div>
+          <div class="warn-row">
+            <div class="warn-box"><strong style="color:var(--red)">2</strong><span>严重</span></div>
+            <div class="warn-box"><strong style="color:var(--yellow)">3</strong><span>重要</span></div>
+            <div class="warn-box"><strong style="color:var(--cyan)">7</strong><span>一般</span></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><b>场景调度</b><span>联动</span></div>
+          <div class="dispatch-grid">
+            <button data-action="应急广播">应急广播</button>
+            <button data-action="异常联动">异常联动</button>
+            <button data-action="人员定位">人员定位</button>
+            <button data-action="轨迹回放">轨迹回放</button>
+            <button data-action="设备调度">设备调度</button>
+            <button data-action="电子围栏">电子围栏</button>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">已切换场景</div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const stage = document.getElementById('threeStage');
+    const canvas = document.getElementById('sceneCanvas');
+    const labelLayer = document.getElementById('labelLayer');
+    const sceneInfo = document.getElementById('sceneInfo');
+    const sceneMetrics = document.getElementById('sceneMetrics');
+    const sceneCards = document.getElementById('sceneCards');
+    const toast = document.getElementById('toast');
+    const modeText = document.getElementById('modeText');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x06151a, 0.013);
+
+    const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 500);
+    camera.position.set(44, 34, 46);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.target.set(2, 8, 0);
+    controls.minDistance = 22;
+    controls.maxDistance = 116;
+    controls.maxPolarAngle = Math.PI * 0.46;
+    controls.autoRotateSpeed = 0.45;
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const hemi = new THREE.HemisphereLight(0x9eeffc, 0x102113, 2.2);
+    scene.add(hemi);
+
+    const sun = new THREE.DirectionalLight(0xffffff, 3.2);
+    sun.position.set(-24, 48, 28);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.near = 1;
+    sun.shadow.camera.far = 140;
+    sun.shadow.camera.left = -60;
+    sun.shadow.camera.right = 60;
+    sun.shadow.camera.top = 60;
+    sun.shadow.camera.bottom = -60;
+    scene.add(sun);
+
+    const fill = new THREE.DirectionalLight(0x46f0e6, 1.0);
+    fill.position.set(32, 22, -40);
+    scene.add(fill);
+
+    const flowGroup = new THREE.Group();
+    const analysisGroup = new THREE.Group();
+    const cloudGroup = new THREE.Group();
+    root.add(flowGroup, analysisGroup, cloudGroup);
+
+    const upperCenter = new THREE.Vector3(23.5, 22.35, -16);
+    const lowerCenter = new THREE.Vector3(-25, 0.55, 18);
+
+    function smoothstep(edge0, edge1, x) {
+      const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
+      return t * t * (3 - 2 * t);
+    }
+
+    function heightFn(x, z) {
+      const ridgeA = 16 * Math.exp(-((x - 21) ** 2 / 420 + (z + 11) ** 2 / 660));
+      const ridgeB = 11 * Math.exp(-((x + 25) ** 2 / 520 + (z - 4) ** 2 / 1120));
+      const ridgeC = 13 * Math.exp(-((x - 4) ** 2 / 980 + (z + 26) ** 2 / 280));
+      const valley = -5.5 * Math.exp(-((x + 7) ** 2 / 1120 + (z - 12) ** 2 / 340));
+      const texture = 1.5 * Math.sin(x * 0.23) * Math.cos(z * 0.18) + 0.9 * Math.sin((x + z) * 0.31);
+      let h = 4.6 + ridgeA + ridgeB + ridgeC + valley + texture;
+
+      const upperDist = Math.hypot((x - upperCenter.x) / 1.05, (z - upperCenter.z) / 0.86);
+      const upperBlend = 1 - smoothstep(8.2, 12.4, upperDist);
+      h = h * (1 - upperBlend) + 21.7 * upperBlend;
+
+      const lowerDist = Math.hypot((x - lowerCenter.x) / 19, (z - lowerCenter.z) / 8.9);
+      const lowerBlend = 1 - smoothstep(1.04, 1.34, lowerDist);
+      h = h * (1 - lowerBlend) + -1.75 * lowerBlend;
+      return h;
+    }
+
+    function makeTerrain() {
+      const geometry = new THREE.PlaneGeometry(96, 70, 166, 122);
+      const pos = geometry.attributes.position;
+      const colors = [];
+      const low = new THREE.Color(0x153f33);
+      const mid = new THREE.Color(0x2d7654);
+      const rock = new THREE.Color(0x777b69);
+      const snow = new THREE.Color(0xc9d6d1);
+      const color = new THREE.Color();
+      for (let i = 0; i < pos.count; i += 1) {
+        const x = pos.getX(i);
+        const z = pos.getY(i);
+        const h = heightFn(x, z);
+        pos.setXYZ(i, x, h, z);
+        if (h < 4) {
+          color.copy(low).lerp(mid, Math.max(0, h / 4));
+        } else if (h < 16) {
+          color.copy(mid).lerp(rock, (h - 4) / 12);
+        } else {
+          color.copy(rock).lerp(snow, Math.min(1, (h - 16) / 14));
+        }
+        const shade = 0.92 + 0.08 * Math.sin(x * 0.7 + z * 0.35);
+        colors.push(color.r * shade, color.g * shade, color.b * shade);
+      }
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      geometry.computeVertexNormals();
+      const material = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.92,
+        metalness: 0.02
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.receiveShadow = true;
+      root.add(mesh);
+    }
+
+    function makeWaterDisk(radius, color, opacity) {
+      const geo = new THREE.CircleGeometry(radius, 128);
+      geo.rotateX(-Math.PI / 2);
+      const mat = new THREE.MeshPhysicalMaterial({
+        color,
+        emissive: color,
+        emissiveIntensity: 0.16,
+        transparent: true,
+        opacity,
+        roughness: 0.18,
+        metalness: 0.08,
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.2
+      });
+      return new THREE.Mesh(geo, mat);
+    }
+
+    function makeReservoirs() {
+      const upperWater = makeWaterDisk(8.1, 0x37c4e8, 0.76);
+      upperWater.position.copy(upperCenter);
+      upperWater.position.y += 0.18;
+      upperWater.scale.z = 0.82;
+      upperWater.receiveShadow = true;
+      root.add(upperWater);
+
+      const upperRim = new THREE.Mesh(
+        new THREE.TorusGeometry(8.35, 0.28, 12, 128),
+        new THREE.MeshStandardMaterial({ color: 0xc6c7bd, roughness: 0.64, metalness: 0.06 })
+      );
+      upperRim.rotation.x = Math.PI / 2;
+      upperRim.position.set(upperCenter.x, upperCenter.y + 0.34, upperCenter.z);
+      upperRim.scale.z = 0.82;
+      upperRim.castShadow = true;
+      root.add(upperRim);
+
+      const damWall = new THREE.Mesh(
+        new THREE.CylinderGeometry(8.55, 9.1, 6.2, 96, 1, true, Math.PI * 0.04, Math.PI * 0.98),
+        new THREE.MeshStandardMaterial({
+          color: 0x9d9d92,
+          roughness: 0.78,
+          metalness: 0.02,
+          side: THREE.DoubleSide
+        })
+      );
+      damWall.position.set(upperCenter.x, upperCenter.y - 2.72, upperCenter.z);
+      damWall.rotation.y = -0.38;
+      damWall.scale.z = 0.82;
+      damWall.castShadow = true;
+      damWall.receiveShadow = true;
+      root.add(damWall);
+
+      const lowerWater = makeWaterDisk(12.2, 0x28b8c9, 0.94);
+      lowerWater.position.copy(lowerCenter);
+      lowerWater.position.y += 0.08;
+      lowerWater.material.transparent = false;
+      lowerWater.material.opacity = 1;
+      lowerWater.material.depthWrite = true;
+      lowerWater.scale.x = 1.55;
+      lowerWater.scale.z = 0.72;
+      root.add(lowerWater);
+
+      const lowerShore = new THREE.Mesh(
+        new THREE.TorusGeometry(12.4, 0.16, 8, 128),
+        new THREE.MeshStandardMaterial({ color: 0x4a7559, roughness: 0.8 })
+      );
+      lowerShore.rotation.x = Math.PI / 2;
+      lowerShore.position.set(lowerCenter.x, lowerCenter.y + 0.03, lowerCenter.z);
+      lowerShore.scale.x = 1.55;
+      lowerShore.scale.z = 0.72;
+      root.add(lowerShore);
+    }
+
+    function makeTube(points, radius, material, tubularSegments = 160) {
+      const curve = new THREE.CatmullRomCurve3(points);
+      const geo = new THREE.TubeGeometry(curve, tubularSegments, radius, 12, false);
+      const mesh = new THREE.Mesh(geo, material);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      root.add(mesh);
+      return { curve, mesh };
+    }
+
+    const pipeMaterial = new THREE.MeshStandardMaterial({ color: 0xb9c0b8, roughness: 0.42, metalness: 0.22 });
+    const glowMaterial = new THREE.MeshBasicMaterial({ color: 0x46f0e6, transparent: true, opacity: 0.78 });
+    const pipeCurves = [];
+
+    function makePipelines() {
+      const basePoints = [
+        new THREE.Vector3(18.4, 21.9, -12.2),
+        new THREE.Vector3(15.2, 19.2, -8.4),
+        new THREE.Vector3(9.2, 14.4, -2.8),
+        new THREE.Vector3(3.4, 9.2, 3.8),
+        new THREE.Vector3(-2.6, 5.2, 10.8)
+      ];
+      const offsets = [-1.35, -0.45, 0.45, 1.35];
+      offsets.forEach((offset) => {
+        const pts = basePoints.map((p) => new THREE.Vector3(p.x + offset, p.y, p.z + offset * 0.24));
+        const pipe = makeTube(pts, 0.22, pipeMaterial);
+        pipeCurves.push(pipe.curve);
+      });
+      const glowPts = basePoints.map((p) => p.clone().add(new THREE.Vector3(0, 0.62, 0)));
+      const glow = makeTube(glowPts, 0.07, glowMaterial, 180);
+      flowGroup.add(glow.mesh);
+
+      const tailrace = makeTube([
+        new THREE.Vector3(-5.4, 4.2, 12.2),
+        new THREE.Vector3(-11.2, 2.8, 14.8),
+        new THREE.Vector3(-18.8, 1.3, 17.2),
+        new THREE.Vector3(-24.2, 0.8, 18.2)
+      ], 0.3, new THREE.MeshStandardMaterial({ color: 0x8e9690, roughness: 0.5, metalness: 0.1 }), 120);
+      pipeCurves.push(tailrace.curve);
+      const tailGlow = makeTube([
+        new THREE.Vector3(-5.4, 4.7, 12.2),
+        new THREE.Vector3(-11.2, 3.2, 14.8),
+        new THREE.Vector3(-18.8, 1.7, 17.2),
+        new THREE.Vector3(-24.2, 1.1, 18.2)
+      ], 0.07, glowMaterial, 120);
+      flowGroup.add(tailGlow.mesh);
+    }
+
+    function makeBuildings() {
+      const concrete = new THREE.MeshStandardMaterial({ color: 0xb9bbb2, roughness: 0.74 });
+      const dark = new THREE.MeshStandardMaterial({ color: 0x2d3c40, roughness: 0.7 });
+      const powerhouse = new THREE.Group();
+      const baseY = heightFn(-5, 11) + 0.3;
+      powerhouse.position.set(-5, baseY, 11);
+      powerhouse.rotation.y = -0.22;
+      const hall = new THREE.Mesh(new THREE.BoxGeometry(9.8, 2.0, 4.2), concrete);
+      hall.position.y = 1.0;
+      hall.castShadow = true;
+      hall.receiveShadow = true;
+      powerhouse.add(hall);
+      const roof = new THREE.Mesh(new THREE.BoxGeometry(10.4, 0.34, 4.7), dark);
+      roof.position.y = 2.18;
+      roof.castShadow = true;
+      powerhouse.add(roof);
+      for (let i = 0; i < 4; i += 1) {
+        const bay = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.18, 5.5), new THREE.MeshBasicMaterial({ color: 0x46f0e6, transparent: true, opacity: 0.56 }));
+        bay.position.set(-3.6 + i * 2.35, 2.42, 0);
+        powerhouse.add(bay);
+      }
+      root.add(powerhouse);
+
+      const intake = new THREE.Group();
+      intake.position.set(17.2, heightFn(17.2, -9.8) + 0.2, -9.8);
+      intake.rotation.y = 0.72;
+      const gate = new THREE.Mesh(new THREE.BoxGeometry(5.8, 1.2, 2.2), concrete);
+      gate.position.y = 0.6;
+      gate.castShadow = true;
+      intake.add(gate);
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(1.8, 3.1, 1.5), concrete);
+      tower.position.set(1.8, 1.8, 0.1);
+      tower.castShadow = true;
+      intake.add(tower);
+      root.add(intake);
+
+      const lowerIntake = new THREE.Group();
+      lowerIntake.position.set(-16.6, heightFn(-16.6, 17) + 0.2, 17);
+      lowerIntake.rotation.y = -0.14;
+      const block = new THREE.Mesh(new THREE.BoxGeometry(7.4, 1.4, 2.6), concrete);
+      block.position.y = 0.7;
+      block.castShadow = true;
+      lowerIntake.add(block);
+      root.add(lowerIntake);
+    }
+
+    function makeRoadsAndContours() {
+      const roadMat = new THREE.MeshStandardMaterial({ color: 0xaeb0a5, roughness: 0.8 });
+      const roadPaths = [
+        [[-42, 22], [-30, 20], [-18, 18], [-8, 14], [4, 9], [15, 2], [25, -10], [31, -20]],
+        [[-34, 28], [-26, 24], [-18, 20], [-12, 16], [-7, 11], [-4, 8]],
+        [[7, 20], [2, 16], [-2, 13], [-6, 11], [-12, 10]]
+      ];
+      roadPaths.forEach((path) => {
+        const pts = path.map(([x, z]) => new THREE.Vector3(x, heightFn(x, z) + 0.2, z));
+        makeTube(pts, 0.18, roadMat, 90);
+      });
+
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x46f0e6, transparent: true, opacity: 0.22 });
+      for (let z = -30; z <= 30; z += 4) {
+        const pts = [];
+        for (let x = -46; x <= 46; x += 1.5) {
+          pts.push(new THREE.Vector3(x, heightFn(x, z) + 0.08, z));
+        }
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        root.add(new THREE.Line(geo, lineMat));
+      }
+    }
+
+    function seededRandom(seed) {
+      let s = seed;
+      return () => {
+        s |= 0;
+        s = s + 0x6D2B79F5 | 0;
+        let t = Math.imul(s ^ s >>> 15, 1 | s);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function makeForest() {
+      const rand = seededRandom(20260617);
+      const geo = new THREE.ConeGeometry(0.34, 1.7, 6);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x1f704b, roughness: 0.88 });
+      const mesh = new THREE.InstancedMesh(geo, mat, 620);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      const matrix = new THREE.Matrix4();
+      let count = 0;
+      for (let i = 0; i < 1200 && count < 620; i += 1) {
+        const x = -45 + rand() * 90;
+        const z = -31 + rand() * 62;
+        const upperDist = Math.hypot((x - upperCenter.x) / 11, (z - upperCenter.z) / 9);
+        const lowerDist = Math.hypot((x - lowerCenter.x) / 19, (z - lowerCenter.z) / 9);
+        const pipeDist = Math.abs((z + 0.78 * x - 7.4));
+        if (upperDist < 1.28 || lowerDist < 1.08 || pipeDist < 1.8) continue;
+        const y = heightFn(x, z);
+        if (y < 2.2 || y > 23) continue;
+        const scale = 0.72 + rand() * 1.15;
+        matrix.compose(
+          new THREE.Vector3(x, y + 0.78 * scale, z),
+          new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rand() * Math.PI * 2, 0)),
+          new THREE.Vector3(scale, scale, scale)
+        );
+        mesh.setMatrixAt(count, matrix);
+        count += 1;
+      }
+      mesh.count = count;
+      root.add(mesh);
+    }
+
+    function makeFlowParticles() {
+      const dotGeo = new THREE.SphereGeometry(0.22, 12, 8);
+      const dotMat = new THREE.MeshBasicMaterial({ color: 0x46f0e6 });
+      for (let i = 0; i < 34; i += 1) {
+        const dot = new THREE.Mesh(dotGeo, dotMat);
+        dot.userData = {
+          curve: pipeCurves[i % pipeCurves.length],
+          offset: i / 34,
+          speed: 0.055 + (i % 5) * 0.006
+        };
+        flowGroup.add(dot);
+      }
+    }
+
+    function canvasCloudTexture() {
+      const c = document.createElement('canvas');
+      c.width = 256;
+      c.height = 128;
+      const ctx = c.getContext('2d');
+      const g = ctx.createRadialGradient(126, 66, 4, 126, 66, 94);
+      g.addColorStop(0, 'rgba(255,255,255,.42)');
+      g.addColorStop(.55, 'rgba(210,235,238,.22)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, c.width, c.height);
+      for (let i = 0; i < 8; i += 1) {
+        const x = 40 + i * 22;
+        const y = 42 + Math.sin(i) * 15;
+        const r = 22 + (i % 3) * 10;
+        const puff = ctx.createRadialGradient(x, y, 2, x, y, r);
+        puff.addColorStop(0, 'rgba(255,255,255,.34)');
+        puff.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = puff;
+        ctx.fillRect(0, 0, c.width, c.height);
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function makeClouds() {
+      const tex = canvasCloudTexture();
+      const rand = seededRandom(76);
+      for (let i = 0; i < 12; i += 1) {
+        const mat = new THREE.SpriteMaterial({
+          map: tex,
+          transparent: true,
+          opacity: 0.18 + rand() * 0.18,
+          depthWrite: false
+        });
+        const sprite = new THREE.Sprite(mat);
+        sprite.position.set(-48 + rand() * 96, 22 + rand() * 18, -34 + rand() * 68);
+        sprite.scale.set(14 + rand() * 22, 7 + rand() * 11, 1);
+        cloudGroup.add(sprite);
+      }
+    }
+
+    function makeAnalysisObjects() {
+      const mat = new THREE.MeshBasicMaterial({
+        color: 0x46f0e6,
+        transparent: true,
+        opacity: 0.16,
+        side: THREE.DoubleSide,
+        depthWrite: false
+      });
+      const edgeMat = new THREE.LineBasicMaterial({ color: 0x46f0e6, transparent: true, opacity: 0.62 });
+      const zones = [
+        { pos: [23.5, 25.4, -16], rot: [-1.2, 0, 0.25], size: [18, 8] },
+        { pos: [-5, 8.2, 11], rot: [-0.92, 0.15, -0.22], size: [12, 6] },
+        { pos: [-25, 3.2, 18], rot: [-1.15, 0, -0.12], size: [18, 7] }
+      ];
+      zones.forEach(({ pos, rot, size }) => {
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(size[0], size[1]), mat);
+        plane.position.set(...pos);
+        plane.rotation.set(...rot);
+        analysisGroup.add(plane);
+        const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plane.geometry), edgeMat);
+        edge.position.copy(plane.position);
+        edge.rotation.copy(plane.rotation);
+        analysisGroup.add(edge);
+      });
+      analysisGroup.visible = false;
+    }
+
+    makeTerrain();
+    makeReservoirs();
+    makePipelines();
+    makeBuildings();
+    makeRoadsAndContours();
+    makeForest();
+    makeFlowParticles();
+    makeClouds();
+    makeAnalysisObjects();
+
+    const hotspots = [
+      { id: 'upper', label: '上水库', coord: new THREE.Vector3(23.5, 25.2, -16), scene: 'upper' },
+      { id: 'dam', label: '坝体', coord: new THREE.Vector3(18.8, 22.8, -9.6), scene: 'upper' },
+      { id: 'pipe', label: '压力管道', coord: new THREE.Vector3(8.0, 14.6, -2.3), scene: 'pipe' },
+      { id: 'powerhouse', label: '地下厂房', coord: new THREE.Vector3(-5.2, 8.5, 10.8), scene: 'powerhouse' },
+      { id: 'lower', label: '下水库', coord: new THREE.Vector3(-25.5, 3.5, 18), scene: 'lower' },
+      { id: 'monitor', label: 'AI巡检', coord: new THREE.Vector3(5.6, 18.2, 17), scene: 'ai' }
+    ];
+
+    const sceneData = {
+      overview: {
+        title: '全景总览 · 抽蓄工程对象',
+        copy: '上水库、下水库、压力管道、地下厂房、交通洞和监测网络构成一套可旋转查看的三维数字孪生场景。',
+        chips: ['上库坝体', '压力管道', '地下厂房', 'AI 巡检'],
+        metrics: [['1.2GW', '装机容量'], ['4×300', '机组配置'], ['98.6%', '感知在线率']],
+        cards: [
+          ['上库安全', '坝顶沉降、边坡位移和库水位连续监测，异常指标进入联动告警。', '91%'],
+          ['水力通道', '压力钢管、岔管、阀室与进出水口形成全链路可视化巡检对象。', '86%'],
+          ['厂房环境', '厂房气体、通风、人员定位、设备状态与应急广播联动展示。', '78%'],
+          ['AI 识别', '无人机航线、热区识别和异常目标框选叠加到三维场景。', '83%']
+        ],
+        counts: [910, 42, 268],
+        active: 'upper',
+        camera: [44, 34, 46],
+        target: [2, 8, 0]
+      },
+      upper: {
+        title: '上库与坝体 · 水位安全监测',
+        copy: '圆形库盆、混凝土坝体、进出水口和坝肩边坡以三维对象展示，可聚焦查看库水位与位移风险。',
+        chips: ['库水位', '坝肩 GNSS', '进出水口', '边坡位移'],
+        metrics: [['718.4m', '当前水位'], ['24', '坝体测点'], ['0.8mm', '日位移峰值']],
+        cards: [
+          ['库盆水位', '水位处于调度曲线控制区间，距汛限水位仍有安全裕度。', '88%'],
+          ['坝体监测', '坝顶沉降、横向位移和渗压测点在线，重点测点高亮。', '94%'],
+          ['进出水口', '拦污栅、闸门启闭与水流通道保持联动监视。', '82%'],
+          ['边坡巡检', '无人机航线覆盖库周高陡边坡，识别松动裸岩区域。', '76%']
+        ],
+        counts: [326, 18, 96],
+        active: 'upper',
+        camera: [35, 30, 2],
+        target: [20, 20, -13]
+      },
+      pipe: {
+        title: '输水系统 · 压力钢管与尾水通道',
+        copy: '多条压力钢管沿山体布设，水流粒子模拟抽发工况，通道状态可联动厂房和库区监控。',
+        chips: ['压力钢管', '岔管', '阀室', '尾水洞'],
+        metrics: [['4', '压力支管'], ['7.2MPa', '管内压力'], ['32.8m³/s', '流量']],
+        cards: [
+          ['压力钢管', '管线沿坡面下穿至厂房，温度、振动、压力测点连续采样。', '86%'],
+          ['岔管阀室', '阀门开度与机组状态联动，异常冲击压力自动预警。', '79%'],
+          ['尾水系统', '尾水通道连接下库，流态与水位变化同步计算。', '84%'],
+          ['水流模拟', '发电与抽水两种工况切换时，流向和粒子速度可动态调整。', '90%']
+        ],
+        counts: [248, 21, 134],
+        active: 'pipe',
+        camera: [21, 21, 31],
+        target: [5, 11, 0]
+      },
+      powerhouse: {
+        title: '地下厂房 · 机组与环境态势',
+        copy: '厂房区域聚合机组运行、气体监测、人员定位和应急联动信息，支持近景查看设备空间关系。',
+        chips: ['4 台机组', '环境监测', '人员定位', '应急联动'],
+        metrics: [['4×300', '机组'], ['20.9%', '氧气浓度'], ['98.7%', '定位覆盖']],
+        cards: [
+          ['机组大厅', '机组状态、检修区域和吊装通道统一纳入厂房态势视图。', '87%'],
+          ['环境安全', '氧气、一氧化碳、甲烷和硫化氢测点正常，局部漂移已标记。', '92%'],
+          ['人员定位', 'UWB 轨迹支持分区统计、电子围栏和历史回放。', '89%'],
+          ['应急联动', '广播、门禁、摄像机和报警策略可按场景一键联动。', '78%']
+        ],
+        counts: [312, 12, 72],
+        active: 'powerhouse',
+        camera: [10, 16, 25],
+        target: [-5, 5, 11]
+      },
+      lower: {
+        title: '下库进出水口 · 水域与交通组织',
+        copy: '下库水面、尾水出口、施工道路和库岸监测点共同呈现，便于识别水域与施工区的空间关系。',
+        chips: ['下库水域', '尾水出口', '库岸道路', '水位测站'],
+        metrics: [['312.6m', '下库水位'], ['11', '水域测点'], ['42', '车辆在线']],
+        cards: [
+          ['下库水位', '水位变化平稳，满足机组发电工况的尾水调节需求。', '84%'],
+          ['尾水出口', '出口水流与尾水通道联动展示，异常淤积区域可标记。', '82%'],
+          ['交通组织', '库岸道路、施工车辆和关键作业面纳入三维定位。', '79%'],
+          ['水域安全', '水面漂浮物、围栏边界和夜间照明进入巡检策略。', '88%']
+        ],
+        counts: [184, 42, 88],
+        active: 'lower',
+        camera: [-39, 18, 33],
+        target: [-23, 2, 17]
+      },
+      ai: {
+        title: 'AI 巡检态势 · 识别框与热区叠加',
+        copy: '三维场景叠加透明识别面，突出库区、厂房和下库的重点监测热区，适合展示智能巡检成果。',
+        chips: ['识别热区', '无人机航线', '异常框选', '联动告警'],
+        metrics: [['97.4%', '识别置信度'], ['18', '今日航线'], ['6', '热区目标']],
+        cards: [
+          ['库区识别', '坝顶、坝肩和库周边坡叠加巡检框，异常目标以暖色提醒。', '93%'],
+          ['厂房识别', '人员、车辆、设备和危险区域在空间场景中联动标记。', '91%'],
+          ['航线覆盖', '无人机航线覆盖上下库和压力管道走廊。', '86%'],
+          ['告警闭环', '识别结果推送至调度面板，形成处置、复核、归档闭环。', '82%']
+        ],
+        counts: [910, 42, 268],
+        active: 'monitor',
+        camera: [35, 28, 36],
+        target: [3, 10, 5]
+      }
+    };
+
+    const labelButtons = new Map();
+    hotspots.forEach((hotspot) => {
+      const button = document.createElement('button');
+      button.className = 'scene-label';
+      button.type = 'button';
+      button.textContent = hotspot.label;
+      button.addEventListener('click', () => setScene(hotspot.scene));
+      labelLayer.appendChild(button);
+      labelButtons.set(hotspot.id, button);
+    });
+
+    let activeScene = 'overview';
+    let activeLabel = 'upper';
+    let labelsEnabled = true;
+    let flowEnabled = true;
+    let toastTimer;
+    let tween = null;
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+    }
+
+    function renderInfo(data) {
+      const chips = data.chips.map((chip) => `<span>${chip}</span>`).join('');
+      sceneInfo.innerHTML = `<b>${data.title}</b><p>${data.copy}</p><div class="scene-chip-row">${chips}</div>`;
+      sceneMetrics.innerHTML = data.metrics.map(([value, label]) => `<div class="scene-metric"><strong>${value}</strong><span>${label}</span></div>`).join('');
+      sceneCards.innerHTML = data.cards.map(([title, copy, v]) => `<div class="scene-card"><b>${title}</b><p>${copy}</p><div class="mini-bar"><i style="--v:${v}"></i></div></div>`).join('');
+      document.getElementById('peopleCount').textContent = data.counts[0];
+      document.getElementById('vehicleCount').textContent = data.counts[1];
+      document.getElementById('deviceCount').textContent = data.counts[2];
+    }
+
+    function startCameraTween(data) {
+      tween = {
+        start: performance.now(),
+        duration: 920,
+        fromPos: camera.position.clone(),
+        toPos: new THREE.Vector3(...data.camera),
+        fromTarget: controls.target.clone(),
+        toTarget: new THREE.Vector3(...data.target)
+      };
+    }
+
+    function setScene(key, silent = false) {
+      const data = sceneData[key];
+      if (!data) return;
+      activeScene = key;
+      activeLabel = data.active;
+      document.querySelectorAll('.scene-btn').forEach((button) => {
+        button.classList.toggle('active', button.dataset.scene === key);
+      });
+      document.getElementById('modeSelect').value = key;
+      renderInfo(data);
+      startCameraTween(data);
+      analysisGroup.visible = key === 'ai';
+      if (!silent) showToast(`已切换：${data.title.split(' · ')[0]}`);
+    }
+
+    function updateTween(now) {
+      if (!tween) return;
+      const t = Math.min(1, (now - tween.start) / tween.duration);
+      const e = 1 - (1 - t) ** 3;
+      camera.position.lerpVectors(tween.fromPos, tween.toPos, e);
+      controls.target.lerpVectors(tween.fromTarget, tween.toTarget, e);
+      if (t >= 1) tween = null;
+    }
+
+    function updateLabels() {
+      const width = stage.clientWidth;
+      const height = stage.clientHeight;
+      const v = new THREE.Vector3();
+      hotspots.forEach((hotspot) => {
+        const button = labelButtons.get(hotspot.id);
+        v.copy(hotspot.coord).project(camera);
+        const sx = (v.x * 0.5 + 0.5) * width;
+        const sy = (-v.y * 0.5 + 0.5) * height;
+        const inBounds = sx > 24 && sx < width - 24 && sy > 24 && sy < height - 24;
+        const visible = labelsEnabled && v.z > -1 && v.z < 1 && inBounds;
+        button.style.opacity = visible ? '1' : '0';
+        button.style.pointerEvents = visible ? 'auto' : 'none';
+        button.style.left = `${sx}px`;
+        button.style.top = `${sy}px`;
+        button.classList.toggle('active', hotspot.id === activeLabel);
+      });
+    }
+
+    function resize() {
+      const rect = stage.getBoundingClientRect();
+      const width = Math.max(320, rect.width);
+      const height = Math.max(420, rect.height);
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      updateLabels();
+    }
+
+    new ResizeObserver(resize).observe(stage);
+    window.addEventListener('resize', resize);
+    resize();
+
+    function tickClock() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      document.getElementById('clock').textContent = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+
+    tickClock();
+    setInterval(tickClock, 1000);
+
+    document.querySelectorAll('.scene-btn').forEach((button) => {
+      button.addEventListener('click', () => setScene(button.dataset.scene));
+    });
+
+    document.getElementById('modeSelect').addEventListener('change', (event) => setScene(event.target.value));
+    document.getElementById('workMode').addEventListener('change', (event) => {
+      modeText.textContent = event.target.value;
+      showToast(`工况：${event.target.value}`);
+    });
+
+    document.getElementById('toggleFlow').addEventListener('click', (event) => {
+      flowEnabled = !flowEnabled;
+      flowGroup.visible = flowEnabled;
+      event.currentTarget.classList.toggle('active', flowEnabled);
+    });
+
+    document.getElementById('toggleLabels').addEventListener('click', (event) => {
+      labelsEnabled = !labelsEnabled;
+      labelLayer.style.display = labelsEnabled ? 'block' : 'none';
+      event.currentTarget.classList.toggle('active', labelsEnabled);
+      updateLabels();
+    });
+
+    document.getElementById('toggleAuto').addEventListener('click', (event) => {
+      controls.autoRotate = !controls.autoRotate;
+      event.currentTarget.classList.toggle('active', controls.autoRotate);
+    });
+
+    document.getElementById('resetView').addEventListener('click', () => setScene('overview'));
+
+    document.getElementById('fullscreen').addEventListener('click', async () => {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    });
+
+    document.querySelectorAll('.dispatch-grid button').forEach((button) => {
+      button.addEventListener('click', () => showToast(`已触发：${button.dataset.action}`));
+    });
+
+    function animate(now) {
+      updateTween(now);
+      controls.update();
+      const time = now * 0.001;
+      flowGroup.children.forEach((item, index) => {
+        if (item.userData.curve) {
+          const t = (time * item.userData.speed + item.userData.offset) % 1;
+          item.position.copy(item.userData.curve.getPointAt(t));
+          item.scale.setScalar(0.78 + 0.22 * Math.sin(time * 6 + index));
+        }
+      });
+      cloudGroup.children.forEach((cloud, index) => {
+        cloud.position.x += Math.sin(time * 0.25 + index) * 0.006;
+        cloud.material.opacity = 0.2 + 0.08 * Math.sin(time * 0.42 + index);
+      });
+      analysisGroup.children.forEach((item, index) => {
+        item.material.opacity = item.type === 'LineSegments'
+          ? 0.52 + 0.12 * Math.sin(time * 2.3 + index)
+          : 0.12 + 0.04 * Math.sin(time * 1.8 + index);
+      });
+      updateLabels();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    const initialScene = new URLSearchParams(window.location.search).get('scene');
+    setScene(sceneData[initialScene] ? initialScene : 'overview', true);
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

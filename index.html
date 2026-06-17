@@ -237,7 +237,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 1.35fr .9fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -349,16 +349,17 @@
         <div class="hero-main">
           <div class="kicker">Project Portal</div>
           <h1>抽水蓄能项目<br />临时展示入口</h1>
-          <p class="lead">当前仓库包含两个 HTML 展示文件：一个用于完整汇报抽水蓄能电站智慧建造整体解决方案，一个用于单独打开抽蓄智慧管理平台驾驶舱界面。</p>
+          <p class="lead">当前仓库包含三个 HTML 展示文件：完整汇报抽水蓄能电站智慧建造整体解决方案、独立打开抽蓄智慧管理平台驾驶舱，以及可拖动查看的三维数字孪生场景。</p>
           <div class="actions">
             <a class="btn primary" href="pump-storage-smart-construction-v2.0.9.html">打开整体解决方案</a>
             <a class="btn" href="pump-storage-smart-platform-dashboard.html">打开智慧管理平台</a>
+            <a class="btn" href="pump-storage-3d-twin-dashboard.html">打开三维数字孪生</a>
           </div>
         </div>
         <aside class="summary" aria-label="仓库文件概览">
-          <div class="summary-item"><b>2</b><span>HTML 展示页面</span></div>
+          <div class="summary-item"><b>3</b><span>HTML 展示页面</span></div>
           <div class="summary-item"><b>1</b><span>整体解决方案主入口</span></div>
-          <div class="summary-item"><b>1</b><span>平台驾驶舱独立页面</span></div>
+          <div class="summary-item"><b>1</b><span>三维数字孪生交互页面</span></div>
         </aside>
       </section>
 
@@ -378,6 +379,12 @@
             <small>独立看板</small>
             <h3>抽蓄智慧管理平台</h3>
             <p>聚焦平台驾驶舱视角，展示抽蓄全景、人员车辆机械、洞室气体监测、安全预警和场景调度能力。</p>
+            <span class="open">进入页面</span>
+          </a>
+          <a class="card" href="pump-storage-3d-twin-dashboard.html">
+            <small>三维场景</small>
+            <h3>抽水蓄能三维数字孪生驾驶舱</h3>
+            <p>将上水库、下水库、压力管道、地下厂房和监测节点组合成可拖动旋转查看的三维场景，支持重点点位快速切换。</p>
             <span class="open">进入页面</span>
           </a>
         </div>
