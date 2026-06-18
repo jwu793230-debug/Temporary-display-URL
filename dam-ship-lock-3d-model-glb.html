@@ -264,7 +264,7 @@
 
   <section class="hud" aria-label="模型视角">
     <h1>大坝船闸3D模型 GLB资产版</h1>
-    <p>采用独立 GLB 模型资产加载，重建双线五级船闸、闸墙、门机、控制楼、库区水面和峡谷地形。</p>
+    <p>采用独立 GLB 模型资产加载，保留中间双线五级船闸、闸墙、门机、控制楼和近区水面，清理外围杂乱构筑物。</p>
     <div class="toolbar">
       <button class="view-btn active" data-view="aerial" title="航拍视角">航拍</button>
       <button class="view-btn" data-view="lock" title="闸室近景">闸室</button>
@@ -280,8 +280,8 @@
   </section>
 
   <aside class="side-tools" aria-label="显示控制">
-    <button id="labelToggle" class="icon-btn active" title="显示或隐藏模型标注">标</button>
-    <button id="flowToggle" class="icon-btn active" title="显示或隐藏水流动效">流</button>
+    <button id="labelToggle" class="icon-btn" title="显示或隐藏模型标注">标</button>
+    <button id="flowToggle" class="icon-btn" title="显示或隐藏水流动效">流</button>
     <button id="resetView" class="icon-btn" title="重置默认视角">↺</button>
   </aside>
 
@@ -312,7 +312,7 @@
 
     const container = document.getElementById("scene");
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xb8dcec, 0.0032);
+    scene.fog = new THREE.FogExp2(0xb8dcec, 0.0022);
 
     const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 620);
     camera.position.set(-76, 50, 108);
@@ -339,15 +339,17 @@
     scene.add(root);
 
     const labelGroup = new THREE.Group();
+    labelGroup.visible = false;
     scene.add(labelGroup);
 
     const flowGroup = new THREE.Group();
+    flowGroup.visible = false;
     root.add(flowGroup);
 
     const clock = new THREE.Clock();
     const labels = [];
     let cameraTween = null;
-    let flowVisible = true;
+    let flowVisible = false;
     let animationStarted = false;
 
     const views = {
@@ -1060,16 +1062,27 @@
             if (!node.isMesh) return;
             node.castShadow = !node.material?.transparent;
             node.receiveShadow = true;
+            const nodeMaterialName = `${node.material?.name || ""} ${node.name || ""}`.toLowerCase();
+            if (nodeMaterialName.includes("water")) {
+              node.castShadow = false;
+              node.material = new THREE.MeshBasicMaterial({
+                name: nodeMaterialName.includes("chamber") ? "clean chamber water" : "clean reservoir water",
+                color: nodeMaterialName.includes("chamber") ? 0x04606e : 0x128f96,
+                side: THREE.DoubleSide
+              });
+              return;
+            }
             const materials = Array.isArray(node.material) ? node.material : [node.material];
             materials.forEach((material) => {
               if (!material) return;
               const materialName = `${material.name || ""} ${node.name || ""}`.toLowerCase();
               if (materialName.includes("water")) {
-                material.color.set(materialName.includes("chamber") ? 0x045765 : 0x067f88);
-                material.map = waterTexture;
+                material.color.set(materialName.includes("chamber") ? 0x034d5a : 0x027884);
+                material.map = null;
                 material.transparent = false;
                 material.opacity = 1;
                 material.depthWrite = true;
+                material.side = THREE.DoubleSide;
                 material.roughness = materialName.includes("chamber") ? 0.32 : 0.24;
               } else if (materialName.includes("concrete")) {
                 material.map = materialName.includes("light") ? concreteFine : concreteTexture;
@@ -1081,7 +1094,9 @@
           });
           root.add(asset);
           buildFlowMarkers();
+          flowGroup.visible = flowVisible;
           addAssetLabels();
+          labelGroup.visible = false;
           startRenderLoop();
         },
         undefined,
