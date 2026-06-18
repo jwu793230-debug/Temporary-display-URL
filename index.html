@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Temporary Display | 抽水蓄能项目展示门户</title>
+  <title>Temporary Display | 临时成果展示门户</title>
   <style>
     :root {
       --bg: #061014;
@@ -14,17 +14,21 @@
       --line: rgba(118, 236, 229, .22);
       --cyan: #5df5ea;
       --blue: #48a8ff;
+      --green: #85f0ad;
       --shadow: 0 24px 80px rgba(0, 0, 0, .34);
       color-scheme: dark;
     }
 
     * { box-sizing: border-box; }
+
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       min-height: 100vh;
       color: var(--text);
       font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      letter-spacing: 0;
       background:
         radial-gradient(circle at 14% 12%, rgba(93, 245, 234, .16), transparent 30rem),
         radial-gradient(circle at 86% 20%, rgba(72, 168, 255, .16), transparent 34rem),
@@ -34,10 +38,13 @@
       background-size: auto, auto, 44px 44px, 44px 44px, auto;
     }
 
-    a { color: inherit; text-decoration: none; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     .shell {
-      width: min(1120px, calc(100vw - 40px));
+      width: min(1160px, calc(100vw - 40px));
       margin: 0 auto;
     }
 
@@ -72,7 +79,6 @@
       box-shadow: 0 0 0 1px rgba(255, 255, 255, .2) inset, 0 18px 42px rgba(93, 245, 234, .18);
       color: #021316;
       font-weight: 950;
-      letter-spacing: -.04em;
     }
 
     .brand strong {
@@ -94,6 +100,7 @@
       color: #d5f5f2;
       background: rgba(255, 255, 255, .04);
       font-size: 12px;
+      white-space: nowrap;
     }
 
     .hero {
@@ -139,7 +146,7 @@
     h1 {
       position: relative;
       margin: 12px 0 0;
-      font-size: clamp(38px, 6vw, 70px);
+      font-size: clamp(38px, 6vw, 68px);
       line-height: 1.04;
       letter-spacing: 0;
     }
@@ -237,13 +244,13 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
     }
 
     .card {
       position: relative;
-      min-height: 230px;
+      min-height: 250px;
       overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -267,6 +274,11 @@
       background: var(--panel-strong);
     }
 
+    .card.featured {
+      border-color: rgba(133, 240, 173, .42);
+      background: linear-gradient(135deg, rgba(10, 70, 62, .86), rgba(8, 25, 31, .84));
+    }
+
     .card small,
     .card h3,
     .card p,
@@ -284,14 +296,19 @@
       font-size: 11px;
     }
 
+    .card.featured small {
+      border-color: rgba(133, 240, 173, .36);
+      color: var(--green);
+    }
+
     .card h3 {
       margin: 18px 0 0;
-      font-size: 26px;
-      line-height: 1.25;
+      font-size: 23px;
+      line-height: 1.28;
     }
 
     .card p {
-      margin: 12px 0 0;
+      margin: 12px 0 36px;
       color: #b6cace;
       line-height: 1.7;
       font-size: 14px;
@@ -313,21 +330,57 @@
       font-size: 12px;
     }
 
+    @media (max-width: 1080px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 900px) {
-      .page { align-items: start; padding-top: 28px; }
+      .page {
+        align-items: start;
+        padding-top: 28px;
+      }
+
       .topbar,
-      .hero { display: grid; grid-template-columns: 1fr; }
-      .repo { justify-self: start; }
-      .grid { grid-template-columns: 1fr; }
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .repo {
+        justify-self: start;
+      }
     }
 
     @media (max-width: 560px) {
-      .shell { width: calc(100vw - 28px); }
-      .hero-main { padding: 28px 20px; }
-      .summary { padding: 18px; }
-      h1 { font-size: clamp(36px, 10vw, 44px); }
-      .actions { flex-direction: column; }
-      .btn { width: 100%; }
+      .shell {
+        width: calc(100vw - 28px);
+      }
+
+      .hero-main {
+        padding: 28px 20px;
+      }
+
+      .summary {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: clamp(36px, 10vw, 44px);
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -339,7 +392,7 @@
           <div class="mark">U</div>
           <div>
             <strong>Temporary Display</strong>
-            <span>抽水蓄能项目展示门户</span>
+            <span>临时成果展示门户</span>
           </div>
         </a>
         <a class="repo" href="https://github.com/jwu793230-debug/Temporary-display-URL">GitHub Repository</a>
@@ -348,18 +401,18 @@
       <section class="hero">
         <div class="hero-main">
           <div class="kicker">Project Portal</div>
-          <h1>抽水蓄能项目<br />临时展示入口</h1>
-          <p class="lead">当前仓库包含三个 HTML 展示文件：完整汇报抽水蓄能电站智慧建造整体解决方案、独立打开抽蓄智慧管理平台驾驶舱，以及可拖动查看的三维数字孪生场景。</p>
+          <h1>工程三维与智能建造展示入口</h1>
+          <p class="lead">这里集中展示临时发布的 HTML 成果，包括抽水蓄能智能建造演示、三维数字孪生看板，以及基于航拍参考重建的三峡大坝永久船闸 3D 交互模型。</p>
           <div class="actions">
-            <a class="btn primary" href="pump-storage-smart-construction-v2.0.9.html">打开整体解决方案</a>
-            <a class="btn" href="pump-storage-smart-platform-dashboard.html">打开智慧管理平台</a>
-            <a class="btn" href="pump-storage-3d-twin-dashboard.html">打开三维数字孪生</a>
+            <a class="btn primary" href="three-gorges-ship-lock-model.html">打开三峡船闸 3D 模型</a>
+            <a class="btn" href="pump-storage-smart-construction-v2.0.9.html">打开智能建造方案</a>
+            <a class="btn" href="#projects">查看全部页面</a>
           </div>
         </div>
-        <aside class="summary" aria-label="仓库文件概览">
-          <div class="summary-item"><b>3</b><span>HTML 展示页面</span></div>
-          <div class="summary-item"><b>1</b><span>整体解决方案主入口</span></div>
-          <div class="summary-item"><b>1</b><span>三维数字孪生交互页面</span></div>
+        <aside class="summary" aria-label="当前文件概览">
+          <div class="summary-item"><b>4</b><span>HTML 展示页面</span></div>
+          <div class="summary-item"><b>1</b><span>三峡大坝永久船闸 3D 模型</span></div>
+          <div class="summary-item"><b>3</b><span>抽水蓄能相关展示页</span></div>
         </aside>
       </section>
 
@@ -369,28 +422,34 @@
           <span></span>
         </div>
         <div class="grid">
+          <a class="card featured" href="three-gorges-ship-lock-model.html">
+            <small>新增成果</small>
+            <h3>三峡大坝永久船闸 3D 模型</h3>
+            <p>可拖拽、缩放、切换视角的 Three.js 单页模型，已按航拍参考图调整深水面、远山、护岸道路、红色门机和控制楼。</p>
+            <span class="open">进入页面</span>
+          </a>
           <a class="card" href="pump-storage-smart-construction-v2.0.9.html">
             <small>主展示页</small>
-            <h3>抽水蓄能电站智慧建造系统整体解决方案</h3>
-            <p>包含建设总览、三大核心应用场景、地下洞室、智慧场站、水库大坝、抽蓄智慧管理平台、实施路径等完整展示内容。</p>
+            <h3>抽水蓄能电站智能建造整体解决方案</h3>
+            <p>展示抽水蓄能项目的建设总览、核心场景、地下洞室、发电场站、水库大坝、智能管理平台和实施路径。</p>
             <span class="open">进入页面</span>
           </a>
           <a class="card" href="pump-storage-smart-platform-dashboard.html">
             <small>独立看板</small>
-            <h3>抽蓄智慧管理平台</h3>
-            <p>聚焦平台驾驶舱视角，展示抽蓄全景、人员车辆机械、洞室气体监测、安全预警和场景调度能力。</p>
+            <h3>抽水蓄能智能管理平台</h3>
+            <p>以平台驾驶舱形式展示项目态势、人员车辆监测、洞室环境、风险预警和场景联动能力。</p>
             <span class="open">进入页面</span>
           </a>
           <a class="card" href="pump-storage-3d-twin-dashboard.html">
             <small>三维场景</small>
             <h3>抽水蓄能三维数字孪生驾驶舱</h3>
-            <p>将上水库、下水库、压力管道、地下厂房和监测节点组合成可拖动旋转查看的三维场景，支持重点点位快速切换。</p>
+            <p>围绕上下水库、压力管道、地下厂房和监测点构建可旋转查看的三维场景，用于快速表达工程空间关系。</p>
             <span class="open">进入页面</span>
           </a>
         </div>
       </section>
 
-      <footer class="footer">Temporary-display-URL · Updated for pumped-storage smart construction demo</footer>
+      <footer class="footer">Temporary-display-URL · Updated for engineering demo pages</footer>
     </div>
   </main>
 </body>
