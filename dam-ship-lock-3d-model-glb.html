@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>大坝船闸3D模型 GLB资产版</title>
+  <style>
+    :root {
+      --ink: #172025;
+      --muted: #5f6f76;
+      --panel: rgba(247, 250, 250, 0.88);
+      --panel-dark: rgba(22, 31, 35, 0.72);
+      --line: rgba(10, 30, 35, 0.14);
+      --accent: #c9251e;
+      --water: #28b8ad;
+      --white: #f7fbfc;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #8fc8df;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+    }
+
+    .hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 4;
+      width: min(384px, calc(100vw - 32px));
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 18px 42px rgba(7, 31, 38, 0.18);
+      backdrop-filter: blur(16px);
+    }
+
+    .hud h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .hud p {
+      margin: 6px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    button {
+      min-width: 0;
+      height: 36px;
+      border: 1px solid rgba(14, 38, 42, 0.14);
+      border-radius: 8px;
+      background: #ffffff;
+      color: #203036;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(10, 30, 38, 0.08);
+    }
+
+    button:hover {
+      border-color: rgba(201, 37, 30, 0.34);
+      color: #861b18;
+    }
+
+    button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chips span {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(32, 184, 173, 0.12);
+      color: #245a5c;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .side-tools {
+      position: fixed;
+      right: 16px;
+      top: 16px;
+      z-index: 4;
+      display: grid;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-color: rgba(255, 255, 255, 0.22);
+      background: var(--panel-dark);
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 18px 32px rgba(5, 20, 24, 0.24);
+    }
+
+    .icon-btn.active {
+      background: #ffffff;
+      color: var(--accent);
+    }
+
+    .scale {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(14, 27, 31, 0.72);
+      color: white;
+      box-shadow: 0 18px 32px rgba(5, 20, 24, 0.22);
+      backdrop-filter: blur(14px);
+    }
+
+    .scale-line {
+      width: 118px;
+      height: 7px;
+      border-left: 2px solid white;
+      border-right: 2px solid white;
+      border-bottom: 2px solid white;
+    }
+
+    .scale span {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 6;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #9cd2e7 0%, #cdeaf1 42%, #edf8f7 100%);
+      color: #17333c;
+      transition: opacity 360ms ease, visibility 360ms ease;
+    }
+
+    .loading.done {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-card {
+      width: min(320px, calc(100vw - 48px));
+      padding: 18px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(15, 39, 46, 0.12);
+      box-shadow: 0 24px 56px rgba(23, 55, 62, 0.2);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .loading-bar {
+      height: 4px;
+      margin-top: 14px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: rgba(18, 54, 60, 0.12);
+    }
+
+    .loading-bar::after {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 42%;
+      border-radius: inherit;
+      background: var(--water);
+      animation: load 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes load {
+      from { transform: translateX(-25%); }
+      to { transform: translateX(160%); }
+    }
+
+    @media (max-width: 720px) {
+      .hud {
+        top: 10px;
+        left: 10px;
+        width: calc(100vw - 20px);
+        padding: 12px;
+      }
+
+      .hud h1 {
+        font-size: 17px;
+      }
+
+      .hud p {
+        display: none;
+      }
+
+      .toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      button {
+        height: 34px;
+        font-size: 12px;
+      }
+
+      .chips {
+        display: none;
+      }
+
+      .side-tools {
+        top: auto;
+        right: 10px;
+        bottom: 10px;
+      }
+
+      .scale {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="scene" aria-label="大坝船闸3D模型"></main>
+
+  <section class="hud" aria-label="模型视角">
+    <h1>大坝船闸3D模型 GLB资产版</h1>
+    <p>采用独立 GLB 模型资产加载，重建双线五级船闸、闸墙、门机、控制楼、库区水面和峡谷地形。</p>
+    <div class="toolbar">
+      <button class="view-btn active" data-view="aerial" title="航拍视角">航拍</button>
+      <button class="view-btn" data-view="lock" title="闸室近景">闸室</button>
+      <button class="view-btn" data-view="downstream" title="下游视角">下游</button>
+      <button class="view-btn" data-view="damface" title="坝体仰视">坝体</button>
+    </div>
+    <div class="chips" aria-label="模型要素">
+      <span>双线五级闸室</span>
+      <span>红色门机</span>
+      <span>灰色混凝土闸墙</span>
+      <span>青绿色库水</span>
+    </div>
+  </section>
+
+  <aside class="side-tools" aria-label="显示控制">
+    <button id="labelToggle" class="icon-btn active" title="显示或隐藏模型标注">标</button>
+    <button id="flowToggle" class="icon-btn active" title="显示或隐藏水流动效">流</button>
+    <button id="resetView" class="icon-btn" title="重置默认视角">↺</button>
+  </aside>
+
+  <div class="scale" aria-hidden="true">
+    <div class="scale-line"></div>
+    <span>约 500 m</span>
+  </div>
+
+  <div id="loading" class="loading" role="status">
+    <div class="loading-card">
+      正在生成三维船闸模型
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+    const container = document.getElementById("scene");
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0xb8dcec, 0.0032);
+
+    const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 620);
+    camera.position.set(-76, 50, 108);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.98;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.minDistance = 18;
+    controls.maxDistance = 150;
+    controls.maxPolarAngle = Math.PI * 0.48;
+    controls.target.set(0, 4, 3);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const labelGroup = new THREE.Group();
+    scene.add(labelGroup);
+
+    const flowGroup = new THREE.Group();
+    root.add(flowGroup);
+
+    const clock = new THREE.Clock();
+    const labels = [];
+    let cameraTween = null;
+    let flowVisible = true;
+    let animationStarted = false;
+
+    const views = {
+      aerial: {
+        position: new THREE.Vector3(-76, 50, 108),
+        target: new THREE.Vector3(2, 4, 6)
+      },
+      lock: {
+        position: new THREE.Vector3(-10, 15, 42),
+        target: new THREE.Vector3(-2, 5, -12)
+      },
+      downstream: {
+        position: new THREE.Vector3(34, 18, -82),
+        target: new THREE.Vector3(0, 3, -10)
+      },
+      damface: {
+        position: new THREE.Vector3(22, 13, 28),
+        target: new THREE.Vector3(13, 8, -9)
+      }
+    };
+
+    function makeCanvasTexture(width, height, draw) {
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      draw(ctx, width, height);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      return texture;
+    }
+
+    function makeConcreteTexture() {
+      return makeCanvasTexture(512, 512, (ctx, w, h) => {
+        ctx.fillStyle = "#89979a";
+        ctx.fillRect(0, 0, w, h);
+        const image = ctx.getImageData(0, 0, w, h);
+        const data = image.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const n = (Math.random() - 0.5) * 34;
+          data[i] = Math.max(0, Math.min(255, data[i] + n));
+          data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + n));
+          data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + n));
+        }
+        ctx.putImageData(image, 0, 0);
+        ctx.strokeStyle = "rgba(36, 47, 50, 0.24)";
+        ctx.lineWidth = 2;
+        for (let y = 62; y < h; y += 62) {
+          ctx.beginPath();
+          ctx.moveTo(0, y + Math.sin(y) * 2);
+          ctx.lineTo(w, y + Math.cos(y) * 2);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "rgba(230, 238, 238, 0.12)";
+        ctx.lineWidth = 1;
+        for (let x = 48; x < w; x += 76) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x + 16, h);
+          ctx.stroke();
+        }
+      });
+    }
+
+    function makeWaterTexture() {
+      return makeCanvasTexture(512, 512, (ctx, w, h) => {
+        const gradient = ctx.createLinearGradient(0, 0, w, h);
+        gradient.addColorStop(0, "#1f9ca2");
+        gradient.addColorStop(0.56, "#0d7f87");
+        gradient.addColorStop(1, "#42c8c0");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = "rgba(238,255,255,0.32)";
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 64; i++) {
+          const y = i * 13 + Math.random() * 10;
+          ctx.beginPath();
+          for (let x = -20; x <= w + 20; x += 24) {
+            const yy = y + Math.sin((x + i * 21) * 0.035) * 5;
+            if (x < 0) ctx.moveTo(x, yy);
+            else ctx.lineTo(x, yy);
+          }
+          ctx.stroke();
+        }
+      });
+    }
+
+    function makeGrassTexture() {
+      return makeCanvasTexture(512, 512, (ctx, w, h) => {
+        const gradient = ctx.createLinearGradient(0, 0, w, h);
+        gradient.addColorStop(0, "#2f6f39");
+        gradient.addColorStop(0.5, "#4f8c48");
+        gradient.addColorStop(1, "#1f5c36");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+        for (let i = 0; i < 1800; i++) {
+          const x = Math.random() * w;
+          const y = Math.random() * h;
+          const s = Math.random() * 2.2 + 0.4;
+          ctx.fillStyle = Math.random() > 0.5 ? "rgba(91,137,65,0.42)" : "rgba(24,77,46,0.42)";
+          ctx.fillRect(x, y, s, s);
+        }
+      });
+    }
+
+    const concreteTexture = makeConcreteTexture();
+    concreteTexture.repeat.set(3, 12);
+
+    const concreteFine = concreteTexture.clone();
+    concreteFine.repeat.set(8, 24);
+
+    const waterTexture = makeWaterTexture();
+    waterTexture.repeat.set(8, 8);
+
+    const grassTexture = makeGrassTexture();
+    grassTexture.repeat.set(10, 10);
+
+    const materials = {
+      concrete: new THREE.MeshStandardMaterial({ map: concreteTexture, color: 0xaab0ad, roughness: 0.88, metalness: 0.02 }),
+      concreteFine: new THREE.MeshStandardMaterial({ map: concreteFine, color: 0x9ca6a7, roughness: 0.9, metalness: 0.02 }),
+      darkConcrete: new THREE.MeshStandardMaterial({ color: 0x4f5a5e, roughness: 0.94, metalness: 0.03 }),
+      road: new THREE.MeshStandardMaterial({ color: 0x667074, roughness: 0.82 }),
+      water: new THREE.MeshStandardMaterial({ map: waterTexture, color: 0x188f91, roughness: 0.18, metalness: 0.02, transparent: true, opacity: 0.94 }),
+      deepWater: new THREE.MeshStandardMaterial({ color: 0x0f747b, roughness: 0.26, metalness: 0.02 }),
+      red: new THREE.MeshStandardMaterial({ color: 0xd62220, roughness: 0.46, metalness: 0.16 }),
+      redDark: new THREE.MeshStandardMaterial({ color: 0x9a1817, roughness: 0.52, metalness: 0.18 }),
+      white: new THREE.MeshStandardMaterial({ color: 0xf0f4f2, roughness: 0.68 }),
+      glass: new THREE.MeshStandardMaterial({ color: 0x162b35, roughness: 0.25, metalness: 0.2 }),
+      grass: new THREE.MeshStandardMaterial({ map: grassTexture, color: 0x69a85d, roughness: 0.95 }),
+      rock: new THREE.MeshStandardMaterial({ color: 0x667062, roughness: 0.96 }),
+      rail: new THREE.MeshStandardMaterial({ color: 0x232c30, roughness: 0.6, metalness: 0.35 }),
+      marker: new THREE.MeshStandardMaterial({ color: 0xa6fff3, roughness: 0.2, metalness: 0.05, transparent: true, opacity: 0.72 })
+    };
+
+    function addBox(group, name, size, position, material, options = {}) {
+      const geometry = new THREE.BoxGeometry(size[0], size[1], size[2]);
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.name = name;
+      mesh.position.set(position[0], position[1], position[2]);
+      mesh.castShadow = options.castShadow ?? true;
+      mesh.receiveShadow = options.receiveShadow ?? true;
+      group.add(mesh);
+      if (options.edges) {
+        const edges = new THREE.LineSegments(
+          new THREE.EdgesGeometry(geometry),
+          new THREE.LineBasicMaterial({ color: options.edgeColor || 0x2f3d41, transparent: true, opacity: options.edgeOpacity ?? 0.24 })
+        );
+        mesh.add(edges);
+      }
+      return mesh;
+    }
+
+    function addCylinder(group, name, radiusTop, radiusBottom, height, position, material, radial = 18) {
+      const geometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radial);
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.name = name;
+      mesh.position.set(position[0], position[1], position[2]);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      group.add(mesh);
+      return mesh;
+    }
+
+    function heightAt(x, z) {
+      const farRidge = 7.4 * Math.exp(-Math.pow((z - 84) / 38, 2)) * (0.78 + 0.22 * Math.sin(x * 0.07));
+      const leftBank = 2.7 * Math.exp(-Math.pow((x + 91) / 23, 2)) * (0.65 + 0.35 * Math.exp(-Math.pow((z + 2) / 84, 2)));
+      const rightBank = 3.6 * Math.exp(-Math.pow((x - 94) / 24, 2)) * (0.7 + 0.3 * Math.exp(-Math.pow((z - 4) / 80, 2)));
+      const lowerLeftIsland = 3.4 * Math.exp(-((x + 66) * (x + 66) + (z + 48) * (z + 48)) / 860);
+      const midPromontory = 2.0 * Math.exp(-((x + 38) * (x + 38) + (z + 28) * (z + 28)) / 1260);
+      const rightTerrace = 2.2 * Math.exp(-((x - 65) * (x - 65)) / 900) * Math.exp(-Math.pow((z - 18) / 70, 2));
+      const roll = Math.sin(x * 0.08) * 0.28 + Math.cos(z * 0.075) * 0.25 + Math.sin((x + z) * 0.055) * 0.2;
+      let h = farRidge + leftBank + rightBank + lowerLeftIsland + midPromontory + rightTerrace + roll - 1.95;
+      const lockCut = Math.exp(-(x * x) / 820) * Math.exp(-(z * z) / 7200);
+      const reservoirCut = Math.exp(-Math.pow(x / 80, 4)) * Math.exp(-Math.pow((z - 2) / 90, 4));
+      h = h * (1 - lockCut * 0.62) - reservoirCut * 1.05;
+      return Math.max(-2.45, h);
+    }
+
+    function buildTerrain() {
+      const geometry = new THREE.PlaneGeometry(270, 205, 110, 88);
+      geometry.rotateX(-Math.PI / 2);
+      const positions = geometry.attributes.position;
+      for (let i = 0; i < positions.count; i++) {
+        const x = positions.getX(i);
+        const z = positions.getZ(i);
+        positions.setY(i, heightAt(x, z));
+      }
+      geometry.computeVertexNormals();
+      const terrain = new THREE.Mesh(geometry, materials.grass);
+      terrain.position.y = -1.05;
+      terrain.receiveShadow = true;
+      root.add(terrain);
+
+      const rockGeometry = new THREE.PlaneGeometry(270, 205, 110, 88);
+      rockGeometry.rotateX(-Math.PI / 2);
+      const rockPositions = rockGeometry.attributes.position;
+      for (let i = 0; i < rockPositions.count; i++) {
+        const x = rockPositions.getX(i);
+        const z = rockPositions.getZ(i);
+        rockPositions.setY(i, heightAt(x, z) - 0.18);
+      }
+      rockGeometry.computeVertexNormals();
+      const rock = new THREE.Mesh(rockGeometry, materials.rock);
+      rock.position.y = -1.18;
+      rock.receiveShadow = true;
+      root.add(rock);
+    }
+
+    function buildWaterBodies() {
+      const water = new THREE.Mesh(new THREE.PlaneGeometry(310, 226, 1, 1), materials.water);
+      water.rotation.x = -Math.PI / 2;
+      water.position.set(0, 0.08, 0);
+      water.receiveShadow = true;
+      root.add(water);
+
+      const channel = new THREE.Mesh(new THREE.PlaneGeometry(44, 150, 1, 1), materials.deepWater);
+      channel.rotation.x = -Math.PI / 2;
+      channel.position.set(0, 0.12, 0);
+      channel.receiveShadow = true;
+      root.add(channel);
+
+      const curves = [
+        new THREE.CatmullRomCurve3([
+          new THREE.Vector3(-18, 0.72, -65),
+          new THREE.Vector3(-36, 0.7, -71),
+          new THREE.Vector3(-50, 0.7, -58),
+          new THREE.Vector3(-56, 0.7, -42)
+        ]),
+        new THREE.CatmullRomCurve3([
+          new THREE.Vector3(18, 0.72, -65),
+          new THREE.Vector3(34, 0.7, -69),
+          new THREE.Vector3(48, 0.7, -52),
+          new THREE.Vector3(62, 0.7, -36)
+        ]),
+        new THREE.CatmullRomCurve3([
+          new THREE.Vector3(-17, 0.74, 65),
+          new THREE.Vector3(-38, 0.72, 68),
+          new THREE.Vector3(-62, 0.7, 61)
+        ]),
+        new THREE.CatmullRomCurve3([
+          new THREE.Vector3(17, 0.74, 65),
+          new THREE.Vector3(37, 0.72, 67),
+          new THREE.Vector3(58, 0.7, 58)
+        ])
+      ];
+
+      curves.forEach((curve, index) => {
+        const wall = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, index < 2 ? 0.42 : 0.34, 10, false), materials.concreteFine);
+        wall.castShadow = true;
+        wall.receiveShadow = true;
+        root.add(wall);
+      });
+    }
+
+    function buildShipLock() {
+      const lock = new THREE.Group();
+      lock.name = "dam-ship-lock-3d-model";
+      root.add(lock);
+
+      addBox(lock, "foundation-slab", [25, 1.4, 128], [0, 0.2, 0], materials.concreteFine, { edges: true, castShadow: false });
+      addBox(lock, "left-outer-wall", [2.4, 8.2, 116], [-10.6, 4.2, 0], materials.concrete, { edges: true });
+      addBox(lock, "right-outer-wall", [2.4, 8.2, 116], [10.6, 4.2, 0], materials.concrete, { edges: true });
+      addBox(lock, "center-wall", [2.1, 7.6, 116], [0, 4.0, 0], materials.concreteFine, { edges: true });
+
+      addBox(lock, "left-top-road", [3.2, 0.35, 116], [-12.2, 8.58, 0], materials.road, { edges: true });
+      addBox(lock, "right-top-road", [3.2, 0.35, 116], [12.2, 8.58, 0], materials.road, { edges: true });
+      addBox(lock, "center-service-deck", [2.7, 0.35, 116], [0, 8.22, 0], materials.road, { edges: true });
+
+      const chamberCenters = [-5.25, 5.25];
+      const chamberLength = 18.4;
+      const gatePositions = [-54, -32, -10, 12, 34, 56];
+      const levelBase = [-0.02, 0.45, 0.95, 1.5, 2.04];
+
+      for (let lane = 0; lane < chamberCenters.length; lane++) {
+        const x = chamberCenters[lane];
+        for (let i = 0; i < 5; i++) {
+          const z = -43 + i * 22;
+          const water = new THREE.Mesh(new THREE.PlaneGeometry(6.9, chamberLength, 1, 1), materials.water);
+          water.rotation.x = -Math.PI / 2;
+          water.position.set(x, 0.46 + levelBase[i], z);
+          water.receiveShadow = true;
+          lock.add(water);
+          addBox(lock, `lane-${lane}-floor-${i}`, [7.1, 0.32, chamberLength], [x, -0.05 + levelBase[i] * 0.16, z], materials.darkConcrete, { castShadow: false, receiveShadow: true });
+        }
+      }
+
+      gatePositions.forEach((z, index) => {
+        addBox(lock, `transverse-gate-wall-${index}`, [23.8, 2.2, 1.5], [0, 1.1, z], materials.darkConcrete, { edges: true });
+        addBox(lock, `overhead-bridge-${index}`, [24.6, 0.62, 2.1], [0, 8.8, z], materials.concreteFine, { edges: true });
+        addBox(lock, `red-gate-beam-${index}`, [20.2, 0.42, 0.54], [0, 9.28, z], materials.redDark, { edges: true });
+        chamberCenters.forEach((x, lane) => {
+          addBox(lock, `vertical-miter-gate-${index}-${lane}`, [5.7, 5.3, 0.42], [x, 3.12, z + 0.18], materials.darkConcrete, { edges: true });
+          addBox(lock, `red-hydraulic-${index}-${lane}-a`, [0.42, 4.6, 0.42], [x - 3.04, 5.1, z + 0.55], materials.red, { edges: true });
+          addBox(lock, `red-hydraulic-${index}-${lane}-b`, [0.42, 4.6, 0.42], [x + 3.04, 5.1, z + 0.55], materials.red, { edges: true });
+        });
+      });
+
+      [-10.95, -0.95, 0.95, 10.95].forEach((x, wallIndex) => {
+        for (let z = -54; z <= 56; z += 4.2) {
+          addBox(lock, `wall-groove-${wallIndex}-${z.toFixed(1)}`, [0.12, 5.4, 0.16], [x, 4.6, z], materials.darkConcrete, { castShadow: false, receiveShadow: false });
+        }
+      });
+
+      [-12.2, 0, 12.2].forEach((x, railIndex) => {
+        addBox(lock, `rail-run-${railIndex}-left`, [0.13, 0.13, 112], [x, 9.2, 0], materials.rail, { castShadow: false });
+        addBox(lock, `rail-run-${railIndex}-right`, [0.13, 0.13, 112], [x + 0.6, 9.2, 0], materials.rail, { castShadow: false });
+        for (let z = -54; z <= 54; z += 5.6) {
+          addBox(lock, `rail-post-${railIndex}-${z.toFixed(1)}`, [0.12, 0.75, 0.12], [x + 0.3, 8.93, z], materials.rail, { castShadow: false });
+        }
+      });
+
+      [-44, -24, 0, 24, 46].forEach((z, index) => addGantryCrane(lock, index, z));
+      buildControlBuilding(lock);
+      buildDamFace(lock);
+      buildFlowMarkers();
+      createLabel("双线五级闸室", new THREE.Vector3(0, 12.8, 1));
+      createLabel("红色门机", new THREE.Vector3(-8, 15.6, -24));
+      createLabel("白色控制楼", new THREE.Vector3(17, 16, 57));
+      createLabel("青绿色库区水面", new THREE.Vector3(-42, 4.5, 45));
+      createLabel("混凝土坝体与闸墙", new THREE.Vector3(18, 12, -11));
+    }
+
+    function addGantryCrane(group, index, z) {
+      const crane = new THREE.Group();
+      crane.name = `red-gantry-crane-${index}`;
+      group.add(crane);
+
+      const xs = [-8.2, 8.2];
+      xs.forEach((x) => {
+        addBox(crane, `crane-leg-${index}-${x}-front`, [0.42, 5.1, 0.42], [x, 11.2, z - 1.35], materials.red, { edges: true });
+        addBox(crane, `crane-leg-${index}-${x}-back`, [0.42, 5.1, 0.42], [x, 11.2, z + 1.35], materials.red, { edges: true });
+      });
+      addBox(crane, `crane-crossbeam-${index}`, [18.4, 0.62, 0.72], [0, 14.0, z], materials.red, { edges: true });
+      addBox(crane, `crane-top-rail-${index}`, [19.5, 0.3, 3.2], [0, 14.55, z], materials.redDark, { edges: true });
+      addBox(crane, `crane-hoist-${index}`, [1.45, 1.1, 1.2], [0, 13.15, z], materials.redDark, { edges: true });
+      addCylinder(crane, `crane-cable-${index}`, 0.035, 0.035, 3.6, [0, 10.85, z], materials.rail, 8);
+    }
+
+    function buildControlBuilding(group) {
+      const building = new THREE.Group();
+      building.name = "white-control-building";
+      group.add(building);
+      addBox(building, "control-building-main", [7.2, 10.8, 8.6], [16.4, 6.0, 56.5], materials.white, { edges: true, edgeOpacity: 0.18 });
+      addBox(building, "control-building-side", [5.5, 6.3, 10.2], [20.5, 3.7, 46.2], materials.white, { edges: true, edgeOpacity: 0.18 });
+      for (let y = 3.2; y < 10.4; y += 2.1) {
+        for (let z = 53.3; z < 60.5; z += 2.1) {
+          addBox(building, `window-east-${y}-${z}`, [0.08, 0.72, 0.86], [12.74, y, z], materials.glass, { castShadow: false });
+        }
+      }
+      for (let x = 18.1; x < 22.4; x += 1.8) {
+        addBox(building, `side-window-${x}`, [0.92, 0.76, 0.08], [x, 5.9, 41.04], materials.glass, { castShadow: false });
+      }
+      addBox(building, "control-roof", [8.0, 0.42, 9.4], [16.4, 11.65, 56.5], materials.road, { edges: true });
+    }
+
+    function triangularPrismGeometry(width, height, depth) {
+      const w = width / 2;
+      const d = depth / 2;
+      const vertices = new Float32Array([
+        -w, 0, -d,  w, 0, -d,  -w, height, -d,
+        -w, 0, d,   w, 0, d,   -w, height, d
+      ]);
+      const indices = [
+        0, 1, 2,
+        3, 5, 4,
+        0, 3, 4, 0, 4, 1,
+        0, 2, 5, 0, 5, 3,
+        1, 4, 5, 1, 5, 2
+      ];
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+      geometry.setIndex(indices);
+      geometry.computeVertexNormals();
+      return geometry;
+    }
+
+    function buildDamFace(group) {
+      const dam = new THREE.Group();
+      dam.name = "adjacent-dam-face";
+      group.add(dam);
+      const face = addBox(dam, "sloped-dam-body", [13.5, 8.5, 71], [21.4, 3.9, -7], materials.concreteFine, { edges: true });
+      face.rotation.z = -0.22;
+      addBox(dam, "upper-dam-gallery", [10.5, 1.1, 73], [15.7, 9.55, -7], materials.concrete, { edges: true });
+      for (let z = -39; z <= 26; z += 6.4) {
+        const buttress = new THREE.Mesh(triangularPrismGeometry(3.2, 5.7, 1.2), materials.concrete);
+        buttress.name = `curved-buttress-${z.toFixed(0)}`;
+        buttress.rotation.y = Math.PI / 2;
+        buttress.rotation.z = -0.12;
+        buttress.position.set(16.4, 6.2, z);
+        buttress.castShadow = true;
+        buttress.receiveShadow = true;
+        dam.add(buttress);
+        addBox(dam, `spillway-shadow-${z.toFixed(0)}`, [0.18, 4.8, 2.4], [14.2, 5.0, z + 2.5], materials.darkConcrete, { castShadow: false });
+      }
+      addBox(dam, "dam-top-road", [8.3, 0.42, 78], [13.4, 10.2, -7], materials.road, { edges: true });
+    }
+
+    function buildFlowMarkers() {
+      for (let i = 0; i < 22; i++) {
+        const z = -54 + i * 5.2;
+        [-5.25, 5.25].forEach((x, lane) => {
+          const marker = new THREE.Mesh(new THREE.ConeGeometry(0.36, 1.25, 3), materials.marker);
+          marker.name = `flow-marker-${i}-${lane}`;
+          marker.rotation.x = Math.PI / 2;
+          marker.rotation.z = Math.PI / 2;
+          marker.position.set(x, 1.1 + (i % 5) * 0.15, z);
+          marker.userData.baseZ = z;
+          marker.castShadow = false;
+          marker.receiveShadow = false;
+          flowGroup.add(marker);
+        });
+      }
+    }
+
+    function buildApproachDetails() {
+      addBox(root, "upstream-approach-wall-left", [2.1, 3.1, 26], [-10.6, 2.0, 72], materials.concreteFine, { edges: true });
+      addBox(root, "upstream-approach-wall-right", [2.1, 3.1, 26], [10.6, 2.0, 72], materials.concreteFine, { edges: true });
+      addBox(root, "downstream-guide-wall-left", [2.0, 2.8, 30], [-10.6, 1.8, -75], materials.concreteFine, { edges: true });
+      addBox(root, "downstream-guide-wall-right", [2.0, 2.8, 30], [10.6, 1.8, -75], materials.concreteFine, { edges: true });
+      addBox(root, "right-parallel-service-apron", [5.6, 0.34, 122], [17.3, 0.86, 0], materials.road, { edges: true, castShadow: false });
+      addBox(root, "left-bank-service-road", [3.2, 0.28, 112], [-17.4, 0.82, -2], materials.road, { edges: true, castShadow: false });
+
+      const tube = (name, points, radius, material, yOffset = 0) => {
+        const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(p[0], p[1] + yOffset, p[2])));
+        const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 72, radius, 10, false), material);
+        mesh.name = name;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        root.add(mesh);
+        return mesh;
+      };
+
+      tube("left-reservoir-curved-shore", [
+        [-96, 0.82, -47], [-78, 0.86, -61], [-54, 0.9, -60], [-36, 0.93, -47], [-26, 0.95, -30]
+      ], 0.38, materials.concreteFine);
+      tube("left-island-road-loop", [
+        [-78, 1.06, -45], [-67, 1.08, -53], [-53, 1.08, -50], [-47, 1.08, -36], [-59, 1.08, -28], [-73, 1.07, -33]
+      ], 0.24, materials.road);
+      tube("right-reservoir-curved-shore", [
+        [24, 0.86, -42], [43, 0.9, -56], [66, 0.9, -49], [82, 0.9, -31], [94, 0.88, -8]
+      ], 0.42, materials.concreteFine);
+      tube("far-town-shoreline", [
+        [-82, 0.78, 62], [-48, 0.82, 70], [-12, 0.84, 72], [25, 0.84, 68], [56, 0.8, 58]
+      ], 0.32, materials.concreteFine);
+      tube("right-hillside-road", [
+        [47, 2.0, 8], [61, 2.35, 18], [78, 2.55, 24], [100, 2.4, 19]
+      ], 0.25, materials.road);
+
+      for (let row = 0; row < 4; row++) {
+        addBox(root, `right-bank-terrace-${row}`, [48 - row * 5, 0.18, 1.1], [78, 1.12 + row * 0.55, 6 + row * 8], materials.concreteFine, { castShadow: false, receiveShadow: true });
+      }
+
+      for (let i = 0; i < 16; i++) {
+        const x = -42 + (i % 8) * 7.2;
+        const z = 68 + Math.floor(i / 8) * 4.8;
+        const body = addBox(root, `far-bank-building-${i}`, [2.4, 1.15 + (i % 3) * 0.25, 1.9], [x, 1.18, z], materials.white, { edges: true, edgeOpacity: 0.12 });
+        addBox(body, `far-bank-building-roof-${i}`, [2.6, 0.16, 2.1], [0, 0.66 + (i % 3) * 0.12, 0], materials.road, { castShadow: false });
+      }
+
+      const bridgeCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-42, 4.8, -61),
+        new THREE.Vector3(-18, 5.2, -69),
+        new THREE.Vector3(16, 5.1, -68),
+        new THREE.Vector3(43, 5.0, -56)
+      ]);
+      const bridge = new THREE.Mesh(new THREE.TubeGeometry(bridgeCurve, 64, 0.32, 10, false), materials.concreteFine);
+      bridge.name = "curved-downstream-bridge";
+      bridge.castShadow = true;
+      bridge.receiveShadow = true;
+      root.add(bridge);
+
+      for (let i = -1; i <= 1; i++) {
+        addBox(root, `bridge-pier-${i}`, [0.9, 5.3, 0.9], [i * 18, 2.7, -66 + Math.abs(i) * 4], materials.concrete, { edges: true });
+      }
+    }
+
+    function buildPowerLines() {
+      const towerMat = materials.rail;
+      const towers = [
+        [31, 0.4, 38],
+        [44, 0.5, 52],
+        [56, 0.8, 66]
+      ];
+      towers.forEach((p, idx) => {
+        const t = new THREE.Group();
+        t.name = `power-pylon-${idx}`;
+        root.add(t);
+        addBox(t, "pylon-leg-a", [0.16, 8.0, 0.16], [-0.9, 4.2, 0], towerMat, { castShadow: false });
+        addBox(t, "pylon-leg-b", [0.16, 8.0, 0.16], [0.9, 4.2, 0], towerMat, { castShadow: false });
+        addBox(t, "pylon-cross-a", [3.4, 0.16, 0.16], [0, 7.8, 0], towerMat, { castShadow: false });
+        addBox(t, "pylon-cross-b", [2.4, 0.16, 0.16], [0, 5.9, 0], towerMat, { castShadow: false });
+        t.position.set(p[0], p[1], p[2]);
+      });
+
+      for (let line = 0; line < 3; line++) {
+        const offset = (line - 1) * 0.7;
+        const curve = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(31 + offset, 8.2, 38),
+          new THREE.Vector3(44 + offset, 9.1, 52),
+          new THREE.Vector3(56 + offset, 10.2, 66)
+        ]);
+        const cable = new THREE.Mesh(new THREE.TubeGeometry(curve, 32, 0.035, 6, false), towerMat);
+        cable.name = `power-cable-${line}`;
+        root.add(cable);
+      }
+    }
+
+    function buildTrees() {
+      const coneGeometry = new THREE.ConeGeometry(0.42, 1.65, 7);
+      const trunkGeometry = new THREE.CylinderGeometry(0.055, 0.085, 0.62, 6);
+      const treeMat = new THREE.MeshStandardMaterial({ color: 0x1f6a38, roughness: 0.9 });
+      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x6a4b2a, roughness: 0.8 });
+      const cones = new THREE.InstancedMesh(coneGeometry, treeMat, 460);
+      const trunks = new THREE.InstancedMesh(trunkGeometry, trunkMat, 460);
+      cones.castShadow = true;
+      trunks.castShadow = true;
+      root.add(cones, trunks);
+
+      let seed = 7;
+      const random = () => {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        return seed / 4294967296;
+      };
+
+      const matrix = new THREE.Matrix4();
+      const pos = new THREE.Vector3();
+      const quat = new THREE.Quaternion();
+      const scale = new THREE.Vector3();
+      let count = 0;
+      let guard = 0;
+      while (count < 460 && guard < 3200) {
+        guard++;
+        const x = -125 + random() * 250;
+        const z = -84 + random() * 174;
+        if (Math.abs(x) < 24 && Math.abs(z) < 76) continue;
+        if (Math.abs(x) < 78 && z < -52) continue;
+        if (x > -40 && x < 52 && z > 46) continue;
+        const y = heightAt(x, z) - 0.4;
+        if (y < -0.05) continue;
+        const s = 0.42 + random() * 0.88;
+        pos.set(x, y + 1.12 * s, z);
+        scale.set(s, s, s);
+        matrix.compose(pos, quat, scale);
+        cones.setMatrixAt(count, matrix);
+        pos.set(x, y + 0.45 * s, z);
+        scale.set(s, s, s);
+        matrix.compose(pos, quat, scale);
+        trunks.setMatrixAt(count, matrix);
+        count++;
+      }
+      cones.count = count;
+      trunks.count = count;
+      cones.instanceMatrix.needsUpdate = true;
+      trunks.instanceMatrix.needsUpdate = true;
+    }
+
+    function createLabel(text, position) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 128;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(15, 27, 31, 0.76)";
+      roundRect(ctx, 18, 24, 476, 80, 18);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.28)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "700 32px Microsoft YaHei, PingFang SC, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, 256, 64);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      const material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
+      const sprite = new THREE.Sprite(material);
+      sprite.position.copy(position);
+      sprite.scale.set(9.8, 2.45, 1);
+      labelGroup.add(sprite);
+      labels.push(sprite);
+      return sprite;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function buildSky() {
+      const skyGeo = new THREE.SphereGeometry(300, 32, 16);
+      const skyMat = new THREE.ShaderMaterial({
+        side: THREE.BackSide,
+        uniforms: {
+          top: { value: new THREE.Color(0x64b5e8) },
+          bottom: { value: new THREE.Color(0xe9f8f5) }
+        },
+        vertexShader: `
+          varying vec3 vWorldPosition;
+          void main() {
+            vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+            vWorldPosition = worldPosition.xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 top;
+          uniform vec3 bottom;
+          varying vec3 vWorldPosition;
+          void main() {
+            float h = normalize(vWorldPosition + vec3(0.0, 55.0, 0.0)).y;
+            gl_FragColor = vec4(mix(bottom, top, max(pow(max(h, 0.0), 0.72), 0.0)), 1.0);
+          }
+        `
+      });
+      scene.add(new THREE.Mesh(skyGeo, skyMat));
+    }
+
+    function buildMountainBackdrop() {
+      const makeLayer = (name, z, baseY, width, peak, color, opacity, phase) => {
+        const segments = 88;
+        const positions = [];
+        const indices = [];
+        for (let i = 0; i <= segments; i++) {
+          const x = -width / 2 + (width * i) / segments;
+          const wave =
+            Math.sin(i * 0.19 + phase) * 0.34 +
+            Math.sin(i * 0.47 + phase * 0.6) * 0.18 +
+            Math.sin(i * 0.08 + 1.7) * 0.28;
+          const top = baseY + peak * (0.56 + Math.max(wave, -0.38));
+          positions.push(x, baseY - 3.2, z, x, top, z + Math.sin(i * 0.11) * 2.4);
+          if (i < segments) {
+            const a = i * 2;
+            indices.push(a, a + 1, a + 3, a, a + 3, a + 2);
+          }
+        }
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+        geometry.setIndex(indices);
+        geometry.computeVertexNormals();
+        const material = new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.name = name;
+        mesh.renderOrder = -4;
+        scene.add(mesh);
+      };
+
+      makeLayer("distant-blue-mountain-ridge", -118, -0.8, 310, 15.5, 0x2a6370, 0.42, 0.7);
+      makeLayer("near-green-mountain-ridge", -100, -0.6, 286, 10.4, 0x245f45, 0.5, 2.2);
+    }
+
+    function addLights() {
+      const hemi = new THREE.HemisphereLight(0xdff8ff, 0x4c643f, 1.25);
+      scene.add(hemi);
+
+      const sun = new THREE.DirectionalLight(0xffffff, 3.3);
+      sun.position.set(-46, 62, 44);
+      sun.castShadow = true;
+      sun.shadow.mapSize.width = 2048;
+      sun.shadow.mapSize.height = 2048;
+      sun.shadow.camera.left = -90;
+      sun.shadow.camera.right = 90;
+      sun.shadow.camera.top = 90;
+      sun.shadow.camera.bottom = -90;
+      sun.shadow.camera.near = 1;
+      sun.shadow.camera.far = 180;
+      scene.add(sun);
+
+      const fill = new THREE.DirectionalLight(0x9bd8ff, 0.9);
+      fill.position.set(54, 28, -48);
+      scene.add(fill);
+    }
+
+    function addAssetLabels() {
+      createLabel("双线五级闸室", new THREE.Vector3(0, 12.8, 1));
+      createLabel("红色门机", new THREE.Vector3(-8, 15.6, -24));
+      createLabel("白色控制楼", new THREE.Vector3(17, 16, 57));
+      createLabel("青绿色库区水面", new THREE.Vector3(-42, 4.5, 45));
+      createLabel("混凝土坝体与闸墙", new THREE.Vector3(18, 12, -11));
+    }
+
+    function startRenderLoop() {
+      if (animationStarted) return;
+      animationStarted = true;
+      document.getElementById("loading").classList.add("done");
+      animate();
+    }
+
+    function loadGlbAsset() {
+      const loader = new GLTFLoader();
+      loader.load(
+        "assets/dam-ship-lock-3d-model-glb.glb",
+        (gltf) => {
+          const asset = gltf.scene;
+          asset.name = "loaded-dam-ship-lock-glb-asset";
+          asset.traverse((node) => {
+            if (!node.isMesh) return;
+            node.castShadow = !node.material?.transparent;
+            node.receiveShadow = true;
+            const materials = Array.isArray(node.material) ? node.material : [node.material];
+            materials.forEach((material) => {
+              if (!material) return;
+              const materialName = `${material.name || ""} ${node.name || ""}`.toLowerCase();
+              if (materialName.includes("water")) {
+                material.color.set(materialName.includes("chamber") ? 0x045765 : 0x067f88);
+                material.map = waterTexture;
+                material.transparent = false;
+                material.opacity = 1;
+                material.depthWrite = true;
+                material.roughness = materialName.includes("chamber") ? 0.32 : 0.24;
+              } else if (materialName.includes("concrete")) {
+                material.map = materialName.includes("light") ? concreteFine : concreteTexture;
+              } else if (materialName.includes("terrain") || materialName.includes("grass") || materialName.includes("canopy")) {
+                material.map = grassTexture;
+              }
+              material.needsUpdate = true;
+            });
+          });
+          root.add(asset);
+          buildFlowMarkers();
+          addAssetLabels();
+          startRenderLoop();
+        },
+        undefined,
+        (error) => {
+          console.warn("GLB asset failed to load; using procedural fallback.", error);
+          buildTerrain();
+          buildWaterBodies();
+          buildShipLock();
+          buildApproachDetails();
+          buildPowerLines();
+          buildTrees();
+          startRenderLoop();
+        }
+      );
+    }
+
+    function setView(name) {
+      const view = views[name];
+      if (!view) return;
+      document.querySelectorAll(".view-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.view === name);
+      });
+      cameraTween = {
+        startPosition: camera.position.clone(),
+        startTarget: controls.target.clone(),
+        endPosition: view.position.clone(),
+        endTarget: view.target.clone(),
+        start: clock.elapsedTime,
+        duration: 1.15
+      };
+    }
+
+    function updateCameraTween() {
+      if (!cameraTween) return;
+      const t = Math.min((clock.elapsedTime - cameraTween.start) / cameraTween.duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      camera.position.lerpVectors(cameraTween.startPosition, cameraTween.endPosition, eased);
+      controls.target.lerpVectors(cameraTween.startTarget, cameraTween.endTarget, eased);
+      if (t >= 1) cameraTween = null;
+    }
+
+    function wireUi() {
+      document.querySelectorAll(".view-btn").forEach((button) => {
+        button.addEventListener("click", () => setView(button.dataset.view));
+      });
+
+      document.getElementById("labelToggle").addEventListener("click", (event) => {
+        labelGroup.visible = !labelGroup.visible;
+        event.currentTarget.classList.toggle("active", labelGroup.visible);
+      });
+
+      document.getElementById("flowToggle").addEventListener("click", (event) => {
+        flowVisible = !flowVisible;
+        flowGroup.visible = flowVisible;
+        event.currentTarget.classList.toggle("active", flowVisible);
+      });
+
+      document.getElementById("resetView").addEventListener("click", () => setView("aerial"));
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+      waterTexture.offset.y -= delta * 0.018;
+      concreteTexture.offset.y += delta * 0.0012;
+
+      flowGroup.children.forEach((marker, index) => {
+        marker.position.z = ((marker.userData.baseZ + clock.elapsedTime * 5.8 + index * 0.22 + 56) % 112) - 56;
+        marker.material.opacity = flowVisible ? 0.42 + Math.sin(clock.elapsedTime * 2.6 + index) * 0.16 : 0;
+      });
+
+      updateCameraTween();
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    function resize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener("resize", resize);
+
+    buildSky();
+    buildMountainBackdrop();
+    addLights();
+    wireUi();
+    setView("aerial");
+    loadGlbAsset();
+  </script>
+</body>
+</html>
