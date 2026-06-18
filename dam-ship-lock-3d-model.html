@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>三峡大坝永久船闸 3D 模型</title>
+  <title>大坝船闸3D模型</title>
   <style>
     :root {
       --ink: #172025;
@@ -260,10 +260,10 @@
   </style>
 </head>
 <body>
-  <main id="scene" aria-label="三峡大坝永久船闸三维模型"></main>
+  <main id="scene" aria-label="大坝船闸3D模型"></main>
 
   <section class="hud" aria-label="模型视角">
-    <h1>三峡大坝永久船闸</h1>
+    <h1>大坝船闸3D模型</h1>
     <p>基于参考视频的航拍画面与闸室近景，重建双线五级船闸、闸墙、门机、控制楼、库区水面和峡谷地形。</p>
     <div class="toolbar">
       <button class="view-btn active" data-view="aerial" title="航拍视角">航拍</button>
@@ -604,7 +604,7 @@
 
     function buildShipLock() {
       const lock = new THREE.Group();
-      lock.name = "three-gorges-permanent-ship-lock";
+      lock.name = "dam-ship-lock-3d-model";
       root.add(lock);
 
       addBox(lock, "foundation-slab", [25, 1.4, 128], [0, 0.2, 0], materials.concreteFine, { edges: true, castShadow: false });
@@ -663,7 +663,7 @@
       buildControlBuilding(lock);
       buildDamFace(lock);
       buildFlowMarkers();
-      createLabel("永久船闸双线五级闸室", new THREE.Vector3(0, 12.8, 1));
+      createLabel("双线五级闸室", new THREE.Vector3(0, 12.8, 1));
       createLabel("红色门机", new THREE.Vector3(-8, 15.6, -24));
       createLabel("白色控制楼", new THREE.Vector3(17, 16, 57));
       createLabel("青绿色库区水面", new THREE.Vector3(-42, 4.5, 45));
