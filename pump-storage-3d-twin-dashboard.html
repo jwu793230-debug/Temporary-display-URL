@@ -62,14 +62,14 @@
       height: 100vh;
       display: grid;
       grid-template-rows: 68px 1fr;
-      padding: 0 16px 16px;
+      padding: 0 12px 14px;
       overflow: hidden;
     }
 
     .topbar {
       display: grid;
-      grid-template-columns: 310px 1fr 410px;
-      gap: 20px;
+      grid-template-columns: 250px 1fr 320px;
+      gap: 14px;
       align-items: center;
       min-width: 0;
     }
@@ -182,8 +182,8 @@
 
     .dashboard {
       display: grid;
-      grid-template-columns: 376px minmax(520px, 1fr) 376px;
-      gap: 12px;
+      grid-template-columns: 260px minmax(0, 1fr) 280px;
+      gap: 10px;
       min-height: 0;
       height: 100%;
     }
@@ -699,21 +699,21 @@
       position: absolute;
       left: 16px;
       right: 16px;
-      bottom: 112px;
+      bottom: 96px;
       z-index: 7;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 8px;
       pointer-events: none;
     }
 
     .scene-card {
-      min-height: 86px;
+      min-height: 70px;
       border: 1px solid rgba(91, 230, 226, .22);
       border-radius: 8px;
-      padding: 12px;
-      background: rgba(4, 24, 30, .78);
-      backdrop-filter: blur(10px);
+      padding: 10px;
+      background: rgba(4, 24, 30, .66);
+      backdrop-filter: blur(8px);
       overflow: hidden;
       position: relative;
     }
@@ -732,20 +732,24 @@
 
     .scene-card b {
       display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
+      margin-bottom: 5px;
+      font-size: 13px;
     }
 
     .scene-card p {
       margin: 0;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
+      font-size: 11px;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .mini-bar {
-      height: 6px;
-      margin-top: 10px;
+      height: 5px;
+      margin-top: 8px;
       border-radius: 999px;
       background: rgba(255, 255, 255, .08);
       overflow: hidden;
@@ -926,8 +930,8 @@
     }
 
     @media (max-width: 1500px) {
-      .dashboard { grid-template-columns: 340px minmax(480px, 1fr) 340px; }
-      .topbar { grid-template-columns: 280px 1fr 360px; }
+      .dashboard { grid-template-columns: 250px minmax(0, 1fr) 270px; }
+      .topbar { grid-template-columns: 230px 1fr 300px; }
       .scene-title-card { width: min(360px, calc(100% - 32px)); }
       .scene-metrics {
         top: 214px;
@@ -935,7 +939,7 @@
         right: auto;
         grid-template-columns: repeat(3, 96px);
       }
-      .scene-bottom-panel { grid-template-columns: repeat(2, 1fr); }
+      .scene-bottom-panel { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .floating-legend { display: none; }
     }
 
@@ -1313,10 +1317,45 @@
 
     const upperCenter = new THREE.Vector3(23.5, 22.35, -16);
     const lowerCenter = new THREE.Vector3(-25, 0.55, 18);
+    const lowerWaterOutline = [
+      new THREE.Vector2(-45.5, 20.4),
+      new THREE.Vector2(-42.2, 16.4),
+      new THREE.Vector2(-36.8, 13.4),
+      new THREE.Vector2(-29.7, 11.7),
+      new THREE.Vector2(-21.4, 11.3),
+      new THREE.Vector2(-14.1, 12.9),
+      new THREE.Vector2(-9.6, 15.6),
+      new THREE.Vector2(-10.9, 18.7),
+      new THREE.Vector2(-16.8, 21.3),
+      new THREE.Vector2(-25.8, 23.4),
+      new THREE.Vector2(-35.5, 24.2),
+      new THREE.Vector2(-42.7, 23.1)
+    ];
 
     function smoothstep(edge0, edge1, x) {
       const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
       return t * t * (3 - 2 * t);
+    }
+
+    function lowerBasinMask(x, z) {
+      const lobes = [
+        [-38.5, 20.5, 8.3, 4.4],
+        [-30.5, 17.8, 10.8, 5.4],
+        [-22.0, 16.4, 11.4, 5.7],
+        [-14.5, 15.6, 7.0, 4.2]
+      ];
+      let mask = 0;
+      lobes.forEach(([cx, cz, rx, rz]) => {
+        const d = Math.hypot((x - cx) / rx, (z - cz) / rz);
+        mask = Math.max(mask, 1 - smoothstep(0.72, 1.12, d));
+      });
+      return mask;
+    }
+
+    function lowerValleyMask(x, z) {
+      const centerZ = 17.4 + Math.sin((x + 27) * 0.16) * 2.1 - (x + 25) * 0.035;
+      const corridor = Math.exp(-((z - centerZ) ** 2) / 42) * Math.exp(-((x + 27) ** 2) / 980);
+      return Math.min(1, corridor);
     }
 
     function heightFn(x, z) {
@@ -1325,14 +1364,14 @@
       const ridgeC = 13 * Math.exp(-((x - 4) ** 2 / 980 + (z + 26) ** 2 / 280));
       const valley = -5.5 * Math.exp(-((x + 7) ** 2 / 1120 + (z - 12) ** 2 / 340));
       const texture = 1.5 * Math.sin(x * 0.23) * Math.cos(z * 0.18) + 0.9 * Math.sin((x + z) * 0.31);
-      let h = 4.6 + ridgeA + ridgeB + ridgeC + valley + texture;
+      const lowerValley = -3.2 * lowerValleyMask(x, z);
+      let h = 4.6 + ridgeA + ridgeB + ridgeC + valley + lowerValley + texture;
 
       const upperDist = Math.hypot((x - upperCenter.x) / 1.05, (z - upperCenter.z) / 0.86);
       const upperBlend = 1 - smoothstep(8.2, 12.4, upperDist);
       h = h * (1 - upperBlend) + 21.7 * upperBlend;
 
-      const lowerDist = Math.hypot((x - lowerCenter.x) / 19, (z - lowerCenter.z) / 8.9);
-      const lowerBlend = 1 - smoothstep(1.04, 1.34, lowerDist);
+      const lowerBlend = lowerBasinMask(x, z);
       h = h * (1 - lowerBlend) + -1.75 * lowerBlend;
       return h;
     }
@@ -1390,6 +1429,27 @@
       return new THREE.Mesh(geo, mat);
     }
 
+    function makeWaterShape(points, center, color, opacity, solid = false) {
+      const local = points.map((p) => new THREE.Vector2(p.x - center.x, p.y - center.z));
+      const smooth = new THREE.SplineCurve(local).getPoints(180);
+      const shape = new THREE.Shape(smooth);
+      const geo = new THREE.ShapeGeometry(shape, 18);
+      geo.rotateX(-Math.PI / 2);
+      const mat = new THREE.MeshPhysicalMaterial({
+        color,
+        emissive: color,
+        emissiveIntensity: 0.2,
+        transparent: !solid,
+        opacity,
+        roughness: 0.16,
+        metalness: 0.08,
+        clearcoat: 0.85,
+        clearcoatRoughness: 0.18,
+        depthWrite: solid
+      });
+      return new THREE.Mesh(geo, mat);
+    }
+
     function makeReservoirs() {
       const upperWater = makeWaterDisk(8.1, 0x37c4e8, 0.76);
       upperWater.position.copy(upperCenter);
@@ -1424,25 +1484,23 @@
       damWall.receiveShadow = true;
       root.add(damWall);
 
-      const lowerWater = makeWaterDisk(12.2, 0x28b8c9, 0.94);
+      const lowerWater = makeWaterShape(lowerWaterOutline, lowerCenter, 0x24bfd0, 1, true);
       lowerWater.position.copy(lowerCenter);
-      lowerWater.position.y += 0.08;
-      lowerWater.material.transparent = false;
-      lowerWater.material.opacity = 1;
-      lowerWater.material.depthWrite = true;
-      lowerWater.scale.x = 1.55;
-      lowerWater.scale.z = 0.72;
+      lowerWater.position.y += 0.12;
       root.add(lowerWater);
 
-      const lowerShore = new THREE.Mesh(
-        new THREE.TorusGeometry(12.4, 0.16, 8, 128),
-        new THREE.MeshStandardMaterial({ color: 0x4a7559, roughness: 0.8 })
-      );
-      lowerShore.rotation.x = Math.PI / 2;
-      lowerShore.position.set(lowerCenter.x, lowerCenter.y + 0.03, lowerCenter.z);
-      lowerShore.scale.x = 1.55;
-      lowerShore.scale.z = 0.72;
-      root.add(lowerShore);
+      const shorePts = lowerWaterOutline.map((p, index) => new THREE.Vector3(
+        p.x,
+        lowerCenter.y + 0.18 + (index % 2) * 0.04,
+        p.y
+      ));
+      shorePts.push(shorePts[0].clone());
+      makeTube(shorePts, 0.16, new THREE.MeshStandardMaterial({ color: 0x557a58, roughness: 0.82 }), 180);
+      makeTube(shorePts.map((p) => p.clone().add(new THREE.Vector3(0, 0.08, 0))), 0.035, new THREE.MeshBasicMaterial({
+        color: 0x46f0e6,
+        transparent: true,
+        opacity: 0.55
+      }), 180);
     }
 
     function makeTube(points, radius, material, tubularSegments = 160) {
@@ -1455,63 +1513,131 @@
       return { curve, mesh };
     }
 
-    const pipeMaterial = new THREE.MeshStandardMaterial({ color: 0xb9c0b8, roughness: 0.42, metalness: 0.22 });
-    const glowMaterial = new THREE.MeshBasicMaterial({ color: 0x46f0e6, transparent: true, opacity: 0.78 });
+    const pipeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xb9c0b8,
+      roughness: 0.48,
+      metalness: 0.18,
+      transparent: true,
+      opacity: 0.28,
+      depthWrite: false
+    });
+    const tunnelMaterial = new THREE.MeshBasicMaterial({
+      color: 0x1fded5,
+      transparent: true,
+      opacity: 0.12,
+      depthWrite: false,
+      depthTest: false,
+      side: THREE.DoubleSide
+    });
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: 0x46f0e6,
+      transparent: true,
+      opacity: 0.86,
+      depthWrite: false,
+      depthTest: false
+    });
     const pipeCurves = [];
 
     function makePipelines() {
       const basePoints = [
-        new THREE.Vector3(18.4, 21.9, -12.2),
-        new THREE.Vector3(15.2, 19.2, -8.4),
-        new THREE.Vector3(9.2, 14.4, -2.8),
-        new THREE.Vector3(3.4, 9.2, 3.8),
-        new THREE.Vector3(-2.6, 5.2, 10.8)
+        new THREE.Vector3(18.4, 21.7, -12.2),
+        new THREE.Vector3(15.4, 17.8, -8.7),
+        new THREE.Vector3(9.8, 12.1, -2.9),
+        new THREE.Vector3(3.8, 6.7, 4.4),
+        new THREE.Vector3(-3.3, 3.1, 10.8)
       ];
+      const tunnel = makeTube(basePoints, 1.45, tunnelMaterial, 190);
+      tunnel.mesh.renderOrder = 2;
       const offsets = [-1.35, -0.45, 0.45, 1.35];
       offsets.forEach((offset) => {
         const pts = basePoints.map((p) => new THREE.Vector3(p.x + offset, p.y, p.z + offset * 0.24));
         const pipe = makeTube(pts, 0.22, pipeMaterial);
+        pipe.mesh.renderOrder = 3;
         pipeCurves.push(pipe.curve);
       });
-      const glowPts = basePoints.map((p) => p.clone().add(new THREE.Vector3(0, 0.62, 0)));
+      const glowPts = basePoints.map((p) => p.clone().add(new THREE.Vector3(0, 0.22, 0)));
       const glow = makeTube(glowPts, 0.07, glowMaterial, 180);
+      glow.mesh.renderOrder = 5;
       flowGroup.add(glow.mesh);
 
-      const tailrace = makeTube([
-        new THREE.Vector3(-5.4, 4.2, 12.2),
-        new THREE.Vector3(-11.2, 2.8, 14.8),
-        new THREE.Vector3(-18.8, 1.3, 17.2),
-        new THREE.Vector3(-24.2, 0.8, 18.2)
-      ], 0.3, new THREE.MeshStandardMaterial({ color: 0x8e9690, roughness: 0.5, metalness: 0.1 }), 120);
+      const tailracePoints = [
+        new THREE.Vector3(-4.8, 2.6, 11.8),
+        new THREE.Vector3(-9.8, 1.85, 13.3),
+        new THREE.Vector3(-15.4, 0.75, 15.0),
+        new THREE.Vector3(-20.8, 0.28, 16.4)
+      ];
+      const tailraceTunnel = makeTube(tailracePoints, 1.05, tunnelMaterial, 130);
+      tailraceTunnel.mesh.renderOrder = 2;
+      const tailrace = makeTube(tailracePoints, 0.3, new THREE.MeshStandardMaterial({
+        color: 0x8e9690,
+        roughness: 0.52,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.24,
+        depthWrite: false
+      }), 130);
+      tailrace.mesh.renderOrder = 3;
       pipeCurves.push(tailrace.curve);
-      const tailGlow = makeTube([
-        new THREE.Vector3(-5.4, 4.7, 12.2),
-        new THREE.Vector3(-11.2, 3.2, 14.8),
-        new THREE.Vector3(-18.8, 1.7, 17.2),
-        new THREE.Vector3(-24.2, 1.1, 18.2)
-      ], 0.07, glowMaterial, 120);
+      const tailGlow = makeTube(tailracePoints.map((p) => p.clone().add(new THREE.Vector3(0, 0.22, 0))), 0.07, glowMaterial, 130);
+      tailGlow.mesh.renderOrder = 5;
       flowGroup.add(tailGlow.mesh);
     }
 
     function makeBuildings() {
-      const concrete = new THREE.MeshStandardMaterial({ color: 0xb9bbb2, roughness: 0.74 });
-      const dark = new THREE.MeshStandardMaterial({ color: 0x2d3c40, roughness: 0.7 });
+      const concrete = new THREE.MeshStandardMaterial({
+        color: 0xb9bbb2,
+        roughness: 0.74,
+        transparent: true,
+        opacity: 0.78,
+        depthWrite: false
+      });
+      const dark = new THREE.MeshStandardMaterial({
+        color: 0x2d3c40,
+        roughness: 0.7,
+        transparent: true,
+        opacity: 0.86,
+        depthWrite: false
+      });
+      const cavernMat = new THREE.MeshBasicMaterial({
+        color: 0x123b42,
+        transparent: true,
+        opacity: 0.28,
+        depthWrite: false,
+        depthTest: false
+      });
+      const cavernEdgeMat = new THREE.LineBasicMaterial({
+        color: 0x46f0e6,
+        transparent: true,
+        opacity: 0.48,
+        depthTest: false
+      });
       const powerhouse = new THREE.Group();
-      const baseY = heightFn(-5, 11) + 0.3;
+      const baseY = Math.max(2.4, Math.min(heightFn(-5, 11) - 3.2, 4.2));
       powerhouse.position.set(-5, baseY, 11);
       powerhouse.rotation.y = -0.22;
-      const hall = new THREE.Mesh(new THREE.BoxGeometry(9.8, 2.0, 4.2), concrete);
-      hall.position.y = 1.0;
+      const cavern = new THREE.Mesh(new THREE.BoxGeometry(12.8, 5.2, 6.6), cavernMat);
+      cavern.position.y = 1.55;
+      cavern.renderOrder = 1;
+      powerhouse.add(cavern);
+      const cavernEdges = new THREE.LineSegments(new THREE.EdgesGeometry(cavern.geometry), cavernEdgeMat);
+      cavernEdges.position.copy(cavern.position);
+      cavernEdges.renderOrder = 4;
+      powerhouse.add(cavernEdges);
+      const hall = new THREE.Mesh(new THREE.BoxGeometry(9.8, 1.85, 4.0), concrete);
+      hall.position.y = 1.3;
+      hall.renderOrder = 3;
       hall.castShadow = true;
       hall.receiveShadow = true;
       powerhouse.add(hall);
       const roof = new THREE.Mesh(new THREE.BoxGeometry(10.4, 0.34, 4.7), dark);
-      roof.position.y = 2.18;
+      roof.position.y = 2.42;
+      roof.renderOrder = 3;
       roof.castShadow = true;
       powerhouse.add(roof);
       for (let i = 0; i < 4; i += 1) {
         const bay = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.18, 5.5), new THREE.MeshBasicMaterial({ color: 0x46f0e6, transparent: true, opacity: 0.56 }));
-        bay.position.set(-3.6 + i * 2.35, 2.42, 0);
+        bay.position.set(-3.6 + i * 2.35, 2.66, 0);
+        bay.renderOrder = 5;
         powerhouse.add(bay);
       }
       root.add(powerhouse);
@@ -1530,12 +1656,19 @@
       root.add(intake);
 
       const lowerIntake = new THREE.Group();
-      lowerIntake.position.set(-16.6, heightFn(-16.6, 17) + 0.2, 17);
-      lowerIntake.rotation.y = -0.14;
-      const block = new THREE.Mesh(new THREE.BoxGeometry(7.4, 1.4, 2.6), concrete);
-      block.position.y = 0.7;
+      lowerIntake.position.set(-15.0, lowerCenter.y + 0.16, 15.5);
+      lowerIntake.rotation.y = -0.22;
+      const block = new THREE.Mesh(new THREE.BoxGeometry(6.2, 1.15, 2.1), concrete);
+      block.position.y = 0.58;
       block.castShadow = true;
       lowerIntake.add(block);
+      const portal = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.72, 2.45), new THREE.MeshBasicMaterial({
+        color: 0x102f34,
+        transparent: true,
+        opacity: 0.78
+      }));
+      portal.position.set(-0.2, 0.72, -0.08);
+      lowerIntake.add(portal);
       root.add(lowerIntake);
     }
 
@@ -1544,10 +1677,16 @@
       const roadPaths = [
         [[-42, 22], [-30, 20], [-18, 18], [-8, 14], [4, 9], [15, 2], [25, -10], [31, -20]],
         [[-34, 28], [-26, 24], [-18, 20], [-12, 16], [-7, 11], [-4, 8]],
-        [[7, 20], [2, 16], [-2, 13], [-6, 11], [-12, 10]]
+        [[7, 20], [2, 16], [-2, 13], [-6, 11], [-12, 10]],
+        [[-44, 24], [-36, 25], [-27, 24], [-18, 22], [-11, 19]],
+        [[-43, 16], [-35, 13], [-26, 12], [-17, 13], [-10, 16]]
       ];
       roadPaths.forEach((path) => {
-        const pts = path.map(([x, z]) => new THREE.Vector3(x, heightFn(x, z) + 0.2, z));
+        const pts = path.map(([x, z]) => {
+          const ground = heightFn(x, z) + 0.2;
+          const bankLift = lowerBasinMask(x, z) > 0.02 ? lowerCenter.y + 0.42 : ground;
+          return new THREE.Vector3(x, Math.max(ground, bankLift), z);
+        });
         makeTube(pts, 0.18, roadMat, 90);
       });
 
@@ -1586,11 +1725,11 @@
         const x = -45 + rand() * 90;
         const z = -31 + rand() * 62;
         const upperDist = Math.hypot((x - upperCenter.x) / 11, (z - upperCenter.z) / 9);
-        const lowerDist = Math.hypot((x - lowerCenter.x) / 19, (z - lowerCenter.z) / 9);
+        const lowerMask = lowerBasinMask(x, z);
         const pipeDist = Math.abs((z + 0.78 * x - 7.4));
-        if (upperDist < 1.28 || lowerDist < 1.08 || pipeDist < 1.8) continue;
+        if (upperDist < 1.28 || lowerMask > 0.04 || pipeDist < 1.55) continue;
         const y = heightFn(x, z);
-        if (y < 2.2 || y > 23) continue;
+        if (y < 1.2 || y > 23) continue;
         const scale = 0.72 + rand() * 1.15;
         matrix.compose(
           new THREE.Vector3(x, y + 0.78 * scale, z),
@@ -1701,9 +1840,9 @@
     const hotspots = [
       { id: 'upper', label: '上水库', coord: new THREE.Vector3(23.5, 25.2, -16), scene: 'upper' },
       { id: 'dam', label: '坝体', coord: new THREE.Vector3(18.8, 22.8, -9.6), scene: 'upper' },
-      { id: 'pipe', label: '压力管道', coord: new THREE.Vector3(8.0, 14.6, -2.3), scene: 'pipe' },
-      { id: 'powerhouse', label: '地下厂房', coord: new THREE.Vector3(-5.2, 8.5, 10.8), scene: 'powerhouse' },
-      { id: 'lower', label: '下水库', coord: new THREE.Vector3(-25.5, 3.5, 18), scene: 'lower' },
+      { id: 'pipe', label: '压力管道', coord: new THREE.Vector3(8.0, 12.9, -2.3), scene: 'pipe' },
+      { id: 'powerhouse', label: '地下厂房', coord: new THREE.Vector3(-5.2, 5.8, 10.8), scene: 'powerhouse' },
+      { id: 'lower', label: '下水库', coord: new THREE.Vector3(-26.8, 2.9, 17.4), scene: 'lower' },
       { id: 'monitor', label: 'AI巡检', coord: new THREE.Vector3(5.6, 18.2, 17), scene: 'ai' }
     ];
 
@@ -1742,23 +1881,23 @@
       },
       pipe: {
         title: '输水系统 · 压力钢管与尾水通道',
-        copy: '多条压力钢管沿山体布设，水流粒子模拟抽发工况，通道状态可联动厂房和库区监控。',
+        copy: '多条压力钢管与尾水洞沿山体内部布设，以半透明剖视方式展示地下水力通道和水流方向。',
         chips: ['压力钢管', '岔管', '阀室', '尾水洞'],
         metrics: [['4', '压力支管'], ['7.2MPa', '管内压力'], ['32.8m³/s', '流量']],
         cards: [
-          ['压力钢管', '管线沿坡面下穿至厂房，温度、振动、压力测点连续采样。', '86%'],
+          ['压力钢管', '管线在山体内下穿至地下厂房，温度、振动、压力测点连续采样。', '86%'],
           ['岔管阀室', '阀门开度与机组状态联动，异常冲击压力自动预警。', '79%'],
           ['尾水系统', '尾水通道连接下库，流态与水位变化同步计算。', '84%'],
           ['水流模拟', '发电与抽水两种工况切换时，流向和粒子速度可动态调整。', '90%']
         ],
         counts: [248, 21, 134],
         active: 'pipe',
-        camera: [21, 21, 31],
-        target: [5, 11, 0]
+        camera: [24, 19, 27],
+        target: [5, 9, 1]
       },
       powerhouse: {
         title: '地下厂房 · 机组与环境态势',
-        copy: '厂房区域聚合机组运行、气体监测、人员定位和应急联动信息，支持近景查看设备空间关系。',
+        copy: '厂房位于山体内部，透视腔室聚合机组运行、气体监测、人员定位和应急联动信息。',
         chips: ['4 台机组', '环境监测', '人员定位', '应急联动'],
         metrics: [['4×300', '机组'], ['20.9%', '氧气浓度'], ['98.7%', '定位覆盖']],
         cards: [
@@ -1769,13 +1908,13 @@
         ],
         counts: [312, 12, 72],
         active: 'powerhouse',
-        camera: [10, 16, 25],
-        target: [-5, 5, 11]
+        camera: [8, 13, 23],
+        target: [-5, 4, 11]
       },
       lower: {
-        title: '下库进出水口 · 水域与交通组织',
-        copy: '下库水面、尾水出口、施工道路和库岸监测点共同呈现，便于识别水域与施工区的空间关系。',
-        chips: ['下库水域', '尾水出口', '库岸道路', '水位测站'],
+        title: '下库进出水口 · 山谷水域与交通组织',
+        copy: '下库改为顺山谷展开的自然水域，尾水出口、库岸道路和水位测站共同呈现空间关系。',
+        chips: ['自然库湾', '尾水出口', '库岸道路', '水位测站'],
         metrics: [['312.6m', '下库水位'], ['11', '水域测点'], ['42', '车辆在线']],
         cards: [
           ['下库水位', '水位变化平稳，满足机组发电工况的尾水调节需求。', '84%'],
@@ -1785,8 +1924,8 @@
         ],
         counts: [184, 42, 88],
         active: 'lower',
-        camera: [-39, 18, 33],
-        target: [-23, 2, 17]
+        camera: [-43, 17, 31],
+        target: [-25, 2, 17]
       },
       ai: {
         title: 'AI 巡检态势 · 识别框与热区叠加',
