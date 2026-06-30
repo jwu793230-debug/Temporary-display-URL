@@ -1,0 +1,17 @@
+{
+  "name": "半马训练打卡",
+  "short_name": "半马训练",
+  "start_url": "./half-marathon-pwa-v1.html",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#17204f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

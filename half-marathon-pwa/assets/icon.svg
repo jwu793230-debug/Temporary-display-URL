@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="半马训练">
+  <rect width="512" height="512" rx="112" fill="#17204f"/>
+  <path d="M126 318c58-21 91-71 119-126 14-27 52-24 62 5l13 38c11 32 35 58 66 72" fill="none" stroke="#7ee66a" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="286" cy="123" r="34" fill="#78e3df"/>
+  <path d="M141 374h234" stroke="#ffffff" stroke-width="28" stroke-linecap="round"/>
+</svg>
