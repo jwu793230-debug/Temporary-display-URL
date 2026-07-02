@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>宇泛解决方案库</title>
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260702a">
+</head>
+<body data-page="home">
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="返回方案库首页">
+      <span class="brand-mark">U</span>
+      <span>
+        <strong id="brandTitle">宇泛解决方案库</strong>
+        <span id="brandSub">宇泛智能科技股份有限公司</span>
+      </span>
+    </a>
+    <nav class="topnav" id="topNav" aria-label="主导航"></nav>
+    <div class="top-actions">
+      <a class="btn" href="../index.html">展示仓库首页</a>
+      <a class="btn primary" href="assets/documents/smart-site-whitepaper-architecture.html" target="_blank" rel="noreferrer">正式长文档</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="页面目录">
+      <p class="side-title">目录</p>
+      <a class="side-link" href="#overview">总览</a>
+      <a class="side-link" href="#search">检索</a>
+      <a class="side-link" href="#solutions">方案</a>
+      <a class="side-link" href="#platforms">平台</a>
+      <a class="side-link" href="#systems">子系统</a>
+      <a class="side-link" href="#documents">资料</a>
+      <a class="side-link" href="#media">素材</a>
+      <a class="side-link" href="#data-model">数据表</a>
+      <a class="side-link" href="#permissions">权限</a>
+    </aside>
+
+    <main class="content" id="app">
+      <section class="hero" id="overview">
+        <div class="hero-main">
+          <h1 id="heroTitle">宇泛解决方案库</h1>
+          <p id="heroLead">方案、平台、子系统、文档和素材统一管理。</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#systems">进入子系统库</a>
+            <a class="btn" href="#documents">查看资料库</a>
+            <a class="btn" href="#data-model">查看数据表结构</a>
+          </div>
+          <div class="stats" id="stats"></div>
+        </div>
+        <figure class="hero-media">
+          <img src="assets/images/concept/portal-concept.png" alt="方案库平台概念图">
+        </figure>
+      </section>
+
+      <section class="section" id="search">
+        <div class="section-head">
+          <div>
+            <h2>全库检索</h2>
+            <p class="section-lead">按关键词、类型和权限筛选方案、平台、子系统、资料和素材。</p>
+          </div>
+          <span class="pill" id="searchCount">0 条结果</span>
+        </div>
+        <div class="toolbar">
+          <input class="input" id="globalSearch" placeholder="搜索：AI巡检、塔机、移动执法、隧道、验收...">
+          <select class="select" id="typeFilter">
+            <option value="">全部类型</option>
+            <option value="solution">解决方案</option>
+            <option value="platform">平台产品</option>
+            <option value="system">子系统</option>
+            <option value="document">文档资料</option>
+            <option value="media">素材图片</option>
+          </select>
+          <select class="select" id="permissionFilter">
+            <option value="">全部权限</option>
+            <option value="public">公开版</option>
+            <option value="internal">内部版</option>
+            <option value="customer">客户定制版</option>
+          </select>
+          <button class="btn" id="resetFilters">重置</button>
+        </div>
+        <div class="grid" id="searchResults"></div>
+      </section>
+
+      <section class="section" id="solutions">
+        <div class="section-head">
+          <div>
+            <h2>解决方案</h2>
+            <p class="section-lead">把正式方案、行业方案和专项应用沉淀为可持续维护的方案条目。</p>
+          </div>
+        </div>
+        <div class="grid" id="solutionGrid"></div>
+      </section>
+
+      <section class="section" id="platforms">
+        <div class="section-head">
+          <div>
+            <h2>平台产品</h2>
+            <p class="section-lead">平台级产品独立沉淀，与子系统同级管理，便于后续补充截图、版本、接口和能力说明。</p>
+          </div>
+        </div>
+        <div class="grid" id="platformGrid"></div>
+      </section>
+
+      <section class="section" id="systems">
+        <div class="section-head">
+          <div>
+            <h2>子系统库</h2>
+            <p class="section-lead">每个子系统保留系统概述、系统组成、核心功能、系统亮点、应用价值五段式正文。</p>
+          </div>
+        </div>
+        <div id="domainBlocks"></div>
+      </section>
+
+      <section class="section" id="documents">
+        <div class="section-head">
+          <div>
+            <h2>文档资料</h2>
+            <p class="section-lead">登记正式方案、源材料、实施交付、验收标准和运维响应资料。</p>
+          </div>
+        </div>
+        <div class="grid" id="documentGrid"></div>
+      </section>
+
+      <section class="section" id="media">
+        <div class="section-head">
+          <div>
+            <h2>素材库</h2>
+            <p class="section-lead">首批导入 PPT 渲染预览图和平台概念图，后续可继续补充产品截图、设备图和现场图。</p>
+          </div>
+        </div>
+        <div class="media-grid" id="mediaGrid"></div>
+      </section>
+
+      <section class="section" id="data-model">
+        <div class="section-head">
+          <div>
+            <h2>数据表结构</h2>
+            <p class="section-lead">当前为静态 JSON 数据库，后续可平滑迁移为真实数据库或后台管理系统。</p>
+          </div>
+        </div>
+        <div id="dataModelTable"></div>
+      </section>
+
+      <section class="section" id="permissions">
+        <div class="section-head">
+          <div>
+            <h2>权限分级</h2>
+            <p class="section-lead">公开 GitHub Pages 只能展示内容分级标签，不能替代真实账号权限。</p>
+          </div>
+        </div>
+        <div class="grid three" id="permissionGrid"></div>
+      </section>
+
+      <footer class="footer" id="footer"></footer>
+    </main>
+  </div>
+
+  <script src="assets/js/data-loader.js?v=20260702a"></script>
+  <script src="assets/js/search.js?v=20260702a"></script>
+  <script src="assets/js/app.js?v=20260702a"></script>
+</body>
+</html>

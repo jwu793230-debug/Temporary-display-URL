@@ -1,0 +1,352 @@
+[
+  {
+    "deck": "company",
+    "page": 1,
+    "src": "assets/solution-portal/slide-previews/company-slide-01.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 7,
+    "src": "assets/solution-portal/slide-previews/company-slide-07.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 8,
+    "src": "assets/solution-portal/slide-previews/company-slide-08.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 9,
+    "src": "assets/solution-portal/slide-previews/company-slide-09.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 14,
+    "src": "assets/solution-portal/slide-previews/company-slide-14.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 26,
+    "src": "assets/solution-portal/slide-previews/company-slide-26.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 27,
+    "src": "assets/solution-portal/slide-previews/company-slide-27.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 29,
+    "src": "assets/solution-portal/slide-previews/company-slide-29.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 30,
+    "src": "assets/solution-portal/slide-previews/company-slide-30.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 32,
+    "src": "assets/solution-portal/slide-previews/company-slide-32.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "company",
+    "page": 46,
+    "src": "assets/solution-portal/slide-previews/company-slide-46.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 2,
+    "src": "assets/solution-portal/slide-previews/ai-slide-02.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 3,
+    "src": "assets/solution-portal/slide-previews/ai-slide-03.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 5,
+    "src": "assets/solution-portal/slide-previews/ai-slide-05.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 6,
+    "src": "assets/solution-portal/slide-previews/ai-slide-06.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 7,
+    "src": "assets/solution-portal/slide-previews/ai-slide-07.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 8,
+    "src": "assets/solution-portal/slide-previews/ai-slide-08.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 11,
+    "src": "assets/solution-portal/slide-previews/ai-slide-11.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 12,
+    "src": "assets/solution-portal/slide-previews/ai-slide-12.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 16,
+    "src": "assets/solution-portal/slide-previews/ai-slide-16.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 18,
+    "src": "assets/solution-portal/slide-previews/ai-slide-18.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "ai",
+    "page": 19,
+    "src": "assets/solution-portal/slide-previews/ai-slide-19.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 9,
+    "src": "assets/solution-portal/slide-previews/law-slide-09.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 10,
+    "src": "assets/solution-portal/slide-previews/law-slide-10.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 13,
+    "src": "assets/solution-portal/slide-previews/law-slide-13.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 14,
+    "src": "assets/solution-portal/slide-previews/law-slide-14.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 15,
+    "src": "assets/solution-portal/slide-previews/law-slide-15.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 17,
+    "src": "assets/solution-portal/slide-previews/law-slide-17.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "law",
+    "page": 18,
+    "src": "assets/solution-portal/slide-previews/law-slide-18.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 1,
+    "src": "assets/solution-portal/slide-previews/linear-slide-001.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 3,
+    "src": "assets/solution-portal/slide-previews/linear-slide-003.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 6,
+    "src": "assets/solution-portal/slide-previews/linear-slide-006.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 45,
+    "src": "assets/solution-portal/slide-previews/linear-slide-045.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 50,
+    "src": "assets/solution-portal/slide-previews/linear-slide-050.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 91,
+    "src": "assets/solution-portal/slide-previews/linear-slide-091.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 92,
+    "src": "assets/solution-portal/slide-previews/linear-slide-092.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 138,
+    "src": "assets/solution-portal/slide-previews/linear-slide-138.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 148,
+    "src": "assets/solution-portal/slide-previews/linear-slide-148.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "linear",
+    "page": 149,
+    "src": "assets/solution-portal/slide-previews/linear-slide-149.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 1,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-001.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 12,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-012.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 16,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-016.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 20,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-020.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 32,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-032.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 83,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-083.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 93,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-093.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 106,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-106.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 117,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-117.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 129,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-129.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "deck": "hydro",
+    "page": 130,
+    "src": "assets/solution-portal/slide-previews/hydro-slide-130.jpg",
+    "width": 1280,
+    "height": 720
+  }
+]

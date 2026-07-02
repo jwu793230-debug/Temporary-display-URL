@@ -1,0 +1,86 @@
+[
+  {
+    "id": "doc-formal-html",
+    "title": "宇泛AI数智建整体解决方案 HTML正式版",
+    "type": "HTML方案",
+    "summary": "由当前正式方案转换形成的长文档版本，适合完整阅读和客户方案预览。",
+    "file": "assets/documents/smart-site-whitepaper-architecture.html",
+    "permission": "public",
+    "status": "已导入",
+    "tags": [
+      "正式方案",
+      "整体方案",
+      "HTML"
+    ]
+  },
+  {
+    "id": "doc-ai-product-material",
+    "title": "AI安全生产大模型产品材料",
+    "type": "PPT源材料",
+    "summary": "对应视觉AI硬件及Agent、U安智巡等产品介绍材料。当前公开库先导入预览图，源文件保留为内部资料。",
+    "file": "",
+    "permission": "internal",
+    "status": "仅登记",
+    "tags": [
+      "AI安全生产",
+      "U安智巡",
+      "内部材料"
+    ]
+  },
+  {
+    "id": "doc-mobile-law-material",
+    "title": "移动执法固证系统解决方案材料",
+    "type": "PPT源材料",
+    "summary": "移动执法固证系统介绍材料。当前公开库先导入预览图，源文件保留为内部资料。",
+    "file": "",
+    "permission": "internal",
+    "status": "仅登记",
+    "tags": [
+      "移动执法",
+      "固证",
+      "内部材料"
+    ]
+  },
+  {
+    "id": "doc-hydro-material",
+    "title": "水利水电工程智慧工地方案材料",
+    "type": "PPT源材料",
+    "summary": "水利水电、抽水蓄能等行业方案素材。当前公开库先导入预览图，源文件保留为内部资料。",
+    "file": "",
+    "permission": "internal",
+    "status": "仅登记",
+    "tags": [
+      "水利水电",
+      "抽水蓄能",
+      "内部材料"
+    ]
+  },
+  {
+    "id": "doc-linear-material",
+    "title": "线性工程安全数字化方案材料",
+    "type": "PPT源材料",
+    "summary": "线性工程安全数字化管理材料。当前公开库先导入预览图，源文件保留为内部资料。",
+    "file": "",
+    "permission": "internal",
+    "status": "仅登记",
+    "tags": [
+      "线性工程",
+      "安全管理",
+      "内部材料"
+    ]
+  },
+  {
+    "id": "doc-delivery-template",
+    "title": "实施交付、验收与运维资料模板",
+    "type": "交付模板",
+    "summary": "沉淀项目实施计划、验收标准、培训移交、运维响应和售后服务等通用内容模块。",
+    "file": "content/delivery/implementation-acceptance-ops.md",
+    "permission": "public",
+    "status": "可编辑",
+    "tags": [
+      "实施交付",
+      "验收标准",
+      "运维响应"
+    ]
+  }
+]

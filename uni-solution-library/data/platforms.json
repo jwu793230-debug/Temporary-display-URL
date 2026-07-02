@@ -1,0 +1,75 @@
+[
+  {
+    "id": "platform-smart-construction",
+    "title": "AI数智建设综合管理平台",
+    "subtitle": "项目级、企业级一体化智慧工地管理底座",
+    "summary": "围绕项目总览、人员管理、机械设备、安全生产、质量技术、绿色施工、物资计量、视频监控和多项目管控等业务，形成面向建设工程的综合管理平台。",
+    "cover": "assets/images/slide-previews/company-slide-27.jpg",
+    "tags": [
+      "平台产品",
+      "智慧工地",
+      "多项目管理"
+    ],
+    "permission": "public",
+    "links": [
+      {
+        "label": "平台展示页",
+        "href": "../pump-storage-smart-platform-dashboard.html"
+      }
+    ],
+    "capabilities": [
+      "项目驾驶舱",
+      "多组织管理",
+      "业务子系统集成",
+      "数据看板",
+      "移动端协同"
+    ]
+  },
+  {
+    "id": "platform-ai-safety-model",
+    "title": "AI安全生产大模型",
+    "subtitle": "面向施工现场隐患识别、巡检闭环和多项目监管的AI能力平台",
+    "summary": "支持影像智巡、移动巡检、AI哨兵、设备接入与管理、巡检闭环、多项目组织管理和模型路由能力，适合集团化项目和分散工地统一管控。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "tags": [
+      "平台产品",
+      "AI安全生产",
+      "U安智巡"
+    ],
+    "permission": "public",
+    "links": [
+      {
+        "label": "U安智巡",
+        "href": "https://safety.uni-ubi.com/homepage"
+      }
+    ],
+    "capabilities": [
+      "AI巡检识别",
+      "设备接入与管理",
+      "巡检闭环",
+      "多项目管理",
+      "模型能力扩展"
+    ]
+  },
+  {
+    "id": "platform-aiot-open",
+    "title": "AIoT开放平台",
+    "subtitle": "设备接入、算法能力、数据接口和生态集成能力",
+    "summary": "为智慧工地各类硬件、AI能力和业务系统提供统一接入、统一管理、统一数据输出能力，支撑后续系统扩展和第三方集成。",
+    "cover": "assets/images/slide-previews/company-slide-26.jpg",
+    "tags": [
+      "平台产品",
+      "AIoT",
+      "开放接口"
+    ],
+    "permission": "internal",
+    "links": [],
+    "capabilities": [
+      "设备接入",
+      "接口开放",
+      "算法管理",
+      "能力快照",
+      "运维监控"
+    ]
+  }
+]

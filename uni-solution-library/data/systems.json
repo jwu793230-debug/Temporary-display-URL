@@ -1,0 +1,2812 @@
+[
+  {
+    "id": "system-8-1-1",
+    "number": "8.1.1",
+    "domainId": "domain-8-1",
+    "domainNumber": "8.1",
+    "domainName": "人员与劳务管理",
+    "title": "人员实名制与门禁考勤子系统",
+    "summary": "用于建立项目人员基础库，并通过人脸识别、实名制通道、闸机、摆闸、翼闸或立柱式门禁实现实名通行、考勤采集、异常拦截和现场人数统计，是劳务实名制、安全准入、考勤结算和现场人员管控的基础系统。",
+    "overview": "用于建立项目人员基础库，并通过人脸识别、实名制通道、闸机、摆闸、翼闸或立柱式门禁实现实名通行、考勤采集、异常拦截和现场人数统计，是劳务实名制、安全准入、考勤结算和现场人员管控的基础系统。",
+    "components": [
+      "实名制平台模块",
+      "人脸门禁或实名制通道",
+      "身份证读卡/人证核验设备",
+      "门禁闸机与通道控制器",
+      "考勤规则与报表模块",
+      "现场LED屏或语音提示设备"
+    ],
+    "functions": [
+      "人员建档、证件采集、班组绑定、进退场管理",
+      "人脸识别通行、临时访客登记、黑名单拦截",
+      "按日、周、月统计考勤、出勤明细和在场人数",
+      "迟到早退、连续未出勤、异常进出预警",
+      "与安全教育结果、班组信息、劳务画像和监管/客户系统联动"
+    ],
+    "highlights": [
+      "将实名制、门禁通行和考勤统计统一到同一人员主数据",
+      "从人工登记和点名转为自动采集，数据实时、可追溯",
+      "支持多项目统一管理，便于集团或项目公司掌握人员投入情况",
+      "通道设备形态可按场地条件灵活配置"
+    ],
+    "value": "帮助项目掌握“谁在现场、何时进出、属于哪个班组、是否完成教育”，提升出入口管理效率，减少无关人员进入工地，形成可用于劳务结算、工资发放、监管对接和安全责任追溯的数据依据。",
+    "mediaNote": "建议复用 doc1-065、doc1-066、doc1-067、doc1-068、doc1-069；正式版补充宇泛新版人员管理平台和通道设备截图。",
+    "source": "V1.2 人员实名制管理、门禁通行与考勤；V7 人员实名制相关内容。",
+    "cover": "assets/images/slide-previews/company-slide-27.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-27.jpg"
+    ],
+    "tags": [
+      "人员与劳务管理",
+      "人员管理",
+      "子系统",
+      "实名制",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-1-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-1-2",
+    "number": "8.1.2",
+    "domainId": "domain-8-1",
+    "domainNumber": "8.1",
+    "domainName": "人员与劳务管理",
+    "title": "移动考勤子系统",
+    "summary": "面向分散作业、临时作业、外勤巡检和无固定门禁条件的项目，通过移动端定位、拍照、二维码或任务签到实现考勤补充。",
+    "overview": "面向分散作业、临时作业、外勤巡检和无固定门禁条件的项目，通过移动端定位、拍照、二维码或任务签到实现考勤补充。",
+    "components": [
+      "移动端APP/小程序",
+      "定位与拍照组件",
+      "考勤规则配置",
+      "审批补卡流程",
+      "考勤报表"
+    ],
+    "functions": [
+      "移动签到、拍照留痕、定位校验和补卡申请",
+      "外勤、临时班组、分散工点考勤采集",
+      "与固定门禁考勤数据合并统计",
+      "异常考勤审批、导出和归档"
+    ],
+    "highlights": [
+      "弥补固定设备覆盖不足",
+      "适合公路、隧道、管线、线性工程等分散场景",
+      "可和移动巡查、任务派发形成统一移动工作入口"
+    ],
+    "value": "降低考勤盲点，提升现场人员投入数据的完整性和真实性。",
+    "mediaNote": "可参考 V7 移动考勤手机界面；建议正式版以宇泛移动端截图替换。",
+    "source": "V7 移动考勤。",
+    "cover": "assets/images/slide-previews/company-slide-27.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-27.jpg"
+    ],
+    "tags": [
+      "人员与劳务管理",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-1-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-1-3",
+    "number": "8.1.3",
+    "domainId": "domain-8-1",
+    "domainNumber": "8.1",
+    "domainName": "人员与劳务管理",
+    "title": "安全教育管理子系统",
+    "summary": "面向新工人入场、班前教育、专项作业教育和复训考核，将VR安全体验、教考一体机、二维码教育和无线WIFI教育统一纳入教育台账。",
+    "overview": "面向新工人入场、班前教育、专项作业教育和复训考核，将VR安全体验、教考一体机、二维码教育和无线WIFI教育统一纳入教育台账。",
+    "components": [
+      "VR安全体验设备",
+      "教考一体机",
+      "二维码教育内容",
+      "WIFI教育入口",
+      "题库、课程和学习记录"
+    ],
+    "functions": [
+      "课程学习、考试测评、错题记录和证书/合格状态管理",
+      "新工人入场三级教育、专项安全教育、班前教育",
+      "教育结果与门禁、实名制、班组管理联动",
+      "教育台账、统计报表和监管留档"
+    ],
+    "highlights": [
+      "把线下宣贯转为可记录、可统计、可追溯的数据",
+      "VR体验提升高风险作业教育的沉浸感",
+      "可按客户项目制度配置课程和考试规则"
+    ],
+    "value": "提升安全教育覆盖率和留痕完整性，支撑安全生产责任制落实。",
+    "mediaNote": "建议复用 doc1-078、doc2-059、doc2-060；若涉及第三方品牌或具体项目，正式版需脱敏。",
+    "source": "V1.2 VR安全教育、WiFi教育；V7 教考一体机、VR安全体验、二维码教育。",
+    "cover": "assets/images/slide-previews/company-slide-14.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-14.jpg"
+    ],
+    "tags": [
+      "人员与劳务管理",
+      "子系统",
+      "安全生产",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-1-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-1-4",
+    "number": "8.1.4",
+    "domainId": "domain-8-1",
+    "domainNumber": "8.1",
+    "domainName": "人员与劳务管理",
+    "title": "工人驿站+积分超市系统",
+    "summary": "面向施工人员进场登记、健康体检、安全教育、安全体验、VR安全体验和积分兑换等场景，建设一站式工人服务与管理空间。系统通过智能化设备与信息化平台联动，将入场服务、教育考核、健康关怀和正向激励统一到现场管理流程中，让人员管理既规范高效，也更有温度。",
+    "overview": "面向施工人员进场登记、健康体检、安全教育、安全体验、VR安全体验和积分兑换等场景，建设一站式工人服务与管理空间。系统通过智能化设备与信息化平台联动，将入场服务、教育考核、健康关怀和正向激励统一到现场管理流程中，让人员管理既规范高效，也更有温度。",
+    "components": [
+      "人员登记与身份核验设备",
+      "健康体检一体机",
+      "教考一体机",
+      "安全体验设备",
+      "VR安全体验设备",
+      "积分超市与兑换管理模块"
+    ],
+    "functions": [
+      "工人刷身份证、人脸录入和进场登记信息同步",
+      "身高、体重、BMI、血压、血氧、心率等健康数据采集与报告打印",
+      "三级安全教育、课程学习、在线考试和安全教育台账生成",
+      "安全帽坠物打击、触电伤害、安全标识认知、心肺复苏等实景体验",
+      "管理员围绕入场、三级安全教育、班前会、班后会等活动发放积分奖励",
+      "工人通过积分兑换物品或服务，形成安全参与、积分激励和兑换留痕闭环"
+    ],
+    "highlights": [
+      "将入场登记、健康关怀、安全教育和积分兑换集中在同一现场服务节点",
+      "通过积分奖励引导工人积极参与安全管理、班组活动和隐患治理",
+      "兼顾标准化管理与人文关怀，提升工人归属感、获得感和主动性"
+    ],
+    "value": "系统以一站式服务降低入场管理和教育组织成本，以健康体检与安全体验强化风险意识，以积分超市建立正向激励机制，推动项目从单纯管控向服务型、参与型和精细化管理升级。",
+    "mediaNote": "建议结合《工人驿站介绍》补充驿站空间、教考一体机、健康体检、安全体验和积分超市示意图；如暂无现场图片，可使用示意图占位。",
+    "source": "工人驿站介绍、积分超市业务说明。",
+    "cover": "assets/images/slide-previews/company-slide-46.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-46.jpg"
+    ],
+    "tags": [
+      "人员与劳务管理",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-1-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-1-5",
+    "number": "8.1.5",
+    "domainId": "domain-8-1",
+    "domainNumber": "8.1",
+    "domainName": "人员与劳务管理",
+    "title": "北斗/GPS人员定位子系统",
+    "summary": "面向开放区域、生活区、办公区、普通作业面、线性工程和外场巡检等场景，通过北斗/GPS定位终端或智能安全帽采集人员位置与轨迹信息，用于区域管控、巡检覆盖和应急辅助。",
+    "overview": "面向开放区域、生活区、办公区、普通作业面、线性工程和外场巡检等场景，通过北斗/GPS定位终端或智能安全帽采集人员位置与轨迹信息，用于区域管控、巡检覆盖和应急辅助。",
+    "components": [
+      "北斗/GPS定位终端",
+      "智能安全帽或移动端定位组件",
+      "电子围栏",
+      "位置服务平台",
+      "告警与轨迹回放模块"
+    ],
+    "functions": [
+      "人员实时位置查看、轨迹查询和历史回放",
+      "重点区域进入提醒、长时间滞留提醒和越界告警",
+      "人员热力、工种分布、区域人数统计",
+      "应急情况下辅助查找人员位置和回溯行动轨迹"
+    ],
+    "highlights": [
+      "本节仅保留开放场景北斗/GPS定位，UWB隧道定位放入专项场景",
+      "适合室外开阔区域、道路桥梁、管线等分散作业场景",
+      "可与实名制、门禁、移动巡查和应急广播联动"
+    ],
+    "value": "提升开放场景人员可视化管理能力，辅助安全巡查、外场作业监管和突发事件处置。",
+    "mediaNote": "可参考 doc1-075、doc1-076、doc2-091 至 doc2-096；UWB隧道图放专项章节。",
+    "source": "V1.2 人员定位；V7 人员定位、安全帽定位。",
+    "cover": "assets/images/slide-previews/company-slide-27.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-27.jpg"
+    ],
+    "tags": [
+      "人员与劳务管理",
+      "人员管理",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-1-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-1",
+    "number": "8.2.1",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "视频监控子系统",
+    "summary": "在出入口、生活区、材料堆场、塔机覆盖区、危险作业面、周界和制高点布设视频点位，实现远程查看、录像存储、历史回放和事故追溯。",
+    "overview": "在出入口、生活区、材料堆场、塔机覆盖区、危险作业面、周界和制高点布设视频点位，实现远程查看、录像存储、历史回放和事故追溯。",
+    "components": [
+      "IPC摄像机",
+      "球机/枪机",
+      "NVR或云存储",
+      "视频管理平台",
+      "大屏/移动端查看入口"
+    ],
+    "functions": [
+      "实时预览、分屏轮巡、云台控制、抓拍录像",
+      "录像检索、回放、导出和事件追溯",
+      "按区域、通道、项目组织视频资源",
+      "向AI安全生产大模型或视频AI模块提供分析源"
+    ],
+    "highlights": [
+      "既是安全监管工具，也是AI识别的数据入口",
+      "适合多项目远程监管和集团巡检",
+      "可与应急广播、周界入侵、移动巡检形成联动"
+    ],
+    "value": "提升远程可视化监管能力，降低现场巡查成本，为安全事故复盘提供影像证据。",
+    "mediaNote": "建议复用 doc1-004、doc1-005、doc1-007；补充新版视频平台截图。",
+    "source": "V1.2 视频监控系统；V7 视频监控子系统。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产管理",
+      "智慧工地",
+      "视频监控"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-2",
+    "number": "8.2.2",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "视频AI应用子系统",
+    "summary": "基于现场视频和图片识别人员未戴安全帽、未穿反光衣、吸烟、人员聚集、区域入侵、明火、车辆冲洗、裸土覆盖等风险事件。该子系统在新方案中应与AI安全生产大模型/U安智巡形成能力衔接。",
+    "overview": "基于现场视频和图片识别人员未戴安全帽、未穿反光衣、吸烟、人员聚集、区域入侵、明火、车辆冲洗、裸土覆盖等风险事件。该子系统在新方案中应与AI安全生产大模型/U安智巡形成能力衔接。",
+    "components": [
+      "AI摄像机/AI盒子",
+      "识别算法模型",
+      "告警规则",
+      "图片与视频证据库",
+      "隐患工单接口"
+    ],
+    "functions": [
+      "安全帽、反光衣、吸烟、聚集、明火、入侵等识别",
+      "事件抓拍、告警推送、报警记录和统计分析",
+      "与U安智巡任务、整改、复核和报告归档衔接",
+      "按项目、通道、模型、时间策略配置巡检任务"
+    ],
+    "highlights": [
+      "从单点视频算法升级为AI巡检识别和闭环治理",
+      "可复用既有视频资源，降低新增硬件成本",
+      "识别结果保留图片/视频证据，便于整改闭环"
+    ],
+    "value": "降低人工盯屏压力，提高隐患发现及时性，推动安全管理从抽查式向持续式转变。",
+    "mediaNote": "建议复用 doc1-008；U安智巡正式表达需补充最新产品截图和闭环流程图。",
+    "source": "V1.2 视频AI应用系统；V7 AI安全着装、AI火灾、AI周界、AI车辆冲洗、裸土识别。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "AI识别",
+      "子系统",
+      "安全生产管理",
+      "智慧工地",
+      "视频监控"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-3",
+    "number": "8.2.3",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "卸料平台安全监控子系统",
+    "summary": "针对卸料平台超载、钢丝绳受力异常、平台使用状态异常等风险，通过传感器采集载荷和状态数据，及时预警并留存记录。",
+    "overview": "针对卸料平台超载、钢丝绳受力异常、平台使用状态异常等风险，通过传感器采集载荷和状态数据，及时预警并留存记录。",
+    "components": [
+      "旁压/称重传感器",
+      "监控主机",
+      "声光报警器",
+      "无线/4G网关",
+      "平台监测界面"
+    ],
+    "functions": [
+      "载荷监测、阈值预警、声光报警",
+      "数据实时上传、历史曲线、报警记录查询",
+      "设备状态自检和离线提醒",
+      "与安全巡查、隐患整改联动"
+    ],
+    "highlights": [
+      "对人工难以持续盯守的平台状态进行自动监控",
+      "现场报警与平台预警同步，缩短处置链路",
+      "适合高频物料转运区域"
+    ],
+    "value": "降低卸料平台超载和结构失稳风险，支撑危大作业安全管控。",
+    "mediaNote": "建议复用 doc1-053、doc1-054、doc2-184；正式版可补充标准安装示意图。",
+    "source": "V1.2 卸料平台安全监测系统；V7 卸料平台安全监控子系统。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-4",
+    "number": "8.2.4",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "配电箱监控报警子系统",
+    "summary": "面向施工现场临时用电和配电箱分散管理问题，对电压、电流、温度、漏电、箱门状态和环境状态进行监测。",
+    "overview": "面向施工现场临时用电和配电箱分散管理问题，对电压、电流、温度、漏电、箱门状态和环境状态进行监测。",
+    "components": [
+      "电力监控仪表",
+      "温湿度/门磁/烟感传感器",
+      "NB-IoT或4G网关",
+      "现场报警装置",
+      "用电安全管理平台"
+    ],
+    "functions": [
+      "电参量监测、温度监测、漏电/过载预警",
+      "箱门异常开启、设备离线、通讯异常提醒",
+      "历史数据、用电趋势和报警记录查询",
+      "支持巡检工单和整改记录关联"
+    ],
+    "highlights": [
+      "减少人工巡检漏检和滞后问题",
+      "适配分布广、移动性强的施工配电场景",
+      "可与烟感、消防和应急广播联动"
+    ],
+    "value": "提升临时用电安全管理水平，降低电气火灾和设备故障风险。",
+    "mediaNote": "建议复用 doc1-039、doc2-185、doc2-186、doc2-187。",
+    "source": "V1.2 配电箱监测系统；V7 配电箱监控报警子系统。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-5",
+    "number": "8.2.5",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "临边防护与门磁防护子系统",
+    "summary": "针对洞口、临边、危险区域围挡、配电箱防护门等防护设施失效问题，实时监测防护状态、位移、拆除或异常开启。",
+    "overview": "针对洞口、临边、危险区域围挡、配电箱防护门等防护设施失效问题，实时监测防护状态、位移、拆除或异常开启。",
+    "components": [
+      "位移/门磁传感器",
+      "边缘采集终端",
+      "声光报警器",
+      "电子围栏规则",
+      "平台告警模块"
+    ],
+    "functions": [
+      "防护栏位移、缺失、门磁打开等状态监测",
+      "异常状态现场报警、平台推送和记录留痕",
+      "按区域建立防护设施台账",
+      "与巡查任务、整改闭环和视频点位关联"
+    ],
+    "highlights": [
+      "把静态防护设施转为可监测对象",
+      "适合高处作业、洞口临边、危险隔离区",
+      "可与视频AI和移动巡查形成互证"
+    ],
+    "value": "减少临边防护失效导致的坠落风险，提升安全设施日常维护效率。",
+    "mediaNote": "建议复用 doc1-035 至 doc1-038、doc2-188 至 doc2-192。",
+    "source": "V1.2 护栏状态监测系统；V7 便携式周界、门磁式临边防护。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-6",
+    "number": "8.2.6",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "烟感与火灾预警子系统",
+    "summary": "面向材料堆放区、生活区、配电房、仓库和易燃作业区，监测烟雾、明火或异常温度，及时发现火灾隐患。",
+    "overview": "面向材料堆放区、生活区、配电房、仓库和易燃作业区，监测烟雾、明火或异常温度，及时发现火灾隐患。",
+    "components": [
+      "烟感探测器",
+      "温度/明火识别设备",
+      "NB-IoT/4G通讯模块",
+      "声光报警器",
+      "消防事件管理模块"
+    ],
+    "functions": [
+      "烟雾浓度监测、设备在线状态监测",
+      "火警事件推送、现场声光报警",
+      "报警记录、处置记录和历史统计",
+      "可与视频AI明火识别、广播疏散联动"
+    ],
+    "highlights": [
+      "低功耗设备适合分散部署",
+      "视频识别与传感器监测可相互补充",
+      "报警事件可形成整改和复盘材料"
+    ],
+    "value": "强化现场消防安全预警，降低生活区、材料区和临电区域火灾风险。",
+    "mediaNote": "建议复用 doc1-040、doc1-041；AI火灾识别需补充U安智巡示例。",
+    "source": "V1.2 烟感监测系统；V7 烟感报警、AI火灾预警。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-6.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-7",
+    "number": "8.2.7",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "移动巡查、巡更与AI眼镜子系统",
+    "summary": "为安全员、质量员和管理人员提供移动巡检、隐患上报、问题整改、巡更路线和现场视频协作能力，配合AI眼镜或AR设备提升远程协同。",
+    "overview": "为安全员、质量员和管理人员提供移动巡检、隐患上报、问题整改、巡更路线和现场视频协作能力，配合AI眼镜或AR设备提升远程协同。",
+    "components": [
+      "移动巡查APP",
+      "巡更点/二维码/NFC",
+      "AI眼镜或AR眼镜",
+      "任务与整改模块",
+      "照片/视频证据库"
+    ],
+    "functions": [
+      "巡检任务派发、现场拍照、语音/文字记录",
+      "隐患上报、整改派单、复查闭环",
+      "巡更路线、到点记录、漏巡提醒",
+      "AI眼镜远程协助、录屏、实时回传"
+    ],
+    "highlights": [
+      "把人工巡查过程标准化、留痕化",
+      "与AI识别结果形成线上线下互补",
+      "适合集团远程专家指导和项目日常安全检查"
+    ],
+    "value": "提升安全质量检查的执行率和闭环率，减少纸质记录和线下沟通成本。",
+    "mediaNote": "建议复用 doc1-042、doc1-043、doc2-211 至 doc2-224；缺宇泛移动端最新截图。",
+    "source": "V1.2 AR巡检眼镜、移动巡查、移动巡更；V7 移动检查、小茗AI眼镜。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "AI识别",
+      "子系统",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-7.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-8",
+    "number": "8.2.8",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "无人机巡检子系统",
+    "summary": "利用无人机对大范围场地、线性工程、高空构件、塔吊附着和人工难到达区域进行航拍巡检，并可结合AI识别进行风险辅助判断。",
+    "overview": "利用无人机对大范围场地、线性工程、高空构件、塔吊附着和人工难到达区域进行航拍巡检，并可结合AI识别进行风险辅助判断。",
+    "components": [
+      "无人机设备",
+      "航线规划",
+      "图传与视频存储",
+      "巡检任务模块",
+      "AI识别或人工复核模块"
+    ],
+    "functions": [
+      "定点/定时航拍、实时图传、视频记录",
+      "塔吊、升降机、边坡、场区、桥梁等巡检",
+      "巡检照片归档、问题标注和任务派发",
+      "可结合安全帽、人员聚集、裸土覆盖等识别"
+    ],
+    "highlights": [
+      "覆盖人工巡检难度大、危险性高、范围大的区域",
+      "图像资料可用于进度、安全和展示",
+      "与AI安全生产大模型结合后具备更高扩展性"
+    ],
+    "value": "提高巡检覆盖面和效率，降低高风险区域人工巡查频次。",
+    "mediaNote": "建议复用 doc1-057、doc2-295 至 doc2-306；需去除品牌和项目专属信息。",
+    "source": "V1.2 无人机巡检系统；V7 无人机应用。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-8.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-2-9",
+    "number": "8.2.9",
+    "domainId": "domain-8-2",
+    "domainNumber": "8.2",
+    "domainName": "安全生产管理",
+    "title": "应急广播与红外入侵报警子系统",
+    "summary": "用于现场通知、应急疏散、生活区公告和周界入侵提醒，形成现场安全事件的快速触达和周界安防能力。",
+    "overview": "用于现场通知、应急疏散、生活区公告和周界入侵提醒，形成现场安全事件的快速触达和周界安防能力。",
+    "components": [
+      "网络音柱/广播主机",
+      "话筒与功放",
+      "红外探测器",
+      "报警主机",
+      "联动规则与广播模板"
+    ],
+    "functions": [
+      "远程喊话、定时播报、应急疏散广播",
+      "周界入侵探测、报警推送和事件记录",
+      "与AI周界、视频监控、门禁和应急预案联动",
+      "支持不同区域分组播放和权限控制"
+    ],
+    "highlights": [
+      "将平台告警转换为现场可感知的声音提醒",
+      "兼顾日常宣教和突发事件处置",
+      "适合生活区、材料区、围挡周界和高风险作业面"
+    ],
+    "value": "缩短告警触达到人员的时间，提高现场应急响应和周界防护能力。",
+    "mediaNote": "建议复用 doc1-015、doc1-016、doc2-253 至 doc2-257。",
+    "source": "V1.2 应急广播；V7 工地广播、红外入侵报警。",
+    "cover": "assets/images/slide-previews/linear-slide-091.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-091.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产管理",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-2-9.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-3-1",
+    "number": "8.3.1",
+    "domainId": "domain-8-3",
+    "domainNumber": "8.3",
+    "domainName": "危大工程与结构监测",
+    "title": "高支模监测子系统",
+    "summary": "对模板支架体系的压力、沉降、位移、倾角等关键参数进行实时监测，辅助判断支撑体系安全状态。",
+    "overview": "对模板支架体系的压力、沉降、位移、倾角等关键参数进行实时监测，辅助判断支撑体系安全状态。",
+    "components": [
+      "压力传感器",
+      "位移/沉降/倾角传感器",
+      "无线采集终端",
+      "声光报警器",
+      "监测平台"
+    ],
+    "functions": [
+      "压力、位移、倾角、沉降等数据采集",
+      "阈值预警、曲线分析、报警记录",
+      "现场声光报警和平台消息推送",
+      "监测报告、点位管理和历史追溯"
+    ],
+    "highlights": [
+      "对微小变化进行连续监测",
+      "适合高风险支撑体系事前预警",
+      "可结合监测方案设置分级阈值和报警策略"
+    ],
+    "value": "辅助项目及时发现支撑体系异常，降低坍塌风险，支撑危大工程安全管理和验收留档。",
+    "mediaNote": "建议复用 doc1-025、doc1-026、doc1-029。",
+    "source": "V1.2 高支模监测系统；V7 高支模监测子系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "危大工程与结构监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-3-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-3-2",
+    "number": "8.3.2",
+    "domainId": "domain-8-3",
+    "domainNumber": "8.3",
+    "domainName": "危大工程与结构监测",
+    "title": "深基坑监测子系统",
+    "summary": "对基坑支护、周边建筑物和地下水等状态进行自动化监测，及时发现位移、倾斜、水位、应力等异常。",
+    "overview": "对基坑支护、周边建筑物和地下水等状态进行自动化监测，及时发现位移、倾斜、水位、应力等异常。",
+    "components": [
+      "测斜仪/位移计",
+      "土压力盒/锚索计",
+      "水位计/孔隙水压计",
+      "采集网关",
+      "基坑监测平台"
+    ],
+    "functions": [
+      "支护结构位移、周边沉降、支撑轴力、水位等监测",
+      "监测曲线、阈值报警、日报周报输出",
+      "异常数据复核、报警处置和闭环记录",
+      "与现场视频、巡查和应急预案关联"
+    ],
+    "highlights": [
+      "适合施工期连续监测和风险趋势判断",
+      "支持多类型传感器接入",
+      "图表化呈现便于项目和专家研判"
+    ],
+    "value": "提升基坑安全监测效率，支撑施工组织调整和风险防控。",
+    "mediaNote": "建议复用 doc1-030、doc1-034、doc2-181、doc2-182。",
+    "source": "V1.2 深基坑监测；V7 深基坑监测子系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "危大工程与结构监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-3-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-3-3",
+    "number": "8.3.3",
+    "domainId": "domain-8-3",
+    "domainNumber": "8.3",
+    "domainName": "危大工程与结构监测",
+    "title": "爬架监测子系统",
+    "summary": "对附着式升降脚手架及爬架的载荷、倾斜、位移、升降同步状态和关键运行过程进行监测，降低架体运行异常和违规操作风险。",
+    "overview": "对附着式升降脚手架及爬架的载荷、倾斜、位移、升降同步状态和关键运行过程进行监测，降低架体运行异常和违规操作风险。",
+    "components": [
+      "载荷/位移/倾角传感器",
+      "升降状态采集终端",
+      "控制与报警装置",
+      "平台监测界面",
+      "设备台账"
+    ],
+    "functions": [
+      "爬架载荷、倾斜、位移和升降状态监测",
+      "升降过程异常预警、报警记录和处置闭环",
+      "点位状态、设备在线、历史曲线展示",
+      "与巡检、维保和验收记录关联"
+    ],
+    "highlights": [
+      "聚焦附着式升降作业过程安全",
+      "支持现场报警和远程监管",
+      "便于形成爬架专项管理资料"
+    ],
+    "value": "提升爬架升降和使用过程的安全可控性，降低高处作业重大风险。",
+    "mediaNote": "建议复用 doc2-193、doc2-194、doc2-195；缺宇泛标准化安装示意图。",
+    "source": "V7 爬架监测子系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "危大工程与结构监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-3-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-3-4",
+    "number": "8.3.4",
+    "domainId": "domain-8-3",
+    "domainNumber": "8.3",
+    "domainName": "危大工程与结构监测",
+    "title": "脚手架监测子系统",
+    "summary": "对落地式或悬挑式脚手架的立杆沉降、架体倾斜、局部受力、连墙件状态和防护状态进行监测，辅助脚手架安全巡查和风险预警。",
+    "overview": "对落地式或悬挑式脚手架的立杆沉降、架体倾斜、局部受力、连墙件状态和防护状态进行监测，辅助脚手架安全巡查和风险预警。",
+    "components": [
+      "沉降/位移/倾角传感器",
+      "局部受力采集设备",
+      "采集网关",
+      "声光报警器",
+      "脚手架监测平台"
+    ],
+    "functions": [
+      "脚手架沉降、倾斜、位移和局部受力监测",
+      "异常趋势分析、阈值报警和记录留痕",
+      "点位台账、巡检任务和整改闭环",
+      "与危大工程资料、验收记录和视频巡查关联"
+    ],
+    "highlights": [
+      "把脚手架从人工抽查扩展为重点点位连续监测",
+      "适合高层外架、悬挑架和重点作业面",
+      "可与移动巡查形成复核闭环"
+    ],
+    "value": "提升脚手架安全状态感知能力，降低架体失稳、沉降和防护缺失风险。",
+    "mediaNote": "建议补充脚手架传感器布点和现场安装示意图。",
+    "source": "V7 脚手架监测子系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "危大工程与结构监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-3-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-3-5",
+    "number": "8.3.5",
+    "domainId": "domain-8-3",
+    "domainNumber": "8.3",
+    "domainName": "危大工程与结构监测",
+    "title": "边坡监测子系统",
+    "summary": "对施工边坡、高边坡、基坑边坡和周边地质结构进行位移、裂缝、倾斜、沉降及降雨等风险监测，辅助判断边坡稳定状态。",
+    "overview": "对施工边坡、高边坡、基坑边坡和周边地质结构进行位移、裂缝、倾斜、沉降及降雨等风险监测，辅助判断边坡稳定状态。",
+    "components": [
+      "位移/倾角/裂缝传感器",
+      "雨量/水位监测设备",
+      "采集网关",
+      "声光报警",
+      "边坡监测平台"
+    ],
+    "functions": [
+      "边坡位移、裂缝、倾斜、沉降和水文环境监测",
+      "监测曲线、阈值报警、趋势分析和报表输出",
+      "异常数据复核、巡查任务派发和整改闭环",
+      "与视频监控、应急广播和专项预案联动"
+    ],
+    "highlights": [
+      "适合公路、隧道洞口、基坑和水利高边坡区域",
+      "支持多点位、多指标连续监测",
+      "可为专项施工和安全评估提供量化依据"
+    ],
+    "value": "提升边坡风险发现和预警能力，减少人工巡查盲区，支撑复杂地质场景安全管控。",
+    "mediaNote": "建议补充边坡安全监测布点图或抽水蓄能/线性工程场景图。",
+    "source": "V7 边坡安全监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "危大工程与结构监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-3-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-3-6",
+    "number": "8.3.6",
+    "domainId": "domain-8-3",
+    "domainNumber": "8.3",
+    "domainName": "危大工程与结构监测",
+    "title": "护栏状态监测子系统",
+    "summary": "对临边护栏、围栏、洞口防护和重点防护设施状态进行监测，及时发现拆除、倾倒、移位、门磁异常或防护失效。",
+    "overview": "对临边护栏、围栏、洞口防护和重点防护设施状态进行监测，及时发现拆除、倾倒、移位、门磁异常或防护失效。",
+    "components": [
+      "护栏状态传感器",
+      "门磁/倾角/位移采集设备",
+      "采集网关",
+      "现场声光报警",
+      "平台告警模块"
+    ],
+    "functions": [
+      "护栏拆除、移位、倾倒、门磁和开闭状态监测",
+      "防护异常告警、事件留痕和责任派发",
+      "点位台账、巡查复核和整改关闭",
+      "与视频AI、移动巡查和隐患整改闭环联动"
+    ],
+    "highlights": [
+      "把临边洞口防护从静态巡查转为动态感知",
+      "适合高处作业、楼层洞口、围挡周界和基坑临边",
+      "可与安全生产大模型形成图像复核"
+    ],
+    "value": "提升防护设施状态透明度，降低因防护缺失引发的坠落和误入风险。",
+    "mediaNote": "建议复用 doc1-035 至 doc1-038，并补充护栏状态传感器示意图。",
+    "source": "V1.2 护栏状态监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "危大工程与结构监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-3-6.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-1",
+    "number": "8.4.1",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "塔机安全监测子系统",
+    "summary": "对塔机吊重、力矩、幅度、高度、回转、风速、司机身份和群塔防碰撞进行监测，辅助塔机安全运行。",
+    "overview": "对塔机吊重、力矩、幅度、高度、回转、风速、司机身份和群塔防碰撞进行监测，辅助塔机安全运行。",
+    "components": [
+      "塔机黑匣子/安全监控终端",
+      "载荷、幅度、高度、回转、风速传感器",
+      "司机人脸识别设备",
+      "平台软件",
+      "声光报警或控制联动"
+    ],
+    "functions": [
+      "吊重、力矩、幅度、高度、回转、风速实时监测",
+      "司机身份核验、超载超限报警",
+      "群塔防碰撞、区域限位和报警记录",
+      "运行数据统计、历史回放和维保关联"
+    ],
+    "highlights": [
+      "覆盖塔机运行核心安全参数",
+      "可结合吊钩视频形成可视化作业辅助",
+      "数据可用于设备安全巡查和责任追溯"
+    ],
+    "value": "降低塔机违规操作和超限运行风险，提高大型机械安全监管效率。",
+    "mediaNote": "建议复用 doc1-017、doc1-018、doc2-147、doc2-151。",
+    "source": "V1.2 塔机智能监控；V7 塔机安全监测。",
+    "cover": "assets/images/slide-previews/linear-slide-050.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-050.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "机械设备管理",
+      "起重机械"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-2",
+    "number": "8.4.2",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "塔机吊钩视频子系统",
+    "summary": "通过吊钩摄像机、小车视频、无线传输和驾驶室显示终端，为司机提供吊装盲区辅助观察和吊物状态可视化能力。",
+    "overview": "通过吊钩摄像机、小车视频、无线传输和驾驶室显示终端，为司机提供吊装盲区辅助观察和吊物状态可视化能力。",
+    "components": [
+      "吊钩摄像机",
+      "小车摄像机",
+      "无线传输设备",
+      "驾驶室显示屏",
+      "视频存储与回放模块"
+    ],
+    "functions": [
+      "吊钩画面实时回传、盲区辅助观察",
+      "吊装过程录像和关键画面留存",
+      "异常作业画面查询和责任追溯",
+      "与塔机安全监测数据同步展示"
+    ],
+    "highlights": [
+      "改善司机视线受限问题",
+      "提升吊装过程可视化程度",
+      "适合高层建筑、狭小场地和复杂吊装场景"
+    ],
+    "value": "减少盲吊、误判和碰撞风险，提高塔机作业安全性和吊装效率。",
+    "mediaNote": "建议复用 doc2-141 至 doc2-146。",
+    "source": "V7 塔机吊钩视频、小车视频。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "机械设备管理",
+      "视频监控",
+      "起重机械"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-3",
+    "number": "8.4.3",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "塔机激光引导子系统",
+    "summary": "通过激光引导设备为塔机吊装提供落点辅助、定位参考和作业提示，辅助司机在复杂场地中提升吊装精度。",
+    "overview": "通过激光引导设备为塔机吊装提供落点辅助、定位参考和作业提示，辅助司机在复杂场地中提升吊装精度。",
+    "components": [
+      "激光引导设备",
+      "驾驶室显示或提示终端",
+      "安装支架与供电模块",
+      "联动控制模块",
+      "平台记录模块"
+    ],
+    "functions": [
+      "吊装落点辅助指示、激光点位引导",
+      "复杂作业面吊物对准和落位提示",
+      "作业记录、设备状态和异常提醒",
+      "与吊钩视频、塔机安全监测联动展示"
+    ],
+    "highlights": [
+      "提升吊装落位精度",
+      "适合夜间、狭小空间和复杂堆场作业",
+      "可与视频画面形成视觉辅助组合"
+    ],
+    "value": "降低吊装偏差和二次调整成本，提升塔机吊装效率和现场作业安全。",
+    "mediaNote": "建议复用 doc2-150、doc2-151 或补充激光引导安装示意图。",
+    "source": "V7 塔机激光引导。",
+    "cover": "assets/images/slide-previews/linear-slide-050.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-050.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "机械设备管理",
+      "起重机械"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-4",
+    "number": "8.4.4",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "施工升降机安全监控子系统",
+    "summary": "针对施工升降机载荷、人数、速度、高度、倾斜、司机身份和维保状态进行监控，防止非法操作、超载运行和安全装置失效。",
+    "overview": "针对施工升降机载荷、人数、速度、高度、倾斜、司机身份和维保状态进行监控，防止非法操作、超载运行和安全装置失效。",
+    "components": [
+      "升降机安全监控终端",
+      "载荷/速度/高度/倾角传感器",
+      "人脸识别或司机授权模块",
+      "AI人数统计摄像机",
+      "平台管理模块"
+    ],
+    "functions": [
+      "载重、人数、速度、高度、倾斜实时监测",
+      "司机身份核验、超载报警、异常停机联动",
+      "运行记录、报警记录和维保记录管理",
+      "笼内视频和人数识别辅助安全管控"
+    ],
+    "highlights": [
+      "对人、机、运行状态同时监管",
+      "适合高频载人载物的垂直运输设备",
+      "可形成设备运行和安全责任追溯资料"
+    ],
+    "value": "降低升降机超载、违规操作和维保不到位风险，提升大型设备运行安全。",
+    "mediaNote": "建议复用 doc1-020、doc1-021、doc1-022、doc2-157、doc2-158。",
+    "source": "V1.2 施工升降机安全监控；V7 升降机安全监控。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-5",
+    "number": "8.4.5",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "龙门吊安全监测子系统",
+    "summary": "面向梁场、加工场、材料堆场等龙门吊作业场景，对起重量、吊钩高度、行走位置、风速、防碰撞和视频画面进行监测。",
+    "overview": "面向梁场、加工场、材料堆场等龙门吊作业场景，对起重量、吊钩高度、行走位置、风速、防碰撞和视频画面进行监测。",
+    "components": [
+      "龙门吊安全监控终端",
+      "载荷/高度/行走/风速传感器",
+      "视频监控",
+      "驾驶室显示终端",
+      "平台分析模块"
+    ],
+    "functions": [
+      "起重量、吊钩高度、行走位置、速度和风速监测",
+      "超载、限位、偏载、防碰撞风险预警",
+      "视频画面、历史数据和报警记录查询",
+      "设备档案、维保、司机和作业记录管理"
+    ],
+    "highlights": [
+      "适合梁场和大型构件吊装场景",
+      "可与地磅、梁场监测和视频监控联动",
+      "支撑龙门吊运行安全数字化监管"
+    ],
+    "value": "降低龙门吊超限、碰撞和违规作业风险，提升场站大型设备安全管理水平。",
+    "mediaNote": "建议复用 doc1-044、doc1-045、doc2-101 至 doc2-106。",
+    "source": "V1.2 龙门吊；V7 公路管理与机械管理模块。",
+    "cover": "assets/images/slide-previews/linear-slide-045.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-045.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-6",
+    "number": "8.4.6",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "架桥机安全监测子系统",
+    "summary": "面向桥梁架设施工，对架桥机姿态、支腿状态、纵横移、起重量、风速、倾斜和关键作业参数进行监测。",
+    "overview": "面向桥梁架设施工，对架桥机姿态、支腿状态、纵横移、起重量、风速、倾斜和关键作业参数进行监测。",
+    "components": [
+      "架桥机安全监控终端",
+      "载荷/倾角/位移/风速传感器",
+      "支腿状态采集",
+      "视频监控",
+      "平台预警模块"
+    ],
+    "functions": [
+      "架桥机起重量、姿态、纵横移、支腿和风速监测",
+      "超载、倾斜、限位、支腿异常和防碰撞预警",
+      "关键工序作业记录、报警记录和趋势分析",
+      "与桥梁施工计划、梁场数据和机械档案关联"
+    ],
+    "highlights": [
+      "贴合桥梁架设高风险作业过程",
+      "可对关键工序形成连续记录",
+      "适合公路桥梁、铁路桥梁和大型梁片架设场景"
+    ],
+    "value": "提升架桥机作业过程风险感知能力，降低桥梁架设重大设备安全风险。",
+    "mediaNote": "建议复用 doc1-046、doc1-047、doc2-107 至 doc2-116。",
+    "source": "V1.2 架桥机；V7 公路管理与机械管理模块。",
+    "cover": "assets/images/slide-previews/linear-slide-045.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-045.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-6.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-7",
+    "number": "8.4.7",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "履带吊安全监测子系统",
+    "summary": "面向大型构件吊装、场站吊装和复杂地形作业场景，对履带吊载荷、幅度、回转、臂架角度、支承状态和作业风险进行监测。",
+    "overview": "面向大型构件吊装、场站吊装和复杂地形作业场景，对履带吊载荷、幅度、回转、臂架角度、支承状态和作业风险进行监测。",
+    "components": [
+      "履带吊安全监控终端",
+      "载荷/幅度/角度/回转传感器",
+      "视频监控",
+      "司机识别或授权模块",
+      "平台预警模块"
+    ],
+    "functions": [
+      "起重量、幅度、臂架角度、回转和作业状态监测",
+      "超载、超限、危险区域和倾覆风险预警",
+      "作业记录、报警记录、视频联动和报表输出",
+      "与机械档案、维保记录和吊装方案关联"
+    ],
+    "highlights": [
+      "适合大型构件和临时吊装作业",
+      "可按吊装方案设置风险边界",
+      "提升履带吊作业过程可追溯性"
+    ],
+    "value": "降低履带吊超限、倾覆和违规吊装风险，提升大型吊装作业安全管理能力。",
+    "mediaNote": "建议补充履带吊设备安装与作业场景图。",
+    "source": "V7 履带吊安全监测相关能力。",
+    "cover": "assets/images/slide-previews/linear-slide-045.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-045.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-7.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-8",
+    "number": "8.4.8",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "吊篮安全监控子系统",
+    "summary": "对吊篮运行高度、载荷、倾角、人员身份和安全锁状态进行监测，适用于外立面、幕墙和高处作业场景。",
+    "overview": "对吊篮运行高度、载荷、倾角、人员身份和安全锁状态进行监测，适用于外立面、幕墙和高处作业场景。",
+    "components": [
+      "吊篮监控终端",
+      "载荷/倾角/高度传感器",
+      "人员识别模块",
+      "声光报警器",
+      "平台告警模块"
+    ],
+    "functions": [
+      "吊篮载荷、倾斜、高度、运行状态监测",
+      "超载、倾斜、异常运行预警",
+      "人员身份和作业记录关联",
+      "报警记录、维保记录和统计报表"
+    ],
+    "highlights": [
+      "面向高处作业安全风险进行精细化监控",
+      "可与安全带监测和移动巡检联动",
+      "部署灵活，适合临时作业面"
+    ],
+    "value": "降低吊篮高处作业风险，支撑高处作业过程监管和事故追溯。",
+    "mediaNote": "建议复用 V1.2 吊篮安全监测和 V7 吊篮安全监控素材；需要补充清晰产品图。",
+    "source": "V1.2 吊篮安全监测；V7 吊篮安全监控。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-8.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-9",
+    "number": "8.4.9",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "智能螺母与钢丝绳监测子系统",
+    "summary": "对塔机、升降机等设备关键连接螺栓和钢丝绳状态进行监测，及时发现松动、退丝、断丝或异常受力风险。",
+    "overview": "对塔机、升降机等设备关键连接螺栓和钢丝绳状态进行监测，及时发现松动、退丝、断丝或异常受力风险。",
+    "components": [
+      "智能预警螺母",
+      "钢丝绳监测传感器",
+      "采集终端",
+      "声光报警",
+      "平台状态监测模块"
+    ],
+    "functions": [
+      "螺母松动/退丝监测、钢丝绳状态监测",
+      "现场报警、平台推送和事件记录",
+      "设备点位台账、状态统计和更换记录",
+      "与机械档案和维保计划关联"
+    ],
+    "highlights": [
+      "聚焦人工巡检难以及时发现的细部隐患",
+      "低功耗、可分散部署",
+      "对大型机械倾覆和断绳风险形成早期提醒"
+    ],
+    "value": "提升关键部件安全状态可视化，降低大型机械重大事故风险。",
+    "mediaNote": "建议复用 doc1-023、doc1-024、doc2-119、doc2-120、doc2-233 至 doc2-235。",
+    "source": "V1.2 智能螺母；V7 智能螺母、钢丝绳监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-9.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-4-10",
+    "number": "8.4.10",
+    "domainId": "domain-8-4",
+    "domainNumber": "8.4",
+    "domainName": "机械设备管理",
+    "title": "机械档案子系统",
+    "summary": "对项目机械设备建立电子档案，管理设备进退场、维保、巡检、司机、证件、运行状态和安全预警。",
+    "overview": "对项目机械设备建立电子档案，管理设备进退场、维保、巡检、司机、证件、运行状态和安全预警。",
+    "components": [
+      "设备台账",
+      "证件与维保管理",
+      "运行状态采集",
+      "巡检任务",
+      "统计报表"
+    ],
+    "functions": [
+      "设备信息维护、进退场、证件和人员管理",
+      "维保计划、检查记录、整改记录和附件管理",
+      "设备运行状态和告警汇总",
+      "按项目、设备类型、责任人形成统计报表"
+    ],
+    "highlights": [
+      "把设备物联监测和日常管理资料统一起来",
+      "便于多项目设备资产管理",
+      "支撑设备安全责任追溯和运维决策"
+    ],
+    "value": "提升机械设备全生命周期管理效率，减少纸质台账和重复统计。",
+    "mediaNote": "建议复用 doc1-080、doc1-081；需补宇泛标准机械档案界面。",
+    "source": "V1.2 机械档案管理。",
+    "cover": "assets/images/slide-previews/hydro-slide-083.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-083.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "机械设备",
+      "机械设备管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-4-10.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-5-1",
+    "number": "8.5.1",
+    "domainId": "domain-8-5",
+    "domainNumber": "8.5",
+    "domainName": "质量管理",
+    "title": "实测实量子系统",
+    "summary": "用于记录工程实体质量实测数据，对测点、构件、楼层、分项工程和检查结果进行数字化管理。",
+    "overview": "用于记录工程实体质量实测数据，对测点、构件、楼层、分项工程和检查结果进行数字化管理。",
+    "components": [
+      "移动测量端",
+      "实测实量表单",
+      "测区/构件库",
+      "统计分析模块",
+      "整改闭环接口"
+    ],
+    "functions": [
+      "实测数据录入、拍照留痕、合格率统计",
+      "按楼栋、楼层、分项、班组分析质量偏差",
+      "问题整改、复查和归档",
+      "输出质量检查报表和趋势分析"
+    ],
+    "highlights": [
+      "替代纸质记录，减少统计成本",
+      "与质量整改闭环联动",
+      "支持多维度质量数据分析"
+    ],
+    "value": "提升质量检查标准化和数据化水平，为质量验收和问题复盘提供依据。",
+    "mediaNote": "建议复用 V7 实测实量素材；缺宇泛质量管理现行界面。",
+    "source": "V7 实测实量系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "质量管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-5-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-5-2",
+    "number": "8.5.2",
+    "domainId": "domain-8-5",
+    "domainNumber": "8.5",
+    "domainName": "质量管理",
+    "title": "混凝土测温子系统",
+    "summary": "对大体积混凝土或关键结构混凝土温度进行自动采集，辅助判断温控风险和养护效果。",
+    "overview": "对大体积混凝土或关键结构混凝土温度进行自动采集，辅助判断温控风险和养护效果。",
+    "components": [
+      "测温传感器",
+      "数据采集器",
+      "无线传输模块",
+      "测温平台",
+      "温控预警规则"
+    ],
+    "functions": [
+      "多点温度采集、温差分析、曲线展示",
+      "阈值预警、异常数据提醒",
+      "测温日报、阶段报表和历史数据导出",
+      "与质量资料和养护记录关联"
+    ],
+    "highlights": [
+      "减少人工测温频次和漏记问题",
+      "适合连续温控和大体积混凝土施工",
+      "数据可作为质量资料归档"
+    ],
+    "value": "提升混凝土温控管理精度，降低温度裂缝等质量风险。",
+    "mediaNote": "建议复用 doc1-060、doc1-061、doc2-225 至 doc2-228。",
+    "source": "V1.2 混凝土测温；V7 混凝土测温。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "质量管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-5-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-5-3",
+    "number": "8.5.3",
+    "domainId": "domain-8-5",
+    "domainNumber": "8.5",
+    "domainName": "质量管理",
+    "title": "标准养护室温湿度监控子系统",
+    "summary": "对标养室温度、湿度、设备运行状态进行自动监测，保证试块养护环境符合管理要求。",
+    "overview": "对标养室温度、湿度、设备运行状态进行自动监测，保证试块养护环境符合管理要求。",
+    "components": [
+      "温湿度传感器",
+      "采集终端",
+      "显示屏/报警器",
+      "养护室监控平台",
+      "报表输出模块"
+    ],
+    "functions": [
+      "温湿度实时采集、超限报警",
+      "历史曲线、日报月报、数据导出",
+      "设备离线、供电异常提示",
+      "与试样养护提醒和质量资料关联"
+    ],
+    "highlights": [
+      "自动留存养护环境数据",
+      "减少人工记录误差",
+      "便于试验室和项目质量管理人员远程查看"
+    ],
+    "value": "提升试块养护过程可追溯性，支撑质量验收资料完整性。",
+    "mediaNote": "建议复用 V1.2 标养室监测、V7 标准养护室素材；缺新版界面。",
+    "source": "V1.2 标养室监测；V7 标准养护室温湿度智能监控。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "质量管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-5-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-5-4",
+    "number": "8.5.4",
+    "domainId": "domain-8-5",
+    "domainNumber": "8.5",
+    "domainName": "质量管理",
+    "title": "质量样板与工艺交底子系统",
+    "summary": "以质量样板、工艺动画、二维码交底、移动端学习和现场展示为载体，提升施工工艺标准化和交底覆盖率。",
+    "overview": "以质量样板、工艺动画、二维码交底、移动端学习和现场展示为载体，提升施工工艺标准化和交底覆盖率。",
+    "components": [
+      "质量样板库",
+      "工艺交底内容库",
+      "二维码展示",
+      "移动学习端",
+      "学习/签收记录"
+    ],
+    "functions": [
+      "工艺标准展示、图文视频交底、二维码查看",
+      "交底记录、签收记录和学习统计",
+      "按分部分项维护样板内容",
+      "与质量检查和整改问题关联"
+    ],
+    "highlights": [
+      "把线下样板和线上内容结合",
+      "便于一线班组反复学习",
+      "交底过程可留痕、可追溯"
+    ],
+    "value": "提升施工工艺一致性，减少因交底不到位导致的质量问题。",
+    "mediaNote": "建议复用 V7 创新质量样板、质量工艺交底素材；正式版需补宇泛内容模板。",
+    "source": "V7 创新质量样板、质量工艺交底。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "质量管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-5-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-5-5",
+    "number": "8.5.5",
+    "domainId": "domain-8-5",
+    "domainNumber": "8.5",
+    "domainName": "质量管理",
+    "title": "钢结构监测子系统",
+    "summary": "面向钢结构安装、吊装、焊接、连接节点和关键构件施工过程，对结构姿态、变形、应力、沉降或施工记录进行数字化采集和分析。",
+    "overview": "面向钢结构安装、吊装、焊接、连接节点和关键构件施工过程，对结构姿态、变形、应力、沉降或施工记录进行数字化采集和分析。",
+    "components": [
+      "钢结构监测传感器",
+      "数据采集终端",
+      "构件与测点管理",
+      "监测分析平台",
+      "异常预警与报告模块"
+    ],
+    "functions": [
+      "钢结构关键状态监测、数据记录和趋势分析",
+      "构件、测点、时间和施工阶段关联管理",
+      "异常阈值提醒、监测曲线和报告输出",
+      "与质量检查、隐患整改和资料归档联动"
+    ],
+    "highlights": [
+      "适合大跨度、复杂节点和高风险安装场景",
+      "将关键结构状态由人工记录扩展为连续数据监测",
+      "资料可用于质量追溯、专项验收和风险复盘"
+    ],
+    "value": "提升钢结构施工过程监测和质量风险预警能力，为复杂结构安装提供可追溯的数据依据。",
+    "mediaNote": "可参考 V7 钢结构监测素材；正式版建议结合客户项目类型补充标准测点示意。",
+    "source": "V7 钢结构监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "质量管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-5-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-5-6",
+    "number": "8.5.6",
+    "domainId": "domain-8-5",
+    "domainNumber": "8.5",
+    "domainName": "质量管理",
+    "title": "移动执法固证系统",
+    "summary": "面向工地日常安全巡查、质量检查、隐患取证、应急处置和监管执法场景，通过移动执法仪、采集站和平台监管系统，对现场音视频、图片、轨迹、任务和告警数据进行全过程留痕。",
+    "overview": "面向工地日常安全巡查、质量检查、隐患取证、应急处置和监管执法场景，通过移动执法仪、采集站和平台监管系统，对现场音视频、图片、轨迹、任务和告警数据进行全过程留痕。",
+    "components": [
+      "移动执法仪",
+      "数据采集站",
+      "4G/无线网络",
+      "GIS定位与轨迹服务",
+      "移动执法固证平台"
+    ],
+    "functions": [
+      "音视频实时记录、拍照、录音、文件加密和水印固证",
+      "北斗/GPS/GLONASS定位、实时位置查看和历史轨迹回放",
+      "平台发起双向音视频对讲、远程录像/拍照/文件上传",
+      "巡查任务创建、计划下发、执行记录查看和任务完成统计",
+      "采集站自动充电、自动采集、集中存储、云端同步和设备状态监控"
+    ],
+    "highlights": [
+      "执法仪与采集站组合，兼顾现场移动取证和本地集中存储",
+      "支持实时对讲、轨迹回放、录像回放和一键报警，便于远程指挥",
+      "音视频、图片、轨迹和任务记录可形成完整证据链"
+    ],
+    "value": "提升安全巡查透明度和责任追溯能力，减少口头反馈和资料缺失问题，为隐患整改、事故复盘和合规监管提供可靠证据。",
+    "mediaNote": "来源于移动执法固证系统解决方案PPT；正式版可按需要补充执法仪、采集站和平台界面图。",
+    "source": "移动执法固证系统解决方案。",
+    "cover": "assets/images/slide-previews/law-slide-13.jpg",
+    "images": [
+      "assets/images/slide-previews/law-slide-13.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "移动执法",
+      "质量管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-5-6.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-6-1",
+    "number": "8.6.1",
+    "domainId": "domain-8-6",
+    "domainNumber": "8.6",
+    "domainName": "进度与生产管理",
+    "title": "工程进度管理子系统",
+    "summary": "用于维护总计划、月计划、周计划和现场进展数据，对进度偏差、滞后原因和责任事项进行跟踪。",
+    "overview": "用于维护总计划、月计划、周计划和现场进展数据，对进度偏差、滞后原因和责任事项进行跟踪。",
+    "components": [
+      "计划维护模块",
+      "进度填报端",
+      "进度看板",
+      "偏差分析",
+      "任务协同模块"
+    ],
+    "functions": [
+      "计划编制、任务拆解、进度填报和审核",
+      "计划对比、偏差预警、滞后原因记录",
+      "进度统计报表、形象进度展示",
+      "与质量、安全、物资、机械数据联动分析"
+    ],
+    "highlights": [
+      "将进度管理从线下表格转为在线协同",
+      "支持多维度进度看板和项目例会材料输出",
+      "可与BIM或数字孪生展示结合"
+    ],
+    "value": "提升项目进度透明度和协同效率，辅助管理层及时识别工期风险。",
+    "mediaNote": "建议复用 doc1-061、doc1-062、doc1-063；项目型进度图需脱敏。",
+    "source": "V1.2 工程进度管理；V7 生产管理、进度管理。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "进度与生产管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-6-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-6-2",
+    "number": "8.6.2",
+    "domainId": "domain-8-6",
+    "domainNumber": "8.6",
+    "domainName": "进度与生产管理",
+    "title": "BIM/数字孪生展示子系统",
+    "summary": "结合BIM模型、GIS、倾斜摄影和现场物联数据，对项目空间、进度、人员、设备和风险状态进行可视化展示。",
+    "overview": "结合BIM模型、GIS、倾斜摄影和现场物联数据，对项目空间、进度、人员、设备和风险状态进行可视化展示。",
+    "components": [
+      "BIM模型",
+      "GIS/倾斜摄影",
+      "数据接入服务",
+      "三维展示引擎",
+      "大屏驾驶舱"
+    ],
+    "functions": [
+      "模型浏览、空间定位、构件关联",
+      "设备、人员、环境、视频数据叠加展示",
+      "进度形象化、风险点标注和事件回放",
+      "大屏汇报和项目展示"
+    ],
+    "highlights": [
+      "让复杂现场数据在空间中可理解",
+      "适合旗舰版和展示型项目",
+      "可与MR/AR/全息展示形成展厅延伸"
+    ],
+    "value": "提升项目展示效果和管理直观性，辅助指挥调度和客户汇报。",
+    "mediaNote": "V7 有数字孪生和工地大脑截图，但多为第三方界面；建议生图/重绘宇泛版。",
+    "source": "V7 工地大脑旗舰版、数字孪生智能调度。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "进度与生产管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-6-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-6-3",
+    "number": "8.6.3",
+    "domainId": "domain-8-6",
+    "domainNumber": "8.6",
+    "domainName": "进度与生产管理",
+    "title": "智能调度与生产数据采集子系统",
+    "summary": "将现场人员、设备、物资、进度、质量、安全等数据汇总，支撑生产调度、资源协调和异常处置。",
+    "overview": "将现场人员、设备、物资、进度、质量、安全等数据汇总，支撑生产调度、资源协调和异常处置。",
+    "components": [
+      "生产数据采集接口",
+      "调度规则",
+      "任务派发模块",
+      "消息通知",
+      "统计分析看板"
+    ],
+    "functions": [
+      "生产数据汇聚、任务分派、协同处理",
+      "设备、人员、物资与进度数据关联分析",
+      "异常事件提醒和调度记录",
+      "输出生产例会和管理报表"
+    ],
+    "highlights": [
+      "打通业务子系统之间的数据壁垒",
+      "支持从看板发现问题到任务闭环处理",
+      "适合多项目或大型项目指挥中心"
+    ],
+    "value": "提升资源配置和协同处理效率，让平台从展示工具升级为生产管理工具。",
+    "mediaNote": "建议生图：生产调度闭环图；缺宇泛现行智能调度界面。",
+    "source": "V7 工地大脑高级版/旗舰版。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "进度与生产管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-6-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-7-1",
+    "number": "8.7.1",
+    "domainId": "domain-8-7",
+    "domainNumber": "8.7",
+    "domainName": "物资与物料管理",
+    "title": "智能地磅子系统",
+    "summary": "对进出场车辆、物料称重、供应商、车牌、时间、毛重、皮重、净重和称重单据进行自动采集和管理。",
+    "overview": "对进出场车辆、物料称重、供应商、车牌、时间、毛重、皮重、净重和称重单据进行自动采集和管理。",
+    "components": [
+      "地磅设备",
+      "车牌识别摄像机",
+      "称重软件",
+      "道闸/红绿灯/语音提示",
+      "物资台账与接口"
+    ],
+    "functions": [
+      "自动称重、车牌识别、皮重毛重净重计算",
+      "称重单据、照片留痕和异常称重提醒",
+      "供应商、材料类型、批次和项目成本关联",
+      "与采购、结算或第三方平台对接"
+    ],
+    "highlights": [
+      "减少人工录入和人为干预",
+      "提升称重数据真实性和可追溯性",
+      "适合混凝土、钢筋、砂石、土方等大宗物料"
+    ],
+    "value": "帮助项目强化物料进出场管控，减少计量偏差和管理漏洞。",
+    "mediaNote": "建议复用 doc1-083、doc1-084、doc2-279、doc2-280；缺宇泛物资台账界面。",
+    "source": "V1.2 智能地磅；V7 地磅/物料计量相关内容。",
+    "cover": "assets/images/slide-previews/hydro-slide-129.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-129.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "物资与物料管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-7-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-7-2",
+    "number": "8.7.2",
+    "domainId": "domain-8-7",
+    "domainNumber": "8.7",
+    "domainName": "物资与物料管理",
+    "title": "钢筋AI盘点子系统",
+    "summary": "通过图像识别对钢筋数量、规格或堆放情况进行辅助盘点，减少人工清点耗时。",
+    "overview": "通过图像识别对钢筋数量、规格或堆放情况进行辅助盘点，减少人工清点耗时。",
+    "components": [
+      "移动拍照端",
+      "AI识别模型",
+      "盘点记录",
+      "材料台账",
+      "复核与修正模块"
+    ],
+    "functions": [
+      "拍照识别钢筋数量、生成盘点记录",
+      "支持人工复核、修改和确认",
+      "按区域、材料、批次形成统计",
+      "与物资台账、库存和报表联动"
+    ],
+    "highlights": [
+      "把高频、耗时、易出错的人工盘点转为AI辅助",
+      "识别结果保留图片证据",
+      "适合材料堆场和钢筋加工区"
+    ],
+    "value": "提升钢筋盘点效率和库存准确性，辅助材料成本控制。",
+    "mediaNote": "建议复用 doc2-281 至 doc2-284；正式版需补充宇泛AI盘点能力说明。",
+    "source": "V7 钢筋AI盘点管理系统。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "AI识别",
+      "子系统",
+      "智慧工地",
+      "物资与物料管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-7-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-7-3",
+    "number": "8.7.3",
+    "domainId": "domain-8-7",
+    "domainNumber": "8.7",
+    "domainName": "物资与物料管理",
+    "title": "物料进出场与台账报表子系统",
+    "summary": "对主要物料的计划、进场、验收、出库、消耗、库存和报表进行统一管理。",
+    "overview": "对主要物料的计划、进场、验收、出库、消耗、库存和报表进行统一管理。",
+    "components": [
+      "物料台账",
+      "进出场登记",
+      "验收记录",
+      "库存统计",
+      "报表中心"
+    ],
+    "functions": [
+      "物料分类、供应商、批次、数量和单据管理",
+      "进出场登记、验收拍照和异常记录",
+      "库存、消耗、结余和成本统计",
+      "按项目、材料、供应商导出报表"
+    ],
+    "highlights": [
+      "可与地磅、自动计量、采购系统对接",
+      "形成物资全流程台账",
+      "为经营分析提供基础数据"
+    ],
+    "value": "提升物资管理透明度，减少材料浪费和账实不符。",
+    "mediaNote": "旧方案素材较少，建议补充新版物资台账和统计报表截图。",
+    "source": "V1.2 物资管理；V7 物料管理模块。",
+    "cover": "assets/images/slide-previews/law-slide-14.jpg",
+    "images": [
+      "assets/images/slide-previews/law-slide-14.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "物资与物料管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-7-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-8-1",
+    "number": "8.8.1",
+    "domainId": "domain-8-8",
+    "domainNumber": "8.8",
+    "domainName": "绿色施工与环境管理",
+    "title": "扬尘噪音监测子系统",
+    "summary": "对PM2.5、PM10、TSP、噪声、温湿度、风速、风向等环境参数进行实时监测，并可联动喷淋降尘。",
+    "overview": "对PM2.5、PM10、TSP、噪声、温湿度、风速、风向等环境参数进行实时监测，并可联动喷淋降尘。",
+    "components": [
+      "扬尘噪音监测站",
+      "LED显示屏",
+      "数据采集终端",
+      "喷淋联动设备",
+      "环境监测平台"
+    ],
+    "functions": [
+      "环境参数实时采集、超限报警",
+      "LED现场展示、平台看板和趋势曲线",
+      "喷淋联动、报警记录和统计报表",
+      "数据上传监管平台或客户平台"
+    ],
+    "highlights": [
+      "成熟、标准化程度高，适合大多数项目",
+      "监测与治理联动，形成闭环",
+      "支持绿色施工和文明施工展示"
+    ],
+    "value": "帮助项目满足环保监管要求，降低扬尘噪音投诉和处罚风险。",
+    "mediaNote": "建议复用 doc1-086、doc1-087、doc2-266、doc2-267。",
+    "source": "V1.2 扬尘噪音监测；V7 扬尘噪音监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "绿色施工与环境管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-8-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-8-2",
+    "number": "8.8.2",
+    "domainId": "domain-8-8",
+    "domainNumber": "8.8",
+    "domainName": "绿色施工与环境管理",
+    "title": "移动式扬尘噪音监测子系统",
+    "summary": "面向施工点位变化频繁或线性工程场景，提供可移动部署的环境监测能力。",
+    "overview": "面向施工点位变化频繁或线性工程场景，提供可移动部署的环境监测能力。",
+    "components": [
+      "移动监测站",
+      "太阳能/电池供电",
+      "无线通信模块",
+      "移动支架",
+      "环境平台"
+    ],
+    "functions": [
+      "随施工点位迁移监测扬尘、噪音和气象参数",
+      "超限报警、趋势展示、数据报表",
+      "与喷淋或现场治理措施联动",
+      "设备定位和在线状态管理"
+    ],
+    "highlights": [
+      "部署灵活，适合道路、桥梁、管线和临时作业区",
+      "减少固定点位覆盖不足问题",
+      "可按项目阶段调整监测点位"
+    ],
+    "value": "提升环境监测覆盖面和灵活性，支撑动态施工区域环保管理。",
+    "mediaNote": "建议复用 doc2-268、doc2-269。",
+    "source": "V7 移动式扬尘噪音监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "绿色施工与环境管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-8-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-8-3",
+    "number": "8.8.3",
+    "domainId": "domain-8-8",
+    "domainNumber": "8.8",
+    "domainName": "绿色施工与环境管理",
+    "title": "智能水电监测子系统",
+    "summary": "通过智能水表、电表或采集终端对现场水电消耗进行实时监控，支撑节能降耗和成本分析。",
+    "overview": "通过智能水表、电表或采集终端对现场水电消耗进行实时监控，支撑节能降耗和成本分析。",
+    "components": [
+      "智能水表",
+      "智能电表",
+      "采集网关",
+      "能耗分析平台",
+      "异常告警规则"
+    ],
+    "functions": [
+      "水电用量实时采集、分区统计和趋势分析",
+      "异常用水用电、漏水漏电或过载提醒",
+      "日/月/项目维度报表输出",
+      "与绿色施工指标和经营分析关联"
+    ],
+    "highlights": [
+      "将四节一环保落到可量化数据",
+      "适合生活区、办公区、加工区分区计量",
+      "可支撑节能考核和成本核算"
+    ],
+    "value": "减少能源浪费，提升绿色施工管理的量化水平。",
+    "mediaNote": "建议复用 doc1-089 至 doc1-091、doc2-270 至 doc2-273。",
+    "source": "V1.2 智能水电；V7 智能水电监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "绿色施工与环境管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-8-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-8-4",
+    "number": "8.8.4",
+    "domainId": "domain-8-8",
+    "domainNumber": "8.8",
+    "domainName": "绿色施工与环境管理",
+    "title": "污水监测子系统",
+    "summary": "对施工废水、生活污水等排放过程中的水质、流量和关键指标进行在线监测。",
+    "overview": "对施工废水、生活污水等排放过程中的水质、流量和关键指标进行在线监测。",
+    "components": [
+      "水质监测主机",
+      "PH/浊度/COD/氨氮/悬浮物传感器",
+      "流量计",
+      "采样与通讯设备",
+      "水质监测平台"
+    ],
+    "functions": [
+      "水质指标采集、流量监测、超限报警",
+      "历史曲线、排放记录和统计报表",
+      "异常处置记录和环保资料归档",
+      "可与污水处理设备或监管平台对接"
+    ],
+    "highlights": [
+      "补充传统扬尘噪音之外的环保管理维度",
+      "适合大型项目、场站、拌合站和生活区",
+      "数据可用于环保检查和客户内部考核"
+    ],
+    "value": "提升污水排放过程透明度，降低环保合规风险。",
+    "mediaNote": "建议复用 doc2-274、doc2-275、doc2-276。",
+    "source": "V7 污水监测子系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-117.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-117.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "绿色施工与环境管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-8-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-8-5",
+    "number": "8.8.5",
+    "domainId": "domain-8-8",
+    "domainNumber": "8.8",
+    "domainName": "绿色施工与环境管理",
+    "title": "车辆冲洗抓拍子系统",
+    "summary": "对渣土车、混凝土车等出场车辆冲洗情况进行识别、抓拍和记录，减少带泥上路和扬尘污染。",
+    "overview": "对渣土车、混凝土车等出场车辆冲洗情况进行识别、抓拍和记录，减少带泥上路和扬尘污染。",
+    "components": [
+      "车牌识别摄像机",
+      "冲洗区摄像机",
+      "AI识别模型",
+      "道闸/语音提示",
+      "冲洗记录平台"
+    ],
+    "functions": [
+      "车牌识别、冲洗过程抓拍、冲洗状态判断",
+      "未冲洗或冲洗不足提醒",
+      "车辆出入记录、图片留痕和统计分析",
+      "与门禁、环保平台和AI巡检闭环联动"
+    ],
+    "highlights": [
+      "将车辆冲洗监管从人工观察转为自动识别",
+      "图像证据清晰，便于追溯",
+      "可与U安智巡AI能力整合"
+    ],
+    "value": "降低车辆带泥上路风险，支撑文明施工和环保合规。",
+    "mediaNote": "建议复用 doc2-277、doc2-278；若含第三方界面需替换。",
+    "source": "V1.2 车辆冲洗抓拍；V7 AI车辆冲洗管理系统。",
+    "cover": "assets/images/slide-previews/hydro-slide-129.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-129.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "绿色施工与环境管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-8-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-8-6",
+    "number": "8.8.6",
+    "domainId": "domain-8-8",
+    "domainNumber": "8.8",
+    "domainName": "绿色施工与环境管理",
+    "title": "裸土覆盖识别子系统",
+    "summary": "通过视频或巡检图片识别裸土未覆盖、覆盖不到位等环保问题，辅助扬尘治理。",
+    "overview": "通过视频或巡检图片识别裸土未覆盖、覆盖不到位等环保问题，辅助扬尘治理。",
+    "components": [
+      "高点摄像机或无人机图像",
+      "AI识别模型",
+      "区域标注",
+      "告警记录",
+      "整改闭环接口"
+    ],
+    "functions": [
+      "裸土区域识别、图片留痕和告警生成",
+      "按区域、时间、项目统计裸土覆盖情况",
+      "联动整改任务和复查",
+      "与扬尘监测数据进行综合分析"
+    ],
+    "highlights": [
+      "适合大面积场区和人工巡查难覆盖区域",
+      "与无人机巡检、高点视频结合效果更好",
+      "可纳入AI安全生产大模型巡检任务"
+    ],
+    "value": "提升绿色施工问题发现效率，降低扬尘治理盲区。",
+    "mediaNote": "建议补充U安智巡裸土识别截图；旧方案仅有V7示例，需确认可用性。",
+    "source": "V7 AI裸土覆盖识别。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "绿色施工与环境管理"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-8-6.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-9-1",
+    "number": "8.9.1",
+    "domainId": "domain-8-9",
+    "domainNumber": "8.9",
+    "domainName": "视频、通信与现场协同",
+    "title": "远程视频会议子系统",
+    "summary": "面向项目例会、专家会商、远程巡查、业主汇报和应急沟通场景，接入会议终端、移动端和现场视频资源，实现跨区域音视频协同。",
+    "overview": "面向项目例会、专家会商、远程巡查、业主汇报和应急沟通场景，接入会议终端、移动端和现场视频资源，实现跨区域音视频协同。",
+    "components": [
+      "会议终端",
+      "视频会议平台",
+      "会议摄像机/麦克风",
+      "移动参会端",
+      "会议记录与资料归档"
+    ],
+    "functions": [
+      "远程会议、多人会商、现场画面共享",
+      "会议预约、参会管理、会议记录和资料归档",
+      "与视频监控、移动巡查、整改任务联动",
+      "支持专家远程指导、项目汇报和应急沟通"
+    ],
+    "highlights": [
+      "减少管理人员和专家往返现场频次",
+      "适合集团远程巡查、技术会商和项目例会",
+      "可与移动端和监控画面结合提升沟通效率"
+    ],
+    "value": "提升跨区域协同效率和问题决策速度，降低现场沟通成本。",
+    "mediaNote": "建议复用 doc2-242、doc2-243；项目会议画面需脱敏。",
+    "source": "V7 远程视频会议。",
+    "cover": "assets/images/slide-previews/ai-slide-06.jpg",
+    "images": [
+      "assets/images/slide-previews/ai-slide-06.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "视频、通信与现场协同",
+      "视频监控"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-9-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-9-2",
+    "number": "8.9.2",
+    "domainId": "domain-8-9",
+    "domainNumber": "8.9",
+    "domainName": "视频、通信与现场协同",
+    "title": "监控中心子系统",
+    "summary": "面向项目指挥中心、企业多项目监管中心和观摩展示中心，汇聚视频监控、平台数据、AI告警、环境设备和项目驾驶舱信息，实现集中展示与指挥调度。",
+    "overview": "面向项目指挥中心、企业多项目监管中心和观摩展示中心，汇聚视频监控、平台数据、AI告警、环境设备和项目驾驶舱信息，实现集中展示与指挥调度。",
+    "components": [
+      "监控中心大屏",
+      "视频管理平台",
+      "项目驾驶舱",
+      "数据汇聚服务",
+      "指挥调度与事件联动模块"
+    ],
+    "functions": [
+      "多路视频调阅、轮巡和大屏展示",
+      "多项目数据看板、告警态势和关键指标展示",
+      "AI告警、应急广播、任务工单和处置记录联动",
+      "面向领导汇报、观摩接待和应急指挥的展示切换"
+    ],
+    "highlights": [
+      "将分散系统数据集中到统一指挥视图",
+      "适合集团多项目监管和项目级指挥中心建设",
+      "可与大屏驾驶舱、AI安全生产大模型和视频监控深度联动"
+    ],
+    "value": "提升项目态势感知、远程监督和应急指挥能力，让管理层快速掌握现场运行状态。",
+    "mediaNote": "建议复用 doc2-246、doc2-248；项目指挥中心照片需脱敏。",
+    "source": "V7 监控中心。",
+    "cover": "assets/images/slide-previews/company-slide-07.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-07.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "视频、通信与现场协同"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-9-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-9-3",
+    "number": "8.9.3",
+    "domainId": "domain-8-9",
+    "domainNumber": "8.9",
+    "domainName": "视频、通信与现场协同",
+    "title": "协同办公与项目文档库子系统",
+    "summary": "为项目参建人员提供公告通知、任务协同、移动审批、文件共享、项目文档库和权限管理能力。",
+    "overview": "为项目参建人员提供公告通知、任务协同、移动审批、文件共享、项目文档库和权限管理能力。",
+    "components": [
+      "移动协同端",
+      "公告与任务模块",
+      "审批流程",
+      "项目文档库",
+      "权限与日志"
+    ],
+    "functions": [
+      "公告发布、任务分派、移动审批和工作跟踪",
+      "文件上传、分类、权限控制和版本管理",
+      "项目通知、会议、资料归档和检索",
+      "与质量安全整改、巡检任务联动"
+    ],
+    "highlights": [
+      "把现场协作从群聊和纸质表单转为平台化流程",
+      "权限可控，资料可追溯",
+      "适合多参建单位协同"
+    ],
+    "value": "提升项目协作效率和资料管理规范性，减少沟通断点。",
+    "mediaNote": "建议复用 doc2-258 至 doc2-264；缺宇泛协同办公界面。",
+    "source": "V7 协同办公系统、项目文档库。",
+    "cover": "assets/images/slide-previews/company-slide-07.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-07.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "视频、通信与现场协同"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-9-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-9-4",
+    "number": "8.9.4",
+    "domainId": "domain-8-9",
+    "domainNumber": "8.9",
+    "domainName": "视频、通信与现场协同",
+    "title": "智能路灯子系统",
+    "summary": "通过智能路灯、太阳能供电、广播、照明、视频或传感器融合，为施工现场提供照明和辅助感知能力。",
+    "overview": "通过智能路灯、太阳能供电、广播、照明、视频或传感器融合，为施工现场提供照明和辅助感知能力。",
+    "components": [
+      "智能路灯杆",
+      "太阳能/蓄电池",
+      "LED照明",
+      "通信模块",
+      "可扩展摄像机/广播/传感器"
+    ],
+    "functions": [
+      "现场照明、远程开关、状态监测",
+      "可扩展视频、广播、环境感知或无线覆盖",
+      "设备在线、故障提醒和运维记录",
+      "与现场安防和环境管理联动"
+    ],
+    "highlights": [
+      "适合临时道路、生活区、场站和周界",
+      "减少布线依赖",
+      "可作为多感知设备载体"
+    ],
+    "value": "提升现场基础设施智能化和运维便利性。",
+    "mediaNote": "建议复用 doc2-265；需确认是否纳入宇泛标准供货范围。",
+    "source": "V7 智能路灯系统。",
+    "cover": "assets/images/slide-previews/company-slide-07.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-07.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "视频、通信与现场协同"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-9-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-9-5",
+    "number": "8.9.5",
+    "domainId": "domain-8-9",
+    "domainNumber": "8.9",
+    "domainName": "视频、通信与现场协同",
+    "title": "VR全景子系统",
+    "summary": "通过全景拍摄和在线漫游，实现项目远程观摩、形象展示、节点记录和安全教育辅助。",
+    "overview": "通过全景拍摄和在线漫游，实现项目远程观摩、形象展示、节点记录和安全教育辅助。",
+    "components": [
+      "全景相机或全景采集服务",
+      "全景编辑平台",
+      "热点标注",
+      "图文音视频讲解",
+      "分享与权限控制"
+    ],
+    "functions": [
+      "工地全景漫游、热点介绍、节点记录",
+      "嵌入安全提示、工艺说明、项目介绍",
+      "远程观摩、客户汇报和培训展示",
+      "支持PC、移动端和大屏展示"
+    ],
+    "highlights": [
+      "展示效果直观，适合企业宣传和项目观摩",
+      "可减少现场接待压力",
+      "与BIM、展厅和大屏形成展示体系"
+    ],
+    "value": "提升项目形象展示和远程沟通效率。",
+    "mediaNote": "建议复用 doc1-058；正式版可补项目通用全景示意图。",
+    "source": "V1.2 VR全景。",
+    "cover": "assets/images/slide-previews/company-slide-14.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-14.jpg"
+    ],
+    "tags": [
+      "子系统",
+      "智慧工地",
+      "视频、通信与现场协同"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-9-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-1",
+    "number": "8.10.1",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "隧道UWB人员定位子系统",
+    "summary": "面向隧道、地铁、地下工程等封闭空间，通过UWB定位基站和人员标签实现人员位置、轨迹、区域管控和应急搜救辅助。",
+    "overview": "面向隧道、地铁、地下工程等封闭空间，通过UWB定位基站和人员标签实现人员位置、轨迹、区域管控和应急搜救辅助。",
+    "components": [
+      "UWB定位基站",
+      "人员定位标签/安全帽",
+      "定位引擎",
+      "电子围栏",
+      "隧道安全管理平台"
+    ],
+    "functions": [
+      "人员实时定位、轨迹回放、区域人数统计",
+      "越界、滞留、超员、脱岗等告警",
+      "应急搜救、撤离统计和人员清点",
+      "与隧道广播、一键报警、有害气体监测联动"
+    ],
+    "highlights": [
+      "适合GPS不可用、空间狭长、风险较高的地下场景",
+      "与普通人员定位区分，作为专项场景配置",
+      "可支撑突发事故救援和现场指挥"
+    ],
+    "value": "提升隧道施工人员可视化和应急救援效率，降低地下工程安全管理盲区。",
+    "mediaNote": "建议复用 doc2-097、doc2-098；如含第三方界面，正式版重绘。",
+    "source": "V7 UWB人员定位子系统。",
+    "cover": "assets/images/slide-previews/company-slide-27.jpg",
+    "images": [
+      "assets/images/slide-previews/company-slide-27.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "人员管理",
+      "子系统",
+      "智慧工地",
+      "隧道工程"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-1.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-2",
+    "number": "8.10.2",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "隧道安全步距监测子系统",
+    "summary": "对隧道掌子面、二衬、仰拱等关键施工部位之间的安全步距进行采集、计算和预警，辅助项目落实隧道施工安全距离要求。",
+    "overview": "对隧道掌子面、二衬、仰拱等关键施工部位之间的安全步距进行采集、计算和预警，辅助项目落实隧道施工安全距离要求。",
+    "components": [
+      "安全步距采集设备",
+      "里程/工序信息录入",
+      "LED/声光报警",
+      "通讯网关",
+      "隧道监控平台"
+    ],
+    "functions": [
+      "掌子面、二衬、仰拱等关键位置数据采集",
+      "安全步距计算、超限提醒和风险分级",
+      "现场报警、平台推送和历史记录查询",
+      "与人员定位、视频监控和整改流程联动"
+    ],
+    "highlights": [
+      "面向隧道施工安全距离这一专项风险",
+      "可按隧道里程、工区和施工阶段形成过程记录",
+      "支持异常事件留痕和报表输出"
+    ],
+    "value": "提升隧道安全步距过程管控能力，降低安全距离不足造成的施工风险。",
+    "mediaNote": "建议复用 V7 隧道安全步距素材；正式版需补清晰拓扑图。",
+    "source": "V7 隧道安全步距。",
+    "cover": "assets/images/slide-previews/linear-slide-091.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-091.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "安全生产",
+      "智慧工地",
+      "隧道工程"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-2.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-3",
+    "number": "8.10.3",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "隧道有害气体监测子系统",
+    "summary": "对隧道作业环境中的氧气、一氧化碳、硫化氢、甲烷等指标进行实时监测和超限预警，辅助地下工程通风和人员安全管理。",
+    "overview": "对隧道作业环境中的氧气、一氧化碳、硫化氢、甲烷等指标进行实时监测和超限预警，辅助地下工程通风和人员安全管理。",
+    "components": [
+      "有害气体传感器",
+      "气体检测主机",
+      "通讯网关",
+      "声光报警器",
+      "隧道环境监测平台"
+    ],
+    "functions": [
+      "多类气体浓度实时采集、趋势展示和历史查询",
+      "超限报警、平台推送和现场声光提醒",
+      "与通风设备、应急广播、人员定位联动",
+      "气体监测记录、告警台账和报表输出"
+    ],
+    "highlights": [
+      "覆盖地下空间有害气体和缺氧风险",
+      "可与隧道人员定位共同支撑应急处置",
+      "适合长距离、多作业面隧道场景"
+    ],
+    "value": "提升隧道作业环境安全预警能力，降低有害气体和缺氧风险对人员安全的影响。",
+    "mediaNote": "建议复用 V7 隧道有害气体素材；正式版需补清晰产品图。",
+    "source": "V7 隧道有害气体监测。",
+    "cover": "assets/images/slide-previews/linear-slide-091.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-091.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地",
+      "隧道工程"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-3.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-4",
+    "number": "8.10.4",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "隧道一键报警子系统",
+    "summary": "在隧道洞内、横通道、掌子面、设备区等关键位置布设一键报警设备，现场人员可在异常情况下快速触发求助并联动平台处置。",
+    "overview": "在隧道洞内、横通道、掌子面、设备区等关键位置布设一键报警设备，现场人员可在异常情况下快速触发求助并联动平台处置。",
+    "components": [
+      "一键报警按钮",
+      "报警主机",
+      "通讯网关",
+      "报警定位信息",
+      "联动处置平台"
+    ],
+    "functions": [
+      "一键报警触发、报警位置识别和事件推送",
+      "报警确认、处置派发、处理反馈和记录归档",
+      "与人员定位、视频监控、有害气体监测联动",
+      "报警统计、演练记录和事件复盘输出"
+    ],
+    "highlights": [
+      "适合隧道长距离、弱通信和高风险作业环境",
+      "缩短突发事件上报链路",
+      "可与广播、电话和人员定位形成应急联动"
+    ],
+    "value": "提升隧道突发事件发现和响应速度，保障洞内作业人员求助通道畅通。",
+    "mediaNote": "建议复用 V7 隧道一键紧急报警素材；缺宇泛标准产品图。",
+    "source": "V7 隧道一键紧急报警。",
+    "cover": "assets/images/slide-previews/linear-slide-091.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-091.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地",
+      "隧道工程"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-4.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-5",
+    "number": "8.10.5",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "隧道应急电话广播子系统",
+    "summary": "在隧道内布设应急电话和广播设备，为洞内人员提供语音通话、调度指令、疏散通知和应急广播能力。",
+    "overview": "在隧道内布设应急电话和广播设备，为洞内人员提供语音通话、调度指令、疏散通知和应急广播能力。",
+    "components": [
+      "应急电话",
+      "隧道广播终端",
+      "广播主机",
+      "语音调度平台",
+      "联动控制模块"
+    ],
+    "functions": [
+      "洞内语音通话、分区广播和全线广播",
+      "应急疏散通知、施工调度和安全提示",
+      "与一键报警、人员定位、有害气体监测联动",
+      "通话记录、广播记录和应急演练资料归档"
+    ],
+    "highlights": [
+      "解决地下空间语音触达和应急通知问题",
+      "支持分区、分组和全域广播",
+      "适合长隧道、多工区和复杂作业面"
+    ],
+    "value": "提升隧道应急指挥、人员疏散和日常调度效率。",
+    "mediaNote": "建议复用 V7 隧道应急电话及广播素材；缺宇泛标准产品图。",
+    "source": "V7 隧道应急电话及广播。",
+    "cover": "assets/images/slide-previews/linear-slide-091.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-091.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地",
+      "隧道工程"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-5.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-6",
+    "number": "8.10.6",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "盾构机远程监控子系统",
+    "summary": "面向盾构施工，对盾构机运行参数、视频画面、掘进状态和安全预警进行远程监控。",
+    "overview": "面向盾构施工，对盾构机运行参数、视频画面、掘进状态和安全预警进行远程监控。",
+    "components": [
+      "盾构机数据采集接口",
+      "视频接入",
+      "参数看板",
+      "预警规则",
+      "历史数据分析"
+    ],
+    "functions": [
+      "掘进参数、设备状态、视频画面实时监控",
+      "异常预警、趋势分析和历史查询",
+      "施工管控、报表输出和远程查看",
+      "可与项目驾驶舱和专项场景大屏联动"
+    ],
+    "highlights": [
+      "适合盾构施工专业化管理",
+      "数据和视频结合，便于远程会商",
+      "可按盾构设备接口能力定制接入"
+    ],
+    "value": "提升盾构施工透明度和远程管控能力，降低现场信息滞后。",
+    "mediaNote": "建议复用 doc2-107 至 doc2-111；需脱敏项目和设备信息。",
+    "source": "V7 盾构机远程监控。",
+    "cover": "assets/images/slide-previews/linear-slide-091.jpg",
+    "images": [
+      "assets/images/slide-previews/linear-slide-091.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-6.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-7",
+    "number": "8.10.7",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "桩机监测子系统",
+    "summary": "面向桩基施工场景，对桩机施工过程参数、施工位置、成桩记录和异常情况进行采集与管理。",
+    "overview": "面向桩基施工场景，对桩机施工过程参数、施工位置、成桩记录和异常情况进行采集与管理。",
+    "components": [
+      "桩机采集终端",
+      "施工参数传感器",
+      "定位与工点信息",
+      "桩基施工管理平台",
+      "报表输出模块"
+    ],
+    "functions": [
+      "桩长、深度、垂直度、施工时间等过程参数采集",
+      "成桩记录、施工轨迹和工点关联",
+      "异常提醒、数据查询和施工报表输出",
+      "与质量、进度和项目驾驶舱联动"
+    ],
+    "highlights": [
+      "适合桥梁、道路、市政和基础工程桩基施工",
+      "减少人工记录偏差",
+      "支撑桩基施工质量追溯"
+    ],
+    "value": "提升桩基施工过程数据完整性和质量可追溯性。",
+    "mediaNote": "建议复用 V7 桩机施工素材；缺宇泛标准接口说明。",
+    "source": "V7 桩机施工。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-7.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-8",
+    "number": "8.10.8",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "混凝土拌合站监测子系统",
+    "summary": "面向混凝土拌合站生产过程，采集生产盘次、配合比、材料用量、方量、搅拌时间和异常信息。",
+    "overview": "面向混凝土拌合站生产过程，采集生产盘次、配合比、材料用量、方量、搅拌时间和异常信息。",
+    "components": [
+      "拌合站数据接口",
+      "采集程序",
+      "生产数据平台",
+      "质量统计报表",
+      "异常规则"
+    ],
+    "functions": [
+      "拌合站生产数据采集、盘次记录和材料用量统计",
+      "配合比、方量、搅拌时间和生产批次追踪",
+      "异常数据提醒、质量追溯和报表输出",
+      "与物资、质量和场站管理联动"
+    ],
+    "highlights": [
+      "将拌合站生产数据纳入项目质量和物料管理",
+      "支持生产批次与质量资料关联",
+      "可根据现场设备接口进行定制接入"
+    ],
+    "value": "提升混凝土生产过程透明度和质量追溯能力。",
+    "mediaNote": "建议复用 V7 混凝土拌合站素材；缺宇泛标准接口说明。",
+    "source": "V7 混凝土拌合站。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-8.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-9",
+    "number": "8.10.9",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "智慧梁场监测子系统",
+    "summary": "面向梁场预制生产、养护、张拉压浆、存梁、移梁和出梁等环节，汇聚生产进度、设备状态、质量记录和场区管理数据。",
+    "overview": "面向梁场预制生产、养护、张拉压浆、存梁、移梁和出梁等环节，汇聚生产进度、设备状态、质量记录和场区管理数据。",
+    "components": [
+      "梁场生产管理系统",
+      "设备状态采集",
+      "质量过程记录",
+      "二维码/构件标识",
+      "梁场看板与报表"
+    ],
+    "functions": [
+      "梁片生产进度、工序状态和构件台账管理",
+      "张拉、压浆、养护等质量过程数据记录",
+      "存梁区、出梁计划和运输信息管理",
+      "梁场生产统计、异常提醒和质量资料输出"
+    ],
+    "highlights": [
+      "适合桥梁预制梁场的生产质量一体化管理",
+      "以构件为主线串联工序、质量和进度",
+      "可与项目驾驶舱和质量管理模块联动"
+    ],
+    "value": "提升梁场生产组织效率和预制构件质量追溯能力。",
+    "mediaNote": "建议复用 V7 智慧梁场素材；缺宇泛标准接口说明。",
+    "source": "V7 智慧梁场。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-9.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  },
+  {
+    "id": "system-8-10-10",
+    "number": "8.10.10",
+    "domainId": "domain-8-10",
+    "domainNumber": "8.10",
+    "domainName": "专项场景模块",
+    "title": "摊铺压实监测子系统",
+    "summary": "面向道路摊铺、路基压实、堤坝或大坝压实施工场景，对摊铺温度、速度、厚度、碾压遍数、压实轨迹和压实质量进行过程监测。",
+    "overview": "面向道路摊铺、路基压实、堤坝或大坝压实施工场景，对摊铺温度、速度、厚度、碾压遍数、压实轨迹和压实质量进行过程监测。",
+    "components": [
+      "摊铺机/压路机采集终端",
+      "北斗/GPS定位模块",
+      "温度/速度/压实参数采集",
+      "轨迹与热力图分析",
+      "摊铺压实监测平台"
+    ],
+    "functions": [
+      "摊铺轨迹、速度、温度、厚度等数据采集",
+      "压路机碾压轨迹、遍数、速度和压实覆盖分析",
+      "大坝压实区域、碾压遍数、压实质量和漏压区域识别",
+      "过程报表、异常提醒和质量资料归档"
+    ],
+    "highlights": [
+      "覆盖道路摊铺、路基压实和大坝压实等连续施工场景",
+      "通过定位轨迹和参数分析减少漏压、欠压和过压",
+      "数据可服务质量验收、施工复盘和生产调度"
+    ],
+    "value": "提升摊铺压实过程质量控制能力，辅助道路、水利和场站工程形成可追溯的施工质量记录。",
+    "mediaNote": "建议生图或补充道路摊铺、大坝压实监测示意；后续可替换为客户项目实际界面。",
+    "source": "按专项场景需求新增：摊铺压实监测/大坝压实监测。",
+    "cover": "assets/images/slide-previews/hydro-slide-093.jpg",
+    "images": [
+      "assets/images/slide-previews/hydro-slide-093.jpg"
+    ],
+    "tags": [
+      "专项场景模块",
+      "压实监测",
+      "子系统",
+      "智慧工地"
+    ],
+    "permission": "public",
+    "status": "基准版",
+    "content": "content/systems/system-8-10-10.md",
+    "formalHref": "assets/documents/smart-site-whitepaper-architecture.html#chapter-8"
+  }
+]

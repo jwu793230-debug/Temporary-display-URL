@@ -1,0 +1,59 @@
+{
+  "name": "宇泛解决方案库",
+  "subtitle": "AI数智建设综合方案、平台产品、子系统、资料与素材统一管理",
+  "organization": "宇泛智能科技股份有限公司",
+  "version": "0.1.0",
+  "generatedAt": "2026-07-02",
+  "githubPagesUrl": "https://jwu793230-debug.github.io/Temporary-display-URL/uni-solution-library/",
+  "permissions": [
+    {
+      "id": "public",
+      "name": "公开版",
+      "description": "可用于对外展示的方案结构、产品介绍和通用能力。"
+    },
+    {
+      "id": "internal",
+      "name": "内部版",
+      "description": "包含源材料登记、项目方法论和内部素材索引，不建议直接公开源文件。"
+    },
+    {
+      "id": "customer",
+      "name": "客户定制版",
+      "description": "后续按客户、行业和项目范围生成的定制内容包。"
+    }
+  ],
+  "stats": {
+    "solutions": 5,
+    "platforms": 3,
+    "domains": 10,
+    "systems": 63,
+    "documents": 6,
+    "media": 50
+  },
+  "navigation": [
+    {
+      "label": "方案总览",
+      "href": "#solutions"
+    },
+    {
+      "label": "平台产品",
+      "href": "#platforms"
+    },
+    {
+      "label": "子系统库",
+      "href": "#systems"
+    },
+    {
+      "label": "文档资料",
+      "href": "#documents"
+    },
+    {
+      "label": "素材库",
+      "href": "#media"
+    },
+    {
+      "label": "权限分级",
+      "href": "#permissions"
+    }
+  ]
+}
