@@ -16,7 +16,8 @@
     activeTab: "calendar",
     selectedDate: resolveInitialDate(),
     calendarMonth: startOfMonth(resolveInitialDate()),
-    planFilter: "upcoming",
+    planFilter: "stats",
+    statsType: "run",
     records: loadRecords(),
     sync: {
       isSyncing: false,
@@ -34,6 +35,7 @@
     run: { label: "跑步", short: "跑", distance: true, runVolume: true, className: "type-run" },
     bike: { label: "骑行", short: "骑", distance: true, runVolume: false, className: "type-bike" },
     swim: { label: "游泳", short: "泳", distance: true, runVolume: false, className: "type-swim" },
+    hike: { label: "徒步", short: "徒", distance: true, runVolume: false, className: "type-hike" },
     strength: { label: "力量", short: "力", distance: false, runVolume: false, className: "type-strength" },
     machine: { label: "器械", short: "械", distance: false, runVolume: false, className: "type-machine" },
     rest: { label: "休息", short: "休", distance: false, runVolume: false, className: "type-rest" },
@@ -196,7 +198,7 @@
   }
 
   function isRunPlan(plan) {
-    return Boolean(plan?.distance) && !/骑行|游泳|力量|器械|休息|恢复走|高铁|出行/.test(plan?.category || "");
+    return Boolean(plan?.distance) && !/骑行|游泳|徒步|力量|器械|休息|恢复走|高铁|出行/.test(plan?.category || "");
   }
 
   function inferActivityType(plan, record = {}) {
@@ -211,6 +213,7 @@
     if (/骑行|骑车|单车|自行车/.test(source)) return "bike";
     if (/游泳|泳池|公开水域/.test(source)) return "swim";
     if (/划船|划船机|椭圆|器械|健身房|登山机/.test(source)) return "machine";
+    if (/徒步|远足|爬山|登山/.test(source)) return "hike";
     if (/力量|深蹲|箭步蹲|臀桥|平板|提踵|核心/.test(source)) return "strength";
     if (/休息|恢复走|赛前准备|计划启动|高铁|出行/.test(source) && !Number(record.actualDistance)) return "rest";
     if (Number(record.actualDistance) > 0) return "run";
@@ -258,6 +261,9 @@
     }
     if (type === "swim") {
       return `<svg ${common} fill="none"><path d="M4 15c2 0 2-1.4 4-1.4s2 1.4 4 1.4 2-1.4 4-1.4 2 1.4 4 1.4M5 19c2 0 2-1.4 4-1.4s2 1.4 4 1.4 2-1.4 4-1.4 2 1.4 4 1.4M8.2 11.3c1.8-2.7 5.4-3.4 8.1-1.7l1.1.7M11.8 7.6l2.5 2.1"/></svg>`;
+    }
+    if (type === "hike") {
+      return `<svg ${common} fill="none"><path d="M8 20l2.2-6.4 3.7-2.3M13 4.5a2 2 0 1 0-2.1-3.4M9.4 9l2.1-2.2 2.8 1.8 2.1 3.1M14.2 11.4l2.2 2.1 2.6.5M6 22l3.2-1.3 3.4 1.3 3.3-1.3L19 22M18.5 7v15"/></svg>`;
     }
     if (type === "strength") {
       return `<svg ${common} fill="none"><path d="M4 10v4M7 8v8M10 12h4M17 8v8M20 10v4"/></svg>`;
@@ -538,7 +544,6 @@
       <nav class="bottom-nav" aria-label="主导航">
         <div class="bottom-nav-inner">
           ${tabButton("calendar", "日历")}
-          ${tabButton("today", "今日")}
           ${tabButton("week", "周复盘")}
           ${tabButton("plan", "计划")}
           ${tabButton("sync", "同步")}
@@ -557,7 +562,7 @@
     if (state.activeTab === "week") return renderWeekTab();
     if (state.activeTab === "plan") return renderPlanTab();
     if (state.activeTab === "sync") return renderSyncTab();
-    return renderTodayTab();
+    return renderCalendarTab();
   }
 
   function renderCalendarTab() {
@@ -592,7 +597,25 @@
           ${days.map((item) => renderCalendarDay(item)).join("")}
         </div>
       </section>
+      ${renderCalendarLegend()}
       ${renderCalendarDetail(selectedPlan, selectedRecord)}
+    `;
+  }
+
+  function renderCalendarLegend() {
+    const sportTypes = ["run", "bike", "hike", "swim", "strength", "machine"];
+    return `
+      <section class="calendar-legend" aria-label="图例">
+        <div class="legend-row">
+          <span><i class="legend-dot done"></i>已完成</span>
+          <span><i class="legend-dot adjusted"></i>调整/交叉训练</span>
+          <span><i class="legend-ring missed"></i>未完成</span>
+          <span><i class="legend-dot planned"></i>计划/休息</span>
+        </div>
+        <div class="legend-row sport-legend">
+          ${sportTypes.map((type) => `<span>${activityIcon(type)}${escapeHTML(activityMeta(type).label)}</span>`).join("")}
+        </div>
+      </section>
     `;
   }
 
@@ -701,11 +724,13 @@
     const durationDone = record.durationDone ?? "";
     const rpe = record.rpe || 5;
     const note = record.note || "";
-    const distanceLabel = activityType === "bike" ? "骑行距离" : activityType === "swim" ? "游泳距离" : "跑步距离";
+    const distanceLabel = activityType === "bike" ? "骑行距离" : activityType === "swim" ? "游泳距离" : activityType === "hike" ? "徒步距离" : "跑步距离";
     const distanceHelp = countsAsRunVolume(activityType)
       ? "跑步距离会计入周跑量"
       : usesDistance(activityType)
-        ? `${meta.label}距离会作为交叉训练记录，不计入跑步跑量`
+        ? activityType === "hike"
+          ? "徒步距离会作为交叉训练记录，不计入跑步跑量"
+          : `${meta.label}距离会作为交叉训练记录，不计入跑步跑量`
         : `${meta.label}不需要填写距离`;
     const checkinClass = compact ? "checkin compact-checkin" : "card checkin";
 
@@ -774,8 +799,7 @@
     return `<button class="activity-button ${escapeHTML(meta.className)}${active}" data-activity="${type}">${activityIcon(type)}<span>${escapeHTML(meta.label)}</span></button>`;
   }
 
-  function renderWeekTab() {
-    const weekStart = startOfWeek(state.selectedDate);
+  function weeklyMetrics(weekStart) {
     const days = Array.from({ length: 7 }, (_, index) => {
       const date = addDays(weekStart, index);
       return { date, plan: planByDate.get(date), record: recordFor(date) };
@@ -786,21 +810,37 @@
     const completedDays = days.filter((item) => item.record.status === "done").length;
     const adjustedDays = days.filter((item) => item.record.status === "adjusted").length;
     const missedDays = days.filter((item) => item.record.status === "missed").length;
+    return {
+      weekStart,
+      weekEnd: addDays(weekStart, 6),
+      days,
+      plannedDistance,
+      actualDistance,
+      crossDistance,
+      completedDays,
+      adjustedDays,
+      missedDays,
+      advice: weeklyAdvice(plannedDistance, actualDistance, crossDistance, completedDays, adjustedDays, missedDays),
+    };
+  }
+
+  function renderWeekTab() {
+    const metrics = weeklyMetrics(startOfWeek(state.selectedDate));
 
     return `
       <section class="section-title">
-        <h2>${shortDate(weekStart)} - ${shortDate(addDays(weekStart, 6))}</h2>
+        <h2>${shortDate(metrics.weekStart)} - ${shortDate(metrics.weekEnd)}</h2>
         <span>本周复盘</span>
       </section>
       <section class="summary-grid">
-        <div class="summary-card"><span>本周跑量</span><strong>${Number(plannedDistance.toFixed(1))}</strong></div>
-        <div class="summary-card"><span>跑步完成</span><strong>${Number(actualDistance.toFixed(1))}</strong></div>
-        <div class="summary-card"><span>交叉距离</span><strong>${Number(crossDistance.toFixed(1))}</strong></div>
-        <div class="summary-card"><span>完成天数</span><strong>${completedDays}</strong></div>
+        <div class="summary-card"><span>本周跑量</span><strong>${Number(metrics.plannedDistance.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>跑步完成</span><strong>${Number(metrics.actualDistance.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>交叉距离</span><strong>${Number(metrics.crossDistance.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>完成天数</span><strong>${metrics.completedDays}</strong></div>
       </section>
-      <section class="advice">${escapeHTML(weeklyAdvice(plannedDistance, actualDistance, crossDistance, completedDays, adjustedDays, missedDays))}</section>
+      <section class="advice">${escapeHTML(metrics.advice)}</section>
       <section class="week-list">
-        ${days.map((item) => renderDayRow(item.date, item.plan, item.record)).join("")}
+        ${metrics.days.map((item) => renderDayRow(item.date, item.plan, item.record)).join("")}
       </section>
     `;
   }
@@ -834,11 +874,14 @@
   function renderPlanTab() {
     const filters = `
       <div class="filter-row">
-        ${filterButton("upcoming", "接下来")}
-        ${filterButton("all", "全部")}
-        ${filterButton("race", "比赛")}
+        ${filterButton("stats", "统计")}
+        ${filterButton("week", "周训练情况")}
+        ${filterButton("race", "比赛日")}
       </div>
     `;
+    if (state.planFilter === "stats") return `${filters}${renderStatsPanel()}`;
+    if (state.planFilter === "week") return `${filters}${renderWeeklyPlanReview()}`;
+
     const items = filteredPlanItems();
     return `
       ${filters}
@@ -857,10 +900,148 @@
     if (state.planFilter === "race") {
       return PLAN.filter((item) => /半马|比赛|测试/.test(item.category));
     }
-    if (state.planFilter === "all") {
-      return PLAN.filter((item) => item.date >= "2026-06-29");
+    return [];
+  }
+
+  function statTypes() {
+    return ["run", "bike", "hike", "swim", "strength", "machine"];
+  }
+
+  function trackedEntries() {
+    const dates = Array.from(new Set([...PLAN.map((plan) => plan.date), ...Object.keys(state.records)])).sort();
+    return dates
+      .map((date) => ({ date, plan: planByDate.get(date) || defaultPlan(date), record: recordFor(date) }))
+      .filter((item) => hasWorkoutRecord(item.plan, item.record));
+  }
+
+  function hasWorkoutRecord(plan, record = {}) {
+    if (!record || !Object.keys(record).length) return false;
+    if (record.status === "missed") return false;
+    if (numericDistance(record.actualDistance) > 0) return true;
+    if (record.durationDone) return true;
+    if (record.status === "done" && (record.note || record.activityType || isRunPlan(plan))) return true;
+    return false;
+  }
+
+  function distanceForType(type, plan, record) {
+    if (!usesDistance(type)) return 0;
+    if (countsAsRunVolume(type)) return completedRunDistance(plan, record);
+    return numericDistance(record.actualDistance);
+  }
+
+  function statsForType(type) {
+    const entries = trackedEntries().filter((item) => inferActivityType(item.plan, item.record) === type);
+    const distance = entries.reduce((sum, item) => sum + distanceForType(type, item.plan, item.record), 0);
+    const done = entries.filter((item) => item.record.status === "done").length;
+    const adjusted = entries.filter((item) => item.record.status === "adjusted").length;
+    return { type, entries, distance, sessions: entries.length, done, adjusted };
+  }
+
+  function renderStatsPanel() {
+    const stats = statTypes().map((type) => statsForType(type));
+    const selected = stats.find((item) => item.type === state.statsType) || stats[0];
+    const totalRun = stats.find((item) => item.type === "run")?.distance || 0;
+    const totalCross = stats
+      .filter((item) => item.type !== "run")
+      .reduce((sum, item) => sum + item.distance, 0);
+    const totalSessions = stats.reduce((sum, item) => sum + item.sessions, 0);
+
+    return `
+      <section class="summary-grid stats-overview">
+        <div class="summary-card"><span>跑步距离</span><strong>${Number(totalRun.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>交叉距离</span><strong>${Number(totalCross.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>运动次数</span><strong>${totalSessions}</strong></div>
+        <div class="summary-card"><span>已记录类型</span><strong>${stats.filter((item) => item.sessions > 0).length}</strong></div>
+      </section>
+      <section class="stat-type-grid">
+        ${stats.map((item) => renderStatTypeCard(item)).join("")}
+      </section>
+      <section class="card stat-detail-card">
+        <div class="section-title">
+          <h2>${escapeHTML(activityMeta(selected.type).label)}明细</h2>
+          <span>${selected.sessions} 次</span>
+        </div>
+        <div class="stat-detail-list">
+          ${selected.entries.length ? selected.entries.map((item) => renderStatDetailRow(selected.type, item.plan, item.record)).join("") : `<div class="empty">还没有这类运动记录</div>`}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderStatTypeCard(stats) {
+    const meta = activityMeta(stats.type);
+    const active = stats.type === state.statsType ? " active" : "";
+    const primary = usesDistance(stats.type) ? `${Number(stats.distance.toFixed(1))} km` : `${stats.sessions} 次`;
+    const secondary = usesDistance(stats.type) ? `${stats.sessions} 次记录` : `${stats.done} 完成 / ${stats.adjusted} 调整`;
+    return `
+      <button class="stat-type-card ${escapeHTML(meta.className)}${active}" data-stat-type="${stats.type}">
+        ${activityIcon(stats.type)}
+        <span>${escapeHTML(meta.label)}</span>
+        <strong>${escapeHTML(primary)}</strong>
+        <small>${escapeHTML(secondary)}</small>
+      </button>
+    `;
+  }
+
+  function renderStatDetailRow(type, plan, record) {
+    const meta = activityMeta(type);
+    const distance = distanceForType(type, plan, record);
+    const metric = usesDistance(type)
+      ? `${Number(distance.toFixed(2))} km`
+      : record.durationDone || statusText(record.status);
+    const note = record.note || plan.content || "";
+    const planned = plan.category && plan.category !== meta.label ? `原计划：${plan.category}` : plan.category;
+    return `
+      <button class="stat-detail-row" data-date="${plan.date}">
+        <span class="row-date">${shortDate(plan.date)}<br>${escapeHTML(plan.weekday)}</span>
+        <span class="row-main">
+          <strong>${activityIcon(type)}${escapeHTML(meta.label)}</strong>
+          <span>${escapeHTML(metric)} · ${escapeHTML(planned)} · ${escapeHTML(note)}</span>
+        </span>
+        <span class="row-status ${statusClass(record.status)}">${escapeHTML(statusText(record.status))}</span>
+      </button>
+    `;
+  }
+
+  function trainingWeekStarts() {
+    if (!PLAN.length) return [startOfWeek(state.selectedDate)];
+    const starts = [];
+    let cursor = startOfWeek(PLAN[0].date);
+    const end = startOfWeek(PLAN[PLAN.length - 1].date);
+    while (cursor <= end) {
+      starts.push(cursor);
+      cursor = addDays(cursor, 7);
     }
-    return PLAN.filter((item) => item.date >= state.selectedDate).slice(0, 21);
+    return starts;
+  }
+
+  function renderWeeklyPlanReview() {
+    const weeks = trainingWeekStarts().map((weekStart) => weeklyMetrics(weekStart));
+    return `
+      <section class="week-plan-list">
+        ${weeks.map((metrics) => renderWeeklySummaryRow(metrics)).join("")}
+      </section>
+    `;
+  }
+
+  function renderWeeklySummaryRow(metrics) {
+    const active = state.selectedDate >= metrics.weekStart && state.selectedDate <= metrics.weekEnd ? " active" : "";
+    const progress = metrics.plannedDistance ? Math.min(120, (metrics.actualDistance / metrics.plannedDistance) * 100) : 0;
+    return `
+      <button class="week-summary-row${active}" data-week-start="${metrics.weekStart}">
+        <div class="week-summary-head">
+          <strong>${shortDate(metrics.weekStart)} - ${shortDate(metrics.weekEnd)}</strong>
+          <span>${metrics.completedDays} 完成 / ${metrics.adjustedDays} 调整 / ${metrics.missedDays} 未完成</span>
+        </div>
+        <div class="week-summary-metrics">
+          <span>计划 ${Number(metrics.plannedDistance.toFixed(1))} km</span>
+          <span>跑步 ${Number(metrics.actualDistance.toFixed(1))} km</span>
+          <span>交叉 ${Number(metrics.crossDistance.toFixed(1))} km</span>
+        </div>
+        <div class="week-progress" aria-hidden="true"><i style="width:${progress}%"></i></div>
+        <p>${escapeHTML(metrics.advice)}</p>
+      </button>
+    `;
   }
 
   function renderPlanRow(plan) {
@@ -974,9 +1155,24 @@
       return;
     }
 
+    const statType = event.target.closest("[data-stat-type]");
+    if (statType) {
+      state.statsType = statType.dataset.statType;
+      render();
+      return;
+    }
+
     const calendarDate = event.target.closest("[data-calendar-date]");
     if (calendarDate) {
       state.selectedDate = calendarDate.dataset.calendarDate;
+      state.calendarMonth = startOfMonth(state.selectedDate);
+      render();
+      return;
+    }
+
+    const weekRow = event.target.closest("[data-week-start]");
+    if (weekRow) {
+      state.selectedDate = weekRow.dataset.weekStart;
       state.calendarMonth = startOfMonth(state.selectedDate);
       render();
       return;
@@ -986,7 +1182,7 @@
     if (dateRow) {
       state.selectedDate = dateRow.dataset.date;
       state.calendarMonth = startOfMonth(state.selectedDate);
-      state.activeTab = "today";
+      state.activeTab = "calendar";
       render();
       return;
     }
