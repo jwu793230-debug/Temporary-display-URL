@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "half-marathon-pwa",
-  "updatedAt": "2026-07-06T07:54:41.459Z",
+  "updatedAt": "2026-07-06T23:43:08.991Z",
   "records": {
     "2026-06-27": {
       "actualDistance": "3.01",
@@ -54,6 +54,12 @@
     "2026-07-06": {
       "activityType": "run",
       "updatedAt": "2026-07-06T07:54:38.245Z"
+    },
+    "2026-07-07": {
+      "actualDistance": "3.77",
+      "updatedAt": "2026-07-06T23:43:08.324Z",
+      "durationDone": "00:30:00",
+      "rpe": "4"
     }
   }
 }
