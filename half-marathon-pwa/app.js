@@ -912,7 +912,7 @@
     const completedDays = days.filter((item) => item.record.status === "done").length;
     const adjustedDays = days.filter((item) => item.record.status === "adjusted").length;
     const missedDays = days.filter((item) => item.record.status === "missed").length;
-    return {
+    const metrics = {
       weekStart,
       weekEnd: addDays(weekStart, 6),
       days,
@@ -922,8 +922,10 @@
       completedDays,
       adjustedDays,
       missedDays,
-      advice: weeklyAdvice(plannedDistance, actualDistance, crossDistance, completedDays, adjustedDays, missedDays),
     };
+    metrics.advice = weeklyAdvice(metrics);
+    metrics.focus = weeklyFocus(metrics);
+    return metrics;
   }
 
   function renderWeekTab() {
@@ -947,13 +949,131 @@
     `;
   }
 
-  function weeklyAdvice(planned, actual, cross, done, adjusted, missed) {
-    if (cross >= 30 && actual < planned * 0.5) return "这周交叉训练负荷不低，跑步不用硬补；下一次跑步保持轻松，先看腿部恢复。";
-    if (planned > 0 && actual > planned * 1.15) return "这周实际跑量偏高，接下来两天优先恢复，不要为了状态好继续加码。";
-    if (missed >= 2) return "这周漏练偏多，不建议补齐所有跑量，保留下一次关键课或周末长距离就好。";
-    if (adjusted >= 2) return "这周身体可能有些波动，质量课可以降强度，轻松跑继续慢。";
-    if (done >= 4 || actual >= planned * 0.8) return "节奏不错，继续把轻松跑压慢，周末训练看恢复情况执行。";
-    return "这周先稳住，不急着追跑量。能完成下一次计划训练，就已经是在往前走。";
+  function racePlans() {
+    return PLAN.filter((item) => /半马|比赛|测试/.test(item.category)).sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  function weekRace(metrics) {
+    return metrics.days.map((item) => item.plan).find((plan) => plan && /半马|比赛|测试/.test(plan.category)) || null;
+  }
+
+  function nextRaceAfter(date) {
+    return racePlans().find((race) => race.date > date) || null;
+  }
+
+  function daysBetween(start, end) {
+    return Math.round((parseISO(end).getTime() - parseISO(start).getTime()) / 86400000);
+  }
+
+  function plannedLongRun(metrics) {
+    return metrics.days
+      .map((item) => item.plan)
+      .filter((plan) => isRunPlan(plan))
+      .sort((a, b) => (b.distance || 0) - (a.distance || 0))[0] || null;
+  }
+
+  function weekHas(metrics, pattern) {
+    return metrics.days.some((item) => {
+      const plan = item.plan || {};
+      return pattern.test(`${plan.category || ""} ${plan.content || ""} ${plan.reminder || ""}`);
+    });
+  }
+
+  function weeklyFocus(metrics) {
+    const race = weekRace(metrics);
+    if (race) return race.category;
+    if (weekHas(metrics, /赛后恢复|恢复走|恢复跑|恢复长跑/)) return "恢复周";
+    if (weekHas(metrics, /赛前唤醒|赛前准备|赛前适应|高铁/)) return "赛前减量";
+    const longRun = plannedLongRun(metrics);
+    if ((longRun?.distance || 0) >= 18) return "峰值长距离";
+    if ((longRun?.distance || 0) >= 13) return "长距离进阶";
+    if (metrics.plannedDistance <= 20) return "恢复/打底";
+    return "基础累积";
+  }
+
+  function completionAwareAdvice(metrics) {
+    const hasRecord = metrics.days.some((item) => {
+      const record = item.record || {};
+      return record.status || record.actualDistance || record.durationDone || record.rpe || record.note;
+    });
+    if (!hasRecord) return "";
+    if (metrics.crossDistance >= 30 && metrics.actualDistance < metrics.plannedDistance * 0.5) {
+      return "这周交叉训练负荷不低，跑步不用硬补；下一次跑步保持轻松，先看腿部恢复。";
+    }
+    if (metrics.plannedDistance > 0 && metrics.actualDistance > metrics.plannedDistance * 1.15) {
+      return "这周实际跑量偏高，接下来两天优先恢复，不要为了状态好继续加码。";
+    }
+    if (metrics.missedDays >= 2) {
+      return "这周漏练偏多，不建议补齐所有跑量，保留下一次关键课或周末长距离就好。";
+    }
+    if (metrics.adjustedDays >= 2) {
+      return "这周身体可能有些波动，质量课可以降强度，轻松跑继续慢。";
+    }
+    if (metrics.completedDays >= 4 || metrics.actualDistance >= metrics.plannedDistance * 0.8) {
+      return "节奏不错，继续把轻松跑压慢，关键训练按恢复情况执行。";
+    }
+    return "";
+  }
+
+  function plannedWeeklyAdvice(metrics) {
+    const race = weekRace(metrics);
+    const longRun = plannedLongRun(metrics);
+    const longDistance = longRun?.distance || 0;
+    const nextRace = nextRaceAfter(metrics.weekEnd);
+    const daysToRace = nextRace ? daysBetween(metrics.weekEnd, nextRace.date) : 0;
+
+    if (race?.category === "10km测试") {
+      return "10km测试周：别把它跑成半马模拟赛，目标是检验均匀配速和心率漂移；测试后两天只恢复，不补量。";
+    }
+    if (race?.category === "杭州半马") {
+      return "杭州半马比赛周：这是减量兑现周，周二唤醒、周四轻松跑都只为保持腿感；本地参赛也要提前到起点，前5km务必保守。";
+    }
+    if (race?.category === "漳州半马") {
+      return "漳州半马比赛周：周五高铁到漳州后不跑步，补水、早点睡；周六只做2km适应或散步，比赛按杭州赛后恢复决定是否提速。";
+    }
+    if (weekHas(metrics, /赛后恢复|恢复走|恢复跑|恢复长跑/)) {
+      return "杭州赛后恢复周：不要补杭州半马消耗掉的跑量，先观察膝踝小腿；周末8km也只是恢复耐力，为漳州留身体余地。";
+    }
+    if (weekHas(metrics, /高铁|赛前适应/)) {
+      return "漳州出行减量周：跑步只是保持节奏，周五高铁优先活动下肢和补水；到漳州后宁可少跑，也不要带疲劳上赛道。";
+    }
+    if (longDistance >= 18) {
+      return `峰值长距离周：${Number(longDistance.toFixed(1))}km 是本轮半马专项的关键课，只求稳定完成；跑前带水或电解质，跑后两天不要追加强度。`;
+    }
+    if (longDistance >= 16) {
+      return `长距离进阶周：周末${Number(longDistance.toFixed(1))}km 继续练耐力，前2km必须慢，最后也不冲；如果杭州湿热，优先完成时间而不是配速。`;
+    }
+    if (longDistance >= 13) {
+      return `基础耐力累积周：周末${Number(longDistance.toFixed(1))}km 开始接近半马耐力区间，工作日30分钟跑保持轻松，别把轻松跑跑成质量课。`;
+    }
+    if (longDistance >= 11) {
+      return `基础长距离过渡周：周末${Number(longDistance.toFixed(1))}km 先练稳定补给和耐心，跑后第二天看小腿反应，再决定是否加交叉训练。`;
+    }
+    if (longDistance >= 9) {
+      return `基础加量周：周末${Number(longDistance.toFixed(1))}km 比前期略上台阶，核心是把配速压住；工作日只要完成30分钟内轻松跑就够。`;
+    }
+    if (longDistance >= 8) {
+      return "启动适应周：先把早跑节奏、热身和跑后洗澡通勤流程跑顺，长距离只负责恢复习惯，不追配速。";
+    }
+    if (weekHas(metrics, /短质量课|状态检查|赛前唤醒/)) {
+      return "质量适应周：短质量课只练动作和节奏，不追绝对速度；只要第二天腿不沉，就是有效刺激。";
+    }
+    if (metrics.plannedDistance <= 20 && nextRace?.category === "杭州半马" && daysToRace <= 14) {
+      return "杭州半马前减量周：跑量下降是为了吸收训练，不是退步；这周重点睡眠、补水和整理比赛装备。";
+    }
+    if (nextRace?.category === "杭州半马") {
+      return `杭州半马倒计时${daysToRace}天：继续稳住基础跑量，周末长距离跑完应有余力；A目标先放在训练完成率上。`;
+    }
+    if (nextRace?.category === "漳州半马") {
+      return `漳州半马倒计时${daysToRace}天：这段不是重新冲峰值，而是杭州赛后恢复基础上再找节奏，长距离完成感比速度重要。`;
+    }
+    return "打底周：先把固定训练节奏跑顺，轻松跑保持能聊天，周末长距离结束后应还能正常走路。";
+  }
+
+  function weeklyAdvice(metrics) {
+    const completion = completionAwareAdvice(metrics);
+    const planned = plannedWeeklyAdvice(metrics);
+    return completion ? `${completion} ${planned}` : planned;
   }
 
   function renderDayRow(date, plan, record) {
@@ -1133,7 +1253,7 @@
       <button class="week-summary-row${active}" data-week-start="${metrics.weekStart}">
         <div class="week-summary-head">
           <strong>${shortDate(metrics.weekStart)} - ${shortDate(metrics.weekEnd)}</strong>
-          <span>${metrics.completedDays} 完成 / ${metrics.adjustedDays} 调整 / ${metrics.missedDays} 未完成</span>
+          <span>${escapeHTML(metrics.focus)} · ${metrics.completedDays} 完成 / ${metrics.adjustedDays} 调整 / ${metrics.missedDays} 未完成</span>
         </div>
         <div class="week-summary-metrics">
           <span>计划 ${Number(metrics.plannedDistance.toFixed(1))} km</span>

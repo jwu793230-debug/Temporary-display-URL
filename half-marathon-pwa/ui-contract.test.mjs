@@ -16,6 +16,15 @@ assert.match(app, /filterButton\("week",\s*"周训练情况"\)/, "全部 is repl
 assert.match(app, /filterButton\("race",\s*"比赛日"\)/, "race-day filter remains");
 assert.match(app, /function renderStatsPanel\(/, "plan statistics panel is rendered");
 assert.match(app, /function renderWeeklyPlanReview\(/, "weekly training analysis is rendered in plan tab");
+assert.match(app, /function plannedWeeklyAdvice\(/, "future weekly advice uses the planned training phase");
+assert.match(app, /function weekRace\(/, "weekly advice can detect race weeks");
+assert.match(app, /function nextRaceAfter\(/, "weekly advice can look ahead to the next race");
+assert.match(app, /10km测试周/, "weekly advice mentions the 10km test week");
+assert.match(app, /杭州半马比赛周/, "weekly advice mentions Hangzhou race week");
+assert.match(app, /杭州赛后恢复周/, "weekly advice mentions the post-Hangzhou recovery week");
+assert.match(app, /漳州半马比赛周/, "weekly advice mentions Zhangzhou race week");
+assert.match(app, /周五高铁/, "Zhangzhou race advice includes Friday train travel");
+assert.match(app, /峰值长距离/, "peak long-run weeks get specific guidance");
 
 assert.match(app, /hike:\s*\{\s*label:\s*"徒步"/, "hike is a supported activity type");
 assert.match(app, /activityType === "hike"\s*\?\s*"徒步距离"/, "hike distance label is explicit");
