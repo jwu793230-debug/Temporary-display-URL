@@ -630,6 +630,7 @@ button {
 }
 
 .field input,
+.field select,
 .field textarea {
   width: 100%;
   min-height: 42px;
@@ -652,25 +653,154 @@ button {
 }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: var(--focus);
   box-shadow: 0 0 0 3px rgba(31, 122, 92, 0.12);
 }
 
-.range-row {
+.rpe-choice-grid {
   display: grid;
-  grid-template-columns: 1fr 36px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.rpe-choice {
+  display: grid;
+  min-width: 0;
+  min-height: 58px;
+  place-items: center;
+  gap: 4px;
+  padding: 7px 2px 6px;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.rpe-choice:last-child {
+  border-right: 0;
+}
+
+.rpe-choice.active {
+  background: rgba(95, 224, 82, 0.12);
+  color: var(--text);
+}
+
+.rpe-choice.hard.active,
+.rpe-choice.very-hard.active {
+  background: rgba(255, 91, 91, 0.12);
+}
+
+.rpe-face {
+  position: relative;
+  display: block;
+  width: 21px;
+  height: 21px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+}
+
+.rpe-face::before {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 7px 0 0 currentColor;
+  content: "";
+}
+
+.rpe-face::after {
+  position: absolute;
+  left: 5px;
+  width: 8px;
+  height: 4px;
+  border: 2px solid currentColor;
+  border-top: 0;
+  border-radius: 0 0 9px 9px;
+  content: "";
+}
+
+.rpe-choice.easy {
+  color: #5fe052;
+}
+
+.rpe-choice.neutral {
+  color: #aab2bd;
+}
+
+.rpe-choice.hard {
+  color: #f0b35e;
+}
+
+.rpe-choice.very-hard {
+  color: #ff6666;
+}
+
+.rpe-choice.neutral .rpe-face::after {
+  top: 14px;
+  height: 0;
+  border-right: 0;
+  border-bottom: 2px solid currentColor;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.rpe-choice.hard .rpe-face::after,
+.rpe-choice.very-hard .rpe-face::after {
+  top: 13px;
+  border-top: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 9px 9px 0 0;
+}
+
+.rpe-choice.easy .rpe-face::after {
+  top: 12px;
+}
+
+.duration-wheel {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 28%, rgba(255, 255, 255, 0.07) 50%, transparent 72%, rgba(0, 0, 0, 0.08)),
+    rgba(255, 255, 255, 0.05);
+}
+
+.duration-column {
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
+  min-width: 0;
 }
 
-.range-row input {
-  padding: 0;
-}
-
-.rpe-value {
+.duration-column select {
+  min-height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--text);
+  font-size: 21px;
+  font-weight: 900;
   text-align: center;
-  color: var(--navy);
+  text-align-last: center;
+}
+
+.duration-column span {
+  color: var(--muted);
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -1128,6 +1258,7 @@ body,
 .status-button,
 .activity-button,
 .field input,
+.field select,
 .field textarea,
 .sync-stat,
 .sync-message,
@@ -1175,14 +1306,14 @@ body,
 }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: #5fe052;
   box-shadow: 0 0 0 3px rgba(95, 224, 82, 0.16);
 }
 
 .summary-card strong,
-.sync-stat strong,
-.rpe-value {
+.sync-stat strong {
   color: var(--text);
 }
 

@@ -22,6 +22,25 @@ assert.match(app, /activityType === "hike"\s*\?\s*"徒步距离"/, "hike distanc
 assert.match(app, /if \(type === "hike"\)/, "hike has a dedicated icon");
 assert.match(app, /徒步距离会作为交叉训练记录/, "hike distance is treated as cross training");
 
+assert.match(app, /const RPE_OPTIONS = \[/, "perceived effort uses fixed choices");
+assert.match(app, /label:\s*"很轻松"/, "RPE choice includes 很轻松");
+assert.match(app, /label:\s*"轻松"/, "RPE choice includes 轻松");
+assert.match(app, /label:\s*"一般"/, "RPE choice includes 一般");
+assert.match(app, /label:\s*"吃力"/, "RPE choice includes 吃力");
+assert.match(app, /label:\s*"很吃力"/, "RPE choice includes 很吃力");
+assert.match(app, /function renderRpeChoices\(/, "RPE is rendered by choice buttons");
+assert.match(app, /data-rpe=/, "RPE choices save through button clicks");
+assert.doesNotMatch(app, /type="range"/, "RPE slider is removed");
+assert.match(app, /function renderDurationWheel\(/, "duration is rendered by a wheel-style control");
+assert.match(app, /data-duration-part="hours"/, "duration wheel has an hour column");
+assert.match(app, /data-duration-part="minutes"/, "duration wheel has a minute column");
+assert.match(app, /data-duration-part="seconds"/, "duration wheel has a second column");
+assert.match(app, /function parseDurationParts\(/, "existing duration strings are parsed into wheel values");
+assert.match(app, /function formatDurationDone\(/, "duration wheel saves a normalized duration string");
+assert.match(css, /\.rpe-choice-grid\s*\{/, "RPE choice grid is styled");
+assert.match(css, /\.duration-wheel\s*\{/, "duration wheel is styled");
+assert.match(css, /\.duration-column\s+select\s*\{/, "duration columns style native selects");
+
 assert.match(css, /color-scheme:\s*dark/, "the app declares a dark color scheme");
 assert.match(css, /--bg:\s*#0a0f14/, "the global background is black");
 assert.match(css, /\.bottom-nav-inner\s*\{[\s\S]*grid-template-columns:\s*repeat\(4,\s*1fr\)/, "bottom nav uses four slots");

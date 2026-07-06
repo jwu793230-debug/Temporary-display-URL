@@ -41,6 +41,14 @@
     rest: { label: "休息", short: "休", distance: false, runVolume: false, className: "type-rest" },
   };
 
+  const RPE_OPTIONS = [
+    { value: "1", label: "很轻松", tone: "easy" },
+    { value: "2", label: "轻松", tone: "easy" },
+    { value: "3", label: "一般", tone: "neutral" },
+    { value: "4", label: "吃力", tone: "hard" },
+    { value: "5", label: "很吃力", tone: "very-hard" },
+  ];
+
   function resolveInitialDate() {
     const today = toISO(new Date());
     if (planByDate.has(today)) return today;
@@ -236,6 +244,64 @@
   function numericDistance(value) {
     const parsed = Number(value);
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  }
+
+  function normalizedRpeValue(value) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed <= 0) return "3";
+    if (parsed > 5) return String(Math.min(5, Math.max(1, Math.ceil(parsed / 2))));
+    return String(Math.min(5, Math.max(1, Math.round(parsed))));
+  }
+
+  function rpeOption(value) {
+    const normalized = normalizedRpeValue(value);
+    return RPE_OPTIONS.find((item) => item.value === normalized) || RPE_OPTIONS[2];
+  }
+
+  function rpeLabel(value) {
+    return rpeOption(value).label;
+  }
+
+  function parseDurationParts(value) {
+    const text = String(value || "").trim();
+    if (!text) return { hours: 0, minutes: 0, seconds: 0 };
+    const numberFromText = Number((text.match(/\d+(\.\d+)?/) || [0])[0]);
+    if (/分钟|分/.test(text) && Number.isFinite(numberFromText)) {
+      return normalizeDurationParts({ hours: 0, minutes: Math.round(numberFromText), seconds: 0 });
+    }
+    if (/小时|时/.test(text) && Number.isFinite(numberFromText)) {
+      return normalizeDurationParts({ hours: Math.round(numberFromText), minutes: 0, seconds: 0 });
+    }
+    const parts = text
+      .split(":")
+      .map((part) => Number(part.replace(/[^\d]/g, "")))
+      .filter((part) => Number.isFinite(part));
+    if (parts.length === 3) {
+      return normalizeDurationParts({ hours: parts[0], minutes: parts[1], seconds: parts[2] });
+    }
+    if (parts.length === 2) {
+      return normalizeDurationParts({ hours: parts[0], minutes: parts[1], seconds: 0 });
+    }
+    return normalizeDurationParts({ hours: 0, minutes: Number.isFinite(numberFromText) ? Math.round(numberFromText) : 0, seconds: 0 });
+  }
+
+  function normalizeDurationParts(parts) {
+    const totalSeconds =
+      Math.max(0, Number(parts.hours) || 0) * 3600 +
+      Math.max(0, Number(parts.minutes) || 0) * 60 +
+      Math.max(0, Number(parts.seconds) || 0);
+    return {
+      hours: Math.min(12, Math.floor(totalSeconds / 3600)),
+      minutes: Math.floor((totalSeconds % 3600) / 60),
+      seconds: totalSeconds % 60,
+    };
+  }
+
+  function formatDurationDone(parts) {
+    const normalized = normalizeDurationParts(parts);
+    if (!normalized.hours && !normalized.minutes && !normalized.seconds) return "";
+    const pad = (value) => String(value).padStart(2, "0");
+    return `${pad(normalized.hours)}:${pad(normalized.minutes)}:${pad(normalized.seconds)}`;
   }
 
   function completedRunDistance(plan, record = {}) {
@@ -670,7 +736,7 @@
         <div class="detail-badges">
           ${activityBadge(type, distance && usesDistance(type) ? `${Number(distance.toFixed(2))}km` : "")}
           ${record.durationDone ? `<span class="detail-chip">时长 ${escapeHTML(record.durationDone)}</span>` : ""}
-          ${record.rpe ? `<span class="detail-chip">RPE ${escapeHTML(record.rpe)}</span>` : ""}
+          ${record.rpe ? `<span class="detail-chip">体感 ${escapeHTML(rpeLabel(record.rpe))}</span>` : ""}
         </div>
         <p class="detail-note">${escapeHTML(record.note || plan.content || "暂无备注")}</p>
         <div class="distance-rule">${escapeHTML(distanceNote)}</div>
@@ -715,6 +781,45 @@
     `;
   }
 
+  function renderRpeChoices(currentValue) {
+    const selected = normalizedRpeValue(currentValue);
+    return `
+      <div class="rpe-choice-grid" role="group" aria-label="体感">
+        ${RPE_OPTIONS.map((option) => {
+          const active = option.value === selected ? " active" : "";
+          return `
+            <button class="rpe-choice ${escapeHTML(option.tone)}${active}" data-rpe="${option.value}" aria-pressed="${option.value === selected}">
+              <span class="rpe-face" aria-hidden="true"></span>
+              <span>${escapeHTML(option.label)}</span>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderDurationWheel(durationDone) {
+    const parts = parseDurationParts(durationDone);
+    return `
+      <div class="duration-wheel" data-duration-wheel aria-label="运动时长">
+        ${durationColumn("hours", "时", parts.hours, 12)}
+        ${durationColumn("minutes", "分", parts.minutes, 59)}
+        ${durationColumn("seconds", "秒", parts.seconds, 59)}
+      </div>
+    `;
+  }
+
+  function durationColumn(part, label, selected, max) {
+    return `
+      <label class="duration-column">
+        <select data-duration-part="${part}" aria-label="${label}">
+          ${Array.from({ length: max + 1 }, (_, value) => `<option value="${value}"${value === selected ? " selected" : ""}>${String(value).padStart(2, "0")}</option>`).join("")}
+        </select>
+        <span>${label}</span>
+      </label>
+    `;
+  }
+
   function renderCheckin(plan, compact = false) {
     const record = recordFor(plan.date);
     const status = record.status || "";
@@ -722,7 +827,7 @@
     const meta = activityMeta(activityType);
     const actualDistance = record.actualDistance ?? "";
     const durationDone = record.durationDone ?? "";
-    const rpe = record.rpe || 5;
+    const rpe = normalizedRpeValue(record.rpe);
     const note = record.note || "";
     const distanceLabel = activityType === "bike" ? "骑行距离" : activityType === "swim" ? "游泳距离" : activityType === "hike" ? "徒步距离" : "跑步距离";
     const distanceHelp = countsAsRunVolume(activityType)
@@ -759,23 +864,20 @@
                   <label for="actualDistance">${escapeHTML(distanceLabel)}</label>
                   <input id="actualDistance" inputmode="decimal" type="number" min="0" step="0.1" value="${escapeHTML(actualDistance)}" placeholder="${plan.distance && countsAsRunVolume(activityType) ? distanceText(plan.distance).replace(" km", "") : "0"}" data-field="actualDistance" />
                 </div>`
-              : `<div class="field">
-                  <label for="durationDone">运动时长</label>
-                  <input id="durationDone" inputmode="text" type="text" value="${escapeHTML(durationDone)}" placeholder="15-30分钟" data-field="durationDone" />
+              : `<div class="field full">
+                  <label>运动时长</label>
+                  ${renderDurationWheel(durationDone)}
                 </div>`
           }
-          <div class="field">
-            <label for="rpe">体感</label>
-            <div class="range-row">
-              <input id="rpe" type="range" min="1" max="10" step="1" value="${escapeHTML(rpe)}" data-field="rpe" />
-              <span class="rpe-value">${escapeHTML(rpe)}</span>
-            </div>
+          <div class="field full">
+            <label>体感</label>
+            ${renderRpeChoices(rpe)}
           </div>
           ${
             usesDistance(activityType)
               ? `<div class="field full">
-                  <label for="durationDone">运动时长</label>
-                  <input id="durationDone" inputmode="text" type="text" value="${escapeHTML(durationDone)}" placeholder="例如 20分钟 / 3:40" data-field="durationDone" />
+                  <label>运动时长</label>
+                  ${renderDurationWheel(durationDone)}
                 </div>`
               : ""
           }
@@ -1155,6 +1257,12 @@
       return;
     }
 
+    const rpeChoice = event.target.closest("[data-rpe]");
+    if (rpeChoice) {
+      updateRecord(state.selectedDate, { rpe: rpeChoice.dataset.rpe });
+      return;
+    }
+
     const statType = event.target.closest("[data-stat-type]");
     if (statType) {
       state.statsType = statType.dataset.statType;
@@ -1198,10 +1306,19 @@
     const field = event.target.closest("[data-field]");
     if (!field) return;
     saveRecordField(state.selectedDate, { [field.dataset.field]: field.value });
-    if (field.dataset.field === "rpe") {
-      const value = field.closest(".range-row")?.querySelector(".rpe-value");
-      if (value) value.textContent = field.value;
-    }
+  });
+
+  app.addEventListener("change", (event) => {
+    const durationPart = event.target.closest("[data-duration-part]");
+    if (!durationPart) return;
+    const wheel = durationPart.closest("[data-duration-wheel]");
+    if (!wheel) return;
+    const parts = {
+      hours: Number(wheel.querySelector('[data-duration-part="hours"]')?.value || 0),
+      minutes: Number(wheel.querySelector('[data-duration-part="minutes"]')?.value || 0),
+      seconds: Number(wheel.querySelector('[data-duration-part="seconds"]')?.value || 0),
+    };
+    saveRecordField(state.selectedDate, { durationDone: formatDurationDone(parts) });
   });
 
   if ("serviceWorker" in navigator) {
