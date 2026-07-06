@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "half-marathon-pwa",
-  "updatedAt": "2026-07-06T07:27:28.312Z",
+  "updatedAt": "2026-07-06T07:54:41.459Z",
   "records": {
     "2026-06-27": {
       "actualDistance": "3.01",
@@ -50,6 +50,10 @@
       "note": "今日骑行40.11km，总运动时长（含休息）3:40，有长爬坡，消耗1967kcal，平均心率138",
       "rpe": "10",
       "actualDistance": "40.11"
+    },
+    "2026-07-06": {
+      "activityType": "run",
+      "updatedAt": "2026-07-06T07:54:38.245Z"
     }
   }
 }
