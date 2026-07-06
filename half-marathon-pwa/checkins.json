@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source": "half-marathon-pwa",
+  "updatedAt": "2026-07-06T07:27:28.312Z",
+  "records": {
+    "2026-06-27": {
+      "actualDistance": "3.01",
+      "updatedAt": "2026-06-30T04:07:23.800Z",
+      "rpe": "8",
+      "status": "done",
+      "note": "有点累"
+    },
+    "2026-06-25": {
+      "actualDistance": "2.88",
+      "updatedAt": "2026-06-30T04:07:57.975Z",
+      "rpe": "8",
+      "status": "done",
+      "note": "有点累"
+    },
+    "2026-06-30": {
+      "status": "adjusted",
+      "updatedAt": "2026-06-30T04:08:30.777Z",
+      "actualDistance": "0",
+      "note": "今天下雨没跑，看明天天气情况补跑"
+    },
+    "2026-07-01": {
+      "status": "done",
+      "updatedAt": "2026-06-30T23:48:59.309Z",
+      "note": "大约15分钟力量训练"
+    },
+    "2026-07-02": {
+      "status": "adjusted",
+      "updatedAt": "2026-07-02T23:44:42.274Z",
+      "note": "下雨天，没有训练"
+    },
+    "2026-07-03": {
+      "status": "done",
+      "updatedAt": "2026-07-02T23:45:48.402Z",
+      "actualDistance": "2.53",
+      "note": "天热，跑了20min，体感蛮舒服，平均心率145"
+    },
+    "2026-07-05": {
+      "status": "missed",
+      "updatedAt": "2026-07-06T00:51:26.266Z",
+      "note": "昨日骑行后身体恢复状态不佳，未训练，休息一日"
+    },
+    "2026-07-04": {
+      "status": "adjusted",
+      "updatedAt": "2026-07-06T00:56:10.537Z",
+      "note": "今日骑行40.11km，总运动时长（含休息）3:40，有长爬坡，消耗1967kcal，平均心率138",
+      "rpe": "10",
+      "actualDistance": "40.11"
+    }
+  }
+}
