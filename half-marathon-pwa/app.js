@@ -13,8 +13,9 @@
   const initialSyncMeta = loadSyncMeta();
 
   const state = {
-    activeTab: "today",
+    activeTab: "calendar",
     selectedDate: resolveInitialDate(),
+    calendarMonth: startOfMonth(resolveInitialDate()),
     planFilter: "upcoming",
     records: loadRecords(),
     sync: {
@@ -28,6 +29,15 @@
 
   const app = document.getElementById("app");
   let autoSyncTimer = null;
+
+  const ACTIVITY_TYPES = {
+    run: { label: "跑步", short: "跑", distance: true, runVolume: true, className: "type-run" },
+    bike: { label: "骑行", short: "骑", distance: true, runVolume: false, className: "type-bike" },
+    swim: { label: "游泳", short: "泳", distance: true, runVolume: false, className: "type-swim" },
+    strength: { label: "力量", short: "力", distance: false, runVolume: false, className: "type-strength" },
+    machine: { label: "器械", short: "械", distance: false, runVolume: false, className: "type-machine" },
+    rest: { label: "休息", short: "休", distance: false, runVolume: false, className: "type-rest" },
+  };
 
   function resolveInitialDate() {
     const today = toISO(new Date());
@@ -100,11 +110,28 @@
     return toISO(date);
   }
 
+  function startOfMonth(iso) {
+    const date = parseISO(iso);
+    date.setDate(1);
+    return toISO(date);
+  }
+
+  function addMonths(iso, offset) {
+    const date = parseISO(startOfMonth(iso));
+    date.setMonth(date.getMonth() + offset);
+    return toISO(date);
+  }
+
   function startOfWeek(iso) {
     const date = parseISO(iso);
     const offset = (date.getDay() + 6) % 7;
     date.setDate(date.getDate() - offset);
     return toISO(date);
+  }
+
+  function monthLabel(iso) {
+    const date = parseISO(iso);
+    return `${date.getFullYear()}年${date.getMonth() + 1}月`;
   }
 
   function formatDate(iso, weekday) {
@@ -147,6 +174,107 @@
 
   function statusClass(status) {
     return status || "";
+  }
+
+  function defaultPlan(date) {
+    return {
+      date,
+      week: "",
+      weekday: weekdayText(date),
+      start: "灵活",
+      category: "无计划",
+      content: "这一天不在当前训练计划里，可只记录实际运动。",
+      duration: "灵活",
+      distance: 0,
+      intensity: "无",
+      reminder: "",
+    };
+  }
+
+  function weekdayText(iso) {
+    return ["周日", "周一", "周二", "周三", "周四", "周五", "周六"][parseISO(iso).getDay()];
+  }
+
+  function isRunPlan(plan) {
+    return Boolean(plan?.distance) && !/骑行|游泳|力量|器械|休息|恢复走|高铁|出行/.test(plan?.category || "");
+  }
+
+  function inferActivityType(plan, record = {}) {
+    if (record.activityType && ACTIVITY_TYPES[record.activityType]) return record.activityType;
+
+    const note = String(record.note || "");
+    const category = String(plan?.category || "");
+    const content = String(plan?.content || "");
+    const source = `${note} ${category} ${content}`;
+
+    if (record.status === "missed" && !Number(record.actualDistance)) return isRunPlan(plan) ? "run" : "rest";
+    if (/骑行|骑车|单车|自行车/.test(source)) return "bike";
+    if (/游泳|泳池|公开水域/.test(source)) return "swim";
+    if (/划船|划船机|椭圆|器械|健身房|登山机/.test(source)) return "machine";
+    if (/力量|深蹲|箭步蹲|臀桥|平板|提踵|核心/.test(source)) return "strength";
+    if (/休息|恢复走|赛前准备|计划启动|高铁|出行/.test(source) && !Number(record.actualDistance)) return "rest";
+    if (Number(record.actualDistance) > 0) return "run";
+    if (isRunPlan(plan)) return "run";
+    return "rest";
+  }
+
+  function activityMeta(type) {
+    return ACTIVITY_TYPES[type] || ACTIVITY_TYPES.run;
+  }
+
+  function usesDistance(type) {
+    return Boolean(activityMeta(type).distance);
+  }
+
+  function countsAsRunVolume(type) {
+    return Boolean(activityMeta(type).runVolume);
+  }
+
+  function numericDistance(value) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  }
+
+  function completedRunDistance(plan, record = {}) {
+    const type = inferActivityType(plan, record);
+    if (!countsAsRunVolume(type)) return 0;
+    const actual = numericDistance(record.actualDistance);
+    if (actual) return actual;
+    if (record.status === "done" && isRunPlan(plan)) return plan.distance || 0;
+    return 0;
+  }
+
+  function crossTrainingDistance(plan, record = {}) {
+    const type = inferActivityType(plan, record);
+    if (countsAsRunVolume(type) || !usesDistance(type)) return 0;
+    return numericDistance(record.actualDistance);
+  }
+
+  function activityIcon(type) {
+    const meta = activityMeta(type);
+    const common = `class="sport-icon ${escapeHTML(meta.className)}" viewBox="0 0 24 24" aria-hidden="true"`;
+    if (type === "bike") {
+      return `<svg ${common} fill="none"><circle cx="6" cy="16" r="3.2"/><circle cx="18" cy="16" r="3.2"/><path d="M8.5 16l3-6h3l2.5 6M11.5 10l-2.2 6M12 10l4 6M14.5 10l1.3-2.2M9.5 8h3"/></svg>`;
+    }
+    if (type === "swim") {
+      return `<svg ${common} fill="none"><path d="M4 15c2 0 2-1.4 4-1.4s2 1.4 4 1.4 2-1.4 4-1.4 2 1.4 4 1.4M5 19c2 0 2-1.4 4-1.4s2 1.4 4 1.4 2-1.4 4-1.4 2 1.4 4 1.4M8.2 11.3c1.8-2.7 5.4-3.4 8.1-1.7l1.1.7M11.8 7.6l2.5 2.1"/></svg>`;
+    }
+    if (type === "strength") {
+      return `<svg ${common} fill="none"><path d="M4 10v4M7 8v8M10 12h4M17 8v8M20 10v4"/></svg>`;
+    }
+    if (type === "machine") {
+      return `<svg ${common} fill="none"><path d="M6 18h12M7 18l2-10h6l2 10M9.5 8l-2-3M14.5 8l2-3M9 13h6"/></svg>`;
+    }
+    if (type === "rest") {
+      return `<svg ${common} fill="none"><path d="M6 12h12M8 16h8"/></svg>`;
+    }
+    return `<svg ${common} fill="none"><path d="M13 5.5a2 2 0 1 0-2-2M9 21l2-6 3-2 2 3 3 1M7 10l4-2 2 3M11 8l-2 5-4 2M14 13l-2 3 2 5"/></svg>`;
+  }
+
+  function activityBadge(type, extra = "") {
+    const meta = activityMeta(type);
+    const detail = extra ? `<span>${escapeHTML(extra)}</span>` : "";
+    return `<span class="activity-badge ${escapeHTML(meta.className)}">${activityIcon(type)}<strong>${escapeHTML(meta.label)}</strong>${detail}</span>`;
   }
 
   function updateRecord(date, patch) {
@@ -373,7 +501,12 @@
 
   function render() {
     const selectedPlan = planByDate.get(state.selectedDate);
-    const titleDate = selectedPlan ? formatDate(selectedPlan.date, selectedPlan.weekday) : state.selectedDate;
+    const titleDate =
+      state.activeTab === "calendar"
+        ? `${monthLabel(state.calendarMonth)} · ${formatDate(state.selectedDate, selectedPlan?.weekday || weekdayText(state.selectedDate))}`
+        : selectedPlan
+          ? formatDate(selectedPlan.date, selectedPlan.weekday)
+          : state.selectedDate;
 
     app.innerHTML = `
       <header class="topbar">
@@ -404,6 +537,7 @@
 
       <nav class="bottom-nav" aria-label="主导航">
         <div class="bottom-nav-inner">
+          ${tabButton("calendar", "日历")}
           ${tabButton("today", "今日")}
           ${tabButton("week", "周复盘")}
           ${tabButton("plan", "计划")}
@@ -419,19 +553,112 @@
   }
 
   function renderActiveTab() {
+    if (state.activeTab === "calendar") return renderCalendarTab();
     if (state.activeTab === "week") return renderWeekTab();
     if (state.activeTab === "plan") return renderPlanTab();
     if (state.activeTab === "sync") return renderSyncTab();
     return renderTodayTab();
   }
 
-  function renderTodayTab() {
-    const plan = planByDate.get(state.selectedDate);
-    const tomorrow = planByDate.get(addDays(state.selectedDate, 1));
+  function renderCalendarTab() {
+    const monthStart = state.calendarMonth;
+    const gridStart = startOfWeek(monthStart);
+    const selectedPlan = planByDate.get(state.selectedDate) || defaultPlan(state.selectedDate);
+    const selectedRecord = recordFor(state.selectedDate);
+    const days = Array.from({ length: 42 }, (_, index) => {
+      const date = addDays(gridStart, index);
+      return {
+        date,
+        plan: planByDate.get(date),
+        record: recordFor(date),
+        inMonth: startOfMonth(date) === monthStart,
+      };
+    });
 
-    if (!plan) {
-      return `<div class="empty">这一天不在当前训练计划里</div>`;
-    }
+    return `
+      <section class="calendar-shell">
+        <div class="calendar-head">
+          <button class="month-button" data-action="prev-month" aria-label="上个月">‹</button>
+          <div>
+            <h2>${escapeHTML(monthLabel(monthStart))}</h2>
+            <p>${escapeHTML(formatDate(state.selectedDate, selectedPlan.weekday))}</p>
+          </div>
+          <button class="month-button" data-action="next-month" aria-label="下个月">›</button>
+        </div>
+        <div class="weekday-grid" aria-hidden="true">
+          ${["一", "二", "三", "四", "五", "六", "日"].map((day) => `<span>${day}</span>`).join("")}
+        </div>
+        <div class="calendar-grid">
+          ${days.map((item) => renderCalendarDay(item)).join("")}
+        </div>
+      </section>
+      ${renderCalendarDetail(selectedPlan, selectedRecord)}
+    `;
+  }
+
+  function renderCalendarDay({ date, plan, record, inMonth }) {
+    const type = inferActivityType(plan, record);
+    const meta = activityMeta(type);
+    const status = record.status || "";
+    const selected = date === state.selectedDate ? " selected" : "";
+    const dimmed = inMonth ? "" : " out-month";
+    const statusClassName = status ? ` ${status}` : "";
+    const planned = !status && plan ? " planned" : "";
+    const distance = numericDistance(record.actualDistance);
+    const distanceLine =
+      distance && usesDistance(type)
+        ? `${Number(distance.toFixed(1))}km`
+        : status
+          ? meta.short
+          : plan?.distance
+            ? `${Number(plan.distance.toFixed(1))}km`
+            : plan
+              ? meta.short
+              : "";
+
+    return `
+      <button class="calendar-day${selected}${dimmed}${statusClassName}${planned} ${escapeHTML(meta.className)}" data-calendar-date="${date}" aria-label="${escapeHTML(formatDate(date, plan?.weekday || weekdayText(date)))}">
+        <span class="calendar-date">${parseISO(date).getDate()}</span>
+        <span class="calendar-mark">${activityIcon(type)}</span>
+        <span class="calendar-distance">${escapeHTML(distanceLine)}</span>
+      </button>
+    `;
+  }
+
+  function renderCalendarDetail(plan, record) {
+    const type = inferActivityType(plan, record);
+    const meta = activityMeta(type);
+    const distance = numericDistance(record.actualDistance);
+    const distanceNote = countsAsRunVolume(type)
+      ? "计入跑步跑量"
+      : usesDistance(type)
+        ? `${meta.label}距离不计入跑步跑量`
+        : "无距离记录，只统计完成、时长和体感";
+
+    return `
+      <section class="card calendar-detail">
+        <div class="detail-head">
+          <div>
+            <div class="workout-label">选中日期</div>
+            <h2>${escapeHTML(formatDate(plan.date, plan.weekday))}</h2>
+          </div>
+          <span class="row-status ${statusClass(record.status)}">${escapeHTML(statusText(record.status))}</span>
+        </div>
+        <div class="detail-badges">
+          ${activityBadge(type, distance && usesDistance(type) ? `${Number(distance.toFixed(2))}km` : "")}
+          ${record.durationDone ? `<span class="detail-chip">时长 ${escapeHTML(record.durationDone)}</span>` : ""}
+          ${record.rpe ? `<span class="detail-chip">RPE ${escapeHTML(record.rpe)}</span>` : ""}
+        </div>
+        <p class="detail-note">${escapeHTML(record.note || plan.content || "暂无备注")}</p>
+        <div class="distance-rule">${escapeHTML(distanceNote)}</div>
+        ${renderCheckin(plan, true)}
+      </section>
+    `;
+  }
+
+  function renderTodayTab() {
+    const plan = planByDate.get(state.selectedDate) || defaultPlan(state.selectedDate);
+    const tomorrow = planByDate.get(addDays(state.selectedDate, 1));
 
     return `
       ${renderWorkoutCard(plan, "今天训练")}
@@ -465,15 +692,25 @@
     `;
   }
 
-  function renderCheckin(plan) {
+  function renderCheckin(plan, compact = false) {
     const record = recordFor(plan.date);
     const status = record.status || "";
+    const activityType = inferActivityType(plan, record);
+    const meta = activityMeta(activityType);
     const actualDistance = record.actualDistance ?? "";
+    const durationDone = record.durationDone ?? "";
     const rpe = record.rpe || 5;
     const note = record.note || "";
+    const distanceLabel = activityType === "bike" ? "骑行距离" : activityType === "swim" ? "游泳距离" : "跑步距离";
+    const distanceHelp = countsAsRunVolume(activityType)
+      ? "跑步距离会计入周跑量"
+      : usesDistance(activityType)
+        ? `${meta.label}距离会作为交叉训练记录，不计入跑步跑量`
+        : `${meta.label}不需要填写距离`;
+    const checkinClass = compact ? "checkin compact-checkin" : "card checkin";
 
     return `
-      <section class="card checkin">
+      <section class="${checkinClass}">
         <div class="section-title">
           <h2>打卡</h2>
           <span>${escapeHTML(statusText(status))}</span>
@@ -483,11 +720,25 @@
           ${statusButton("adjusted", "调整", status)}
           ${statusButton("missed", "未完成", status)}
         </div>
+        <div class="activity-selector" aria-label="运动类型">
+          ${Object.keys(ACTIVITY_TYPES)
+            .filter((type) => type !== "rest")
+            .map((type) => activityButton(type, activityType))
+            .join("")}
+        </div>
+        <div class="distance-rule">${escapeHTML(distanceHelp)}</div>
         <div class="form-grid">
-          <div class="field">
-            <label for="actualDistance">实际距离</label>
-            <input id="actualDistance" inputmode="decimal" type="number" min="0" step="0.1" value="${escapeHTML(actualDistance)}" placeholder="${plan.distance ? distanceText(plan.distance).replace(" km", "") : "0"}" data-field="actualDistance" />
-          </div>
+          ${
+            usesDistance(activityType)
+              ? `<div class="field">
+                  <label for="actualDistance">${escapeHTML(distanceLabel)}</label>
+                  <input id="actualDistance" inputmode="decimal" type="number" min="0" step="0.1" value="${escapeHTML(actualDistance)}" placeholder="${plan.distance && countsAsRunVolume(activityType) ? distanceText(plan.distance).replace(" km", "") : "0"}" data-field="actualDistance" />
+                </div>`
+              : `<div class="field">
+                  <label for="durationDone">运动时长</label>
+                  <input id="durationDone" inputmode="text" type="text" value="${escapeHTML(durationDone)}" placeholder="15-30分钟" data-field="durationDone" />
+                </div>`
+          }
           <div class="field">
             <label for="rpe">体感</label>
             <div class="range-row">
@@ -495,6 +746,14 @@
               <span class="rpe-value">${escapeHTML(rpe)}</span>
             </div>
           </div>
+          ${
+            usesDistance(activityType)
+              ? `<div class="field full">
+                  <label for="durationDone">运动时长</label>
+                  <input id="durationDone" inputmode="text" type="text" value="${escapeHTML(durationDone)}" placeholder="例如 20分钟 / 3:40" data-field="durationDone" />
+                </div>`
+              : ""
+          }
           <div class="field full">
             <label for="note">备注</label>
             <textarea id="note" data-field="note" placeholder="比如：腿沉、很轻松、改成快走">${escapeHTML(note)}</textarea>
@@ -509,19 +768,21 @@
     return `<button class="status-button${active}" data-status="${value}">${label}</button>`;
   }
 
+  function activityButton(type, current) {
+    const meta = activityMeta(type);
+    const active = type === current ? " active" : "";
+    return `<button class="activity-button ${escapeHTML(meta.className)}${active}" data-activity="${type}">${activityIcon(type)}<span>${escapeHTML(meta.label)}</span></button>`;
+  }
+
   function renderWeekTab() {
     const weekStart = startOfWeek(state.selectedDate);
     const days = Array.from({ length: 7 }, (_, index) => {
       const date = addDays(weekStart, index);
       return { date, plan: planByDate.get(date), record: recordFor(date) };
     });
-    const plannedDistance = days.reduce((sum, item) => sum + (item.plan?.distance || 0), 0);
-    const actualDistance = days.reduce((sum, item) => {
-      const typed = Number(item.record.actualDistance);
-      if (Number.isFinite(typed) && typed > 0) return sum + typed;
-      if (item.record.status === "done") return sum + (item.plan?.distance || 0);
-      return sum;
-    }, 0);
+    const plannedDistance = days.reduce((sum, item) => sum + (isRunPlan(item.plan) ? item.plan.distance || 0 : 0), 0);
+    const actualDistance = days.reduce((sum, item) => sum + completedRunDistance(item.plan, item.record), 0);
+    const crossDistance = days.reduce((sum, item) => sum + crossTrainingDistance(item.plan, item.record), 0);
     const completedDays = days.filter((item) => item.record.status === "done").length;
     const adjustedDays = days.filter((item) => item.record.status === "adjusted").length;
     const missedDays = days.filter((item) => item.record.status === "missed").length;
@@ -533,17 +794,19 @@
       </section>
       <section class="summary-grid">
         <div class="summary-card"><span>本周跑量</span><strong>${Number(plannedDistance.toFixed(1))}</strong></div>
-        <div class="summary-card"><span>已完成</span><strong>${Number(actualDistance.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>跑步完成</span><strong>${Number(actualDistance.toFixed(1))}</strong></div>
+        <div class="summary-card"><span>交叉距离</span><strong>${Number(crossDistance.toFixed(1))}</strong></div>
         <div class="summary-card"><span>完成天数</span><strong>${completedDays}</strong></div>
       </section>
-      <section class="advice">${escapeHTML(weeklyAdvice(plannedDistance, actualDistance, completedDays, adjustedDays, missedDays))}</section>
+      <section class="advice">${escapeHTML(weeklyAdvice(plannedDistance, actualDistance, crossDistance, completedDays, adjustedDays, missedDays))}</section>
       <section class="week-list">
         ${days.map((item) => renderDayRow(item.date, item.plan, item.record)).join("")}
       </section>
     `;
   }
 
-  function weeklyAdvice(planned, actual, done, adjusted, missed) {
+  function weeklyAdvice(planned, actual, cross, done, adjusted, missed) {
+    if (cross >= 30 && actual < planned * 0.5) return "这周交叉训练负荷不低，跑步不用硬补；下一次跑步保持轻松，先看腿部恢复。";
     if (planned > 0 && actual > planned * 1.15) return "这周实际跑量偏高，接下来两天优先恢复，不要为了状态好继续加码。";
     if (missed >= 2) return "这周漏练偏多，不建议补齐所有跑量，保留下一次关键课或周末长距离就好。";
     if (adjusted >= 2) return "这周身体可能有些波动，质量课可以降强度，轻松跑继续慢。";
@@ -554,12 +817,13 @@
   function renderDayRow(date, plan, record) {
     const active = date === state.selectedDate ? " active" : "";
     const category = plan?.category || "无计划";
+    const type = inferActivityType(plan, record);
     const distance = plan ? distanceText(plan.distance) : "0 km";
     return `
       <button class="day-row${active}" data-date="${date}">
         <span class="row-date">${shortDate(date)}</span>
         <span class="row-main">
-          <strong>${escapeHTML(category)}</strong>
+          <strong>${activityIcon(type)}${escapeHTML(category)}</strong>
           <span>${escapeHTML(distance)} · ${escapeHTML(plan?.duration || "灵活")}</span>
         </span>
         <span class="row-status ${statusClass(record.status)}">${escapeHTML(statusText(record.status))}</span>
@@ -602,11 +866,12 @@
   function renderPlanRow(plan) {
     const record = recordFor(plan.date);
     const active = plan.date === state.selectedDate ? " active" : "";
+    const type = inferActivityType(plan, record);
     return `
       <button class="plan-row${active}" data-date="${plan.date}">
         <span class="row-date">${shortDate(plan.date)}<br>${escapeHTML(plan.weekday)}</span>
         <span class="row-main">
-          <strong>${escapeHTML(plan.category)}</strong>
+          <strong>${activityIcon(type)}${escapeHTML(plan.category)}</strong>
           <span>${distanceText(plan.distance)} · ${escapeHTML(plan.duration || "灵活")}</span>
         </span>
         <span class="row-status ${statusClass(record.status)}">${escapeHTML(statusText(record.status))}</span>
@@ -658,6 +923,7 @@
     const tab = event.target.closest("[data-tab]");
     if (tab) {
       state.activeTab = tab.dataset.tab;
+      if (state.activeTab === "calendar") state.calendarMonth = startOfMonth(state.selectedDate);
       render();
       return;
     }
@@ -667,6 +933,18 @@
       if (action.dataset.action === "prev-day") state.selectedDate = addDays(state.selectedDate, -1);
       if (action.dataset.action === "next-day") state.selectedDate = addDays(state.selectedDate, 1);
       if (action.dataset.action === "today") state.selectedDate = resolveInitialDate();
+      if (action.dataset.action === "prev-month") {
+        state.calendarMonth = addMonths(state.calendarMonth, -1);
+        state.selectedDate = state.calendarMonth;
+        render();
+        return;
+      }
+      if (action.dataset.action === "next-month") {
+        state.calendarMonth = addMonths(state.calendarMonth, 1);
+        state.selectedDate = state.calendarMonth;
+        render();
+        return;
+      }
       if (action.dataset.action === "save-token-sync") {
         saveTokenAndSync();
         return;
@@ -679,7 +957,14 @@
         clearGitHubToken();
         return;
       }
+      state.calendarMonth = startOfMonth(state.selectedDate);
       render();
+      return;
+    }
+
+    const activity = event.target.closest("[data-activity]");
+    if (activity) {
+      updateRecord(state.selectedDate, { activityType: activity.dataset.activity });
       return;
     }
 
@@ -689,9 +974,18 @@
       return;
     }
 
+    const calendarDate = event.target.closest("[data-calendar-date]");
+    if (calendarDate) {
+      state.selectedDate = calendarDate.dataset.calendarDate;
+      state.calendarMonth = startOfMonth(state.selectedDate);
+      render();
+      return;
+    }
+
     const dateRow = event.target.closest("[data-date]");
     if (dateRow) {
       state.selectedDate = dateRow.dataset.date;
+      state.calendarMonth = startOfMonth(state.selectedDate);
       state.activeTab = "today";
       render();
       return;

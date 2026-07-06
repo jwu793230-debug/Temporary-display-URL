@@ -137,6 +137,40 @@ button {
   padding-top: 14px;
 }
 
+.sport-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.type-run {
+  color: #7ee66a;
+}
+
+.type-bike {
+  color: #ffb86b;
+}
+
+.type-swim {
+  color: #78b7ff;
+}
+
+.type-strength {
+  color: #cb8cff;
+}
+
+.type-machine {
+  color: #9de7df;
+}
+
+.type-rest {
+  color: #a4aab6;
+}
+
 .section-title {
   display: flex;
   align-items: end;
@@ -275,10 +309,242 @@ button {
   line-height: 1.45;
 }
 
+.calendar-shell {
+  display: grid;
+  gap: 10px;
+  margin: 0 -4px;
+  padding: 12px 10px 10px;
+  border-radius: 18px;
+  background: #18191d;
+  color: #f8fafc;
+  box-shadow: 0 18px 40px rgba(13, 15, 22, 0.22);
+}
+
+.calendar-head {
+  display: grid;
+  grid-template-columns: 38px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-head h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.15;
+}
+
+.calendar-head p {
+  margin: 4px 0 0;
+  color: #a4aab6;
+  text-align: center;
+  font-size: 12px;
+}
+
+.month-button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #262932;
+  color: #f8fafc;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.weekday-grid,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.weekday-grid {
+  color: #d3d7df;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.calendar-grid {
+  gap: 3px;
+}
+
+.calendar-day {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 51px;
+  align-content: start;
+  justify-items: center;
+  gap: 2px;
+  padding: 5px 2px 4px;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  background: transparent;
+  color: #f7f8fb;
+}
+
+.calendar-day.out-month {
+  opacity: 0.28;
+}
+
+.calendar-day.selected {
+  background: #ff8d72;
+  color: #1e1b18;
+}
+
+.calendar-day.done {
+  border-color: rgba(126, 230, 106, 0.42);
+}
+
+.calendar-day.adjusted {
+  border-color: rgba(255, 184, 107, 0.52);
+}
+
+.calendar-day.missed {
+  border-color: rgba(255, 119, 119, 0.6);
+  color: #ffb8b8;
+}
+
+.calendar-day.planned .calendar-mark {
+  opacity: 0.55;
+}
+
+.calendar-date {
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.calendar-mark {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+}
+
+.calendar-day.type-run .calendar-mark,
+.activity-button.type-run .sport-icon {
+  color: #7ee66a;
+}
+
+.calendar-day.type-bike .calendar-mark,
+.activity-button.type-bike .sport-icon {
+  color: #ffb86b;
+}
+
+.calendar-day.type-swim .calendar-mark,
+.activity-button.type-swim .sport-icon {
+  color: #78b7ff;
+}
+
+.calendar-day.type-strength .calendar-mark,
+.activity-button.type-strength .sport-icon {
+  color: #cb8cff;
+}
+
+.calendar-day.type-machine .calendar-mark,
+.activity-button.type-machine .sport-icon {
+  color: #9de7df;
+}
+
+.calendar-day.type-rest .calendar-mark {
+  color: #8e95a3;
+}
+
+.calendar-day.selected .calendar-mark,
+.activity-button.active .sport-icon {
+  color: currentColor;
+}
+
+.calendar-mark .sport-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.calendar-distance {
+  max-width: 100%;
+  overflow: hidden;
+  color: currentColor;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-detail {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.detail-head h2 {
+  margin: 4px 0 0;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.activity-badge,
+.detail-chip {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f1f4fa;
+  color: #293044;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.activity-badge span {
+  color: #667085;
+}
+
+.detail-note {
+  margin: 0;
+  color: #2b3142;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.distance-rule {
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: #edf8f5;
+  color: #1e5948;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
 .checkin {
   display: grid;
   gap: 12px;
   padding: 14px;
+}
+
+.compact-checkin {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .status-grid {
@@ -299,6 +565,42 @@ button {
 .status-button.active {
   background: var(--navy);
   color: #fff;
+}
+
+.activity-selector {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.activity-button {
+  display: grid;
+  min-width: 0;
+  min-height: 52px;
+  place-items: center;
+  gap: 3px;
+  padding: 6px 2px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: #3d4355;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.activity-button .sport-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.activity-button.active {
+  border-color: currentColor;
+  background: #17204f;
+  color: #fff;
+}
+
+.activity-button.active .sport-icon {
+  color: inherit;
 }
 
 .form-grid {
@@ -369,7 +671,7 @@ button {
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
@@ -439,11 +741,18 @@ button {
 }
 
 .row-main strong {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 14px;
+}
+
+.row-main strong .sport-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .row-main span {
@@ -618,10 +927,10 @@ button {
 
 .bottom-nav-inner {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   width: min(100%, 452px);
   margin: 0 auto;
-  gap: 6px;
+  gap: 5px;
 }
 
 .tab-button {
@@ -631,7 +940,7 @@ button {
   border-radius: 14px;
   background: transparent;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
 }
 
