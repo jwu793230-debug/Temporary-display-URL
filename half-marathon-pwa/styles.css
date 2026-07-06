@@ -334,6 +334,11 @@ button {
   outline: none;
 }
 
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #98a2b3;
+}
+
 .field textarea {
   min-height: 74px;
   resize: vertical;
@@ -497,6 +502,100 @@ button {
   color: #fff;
 }
 
+.sync-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.sync-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.sync-stat {
+  min-width: 0;
+  padding: 10px;
+  border-radius: 11px;
+  background: #f4f6fb;
+}
+
+.sync-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.sync-stat strong {
+  display: block;
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sync-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sync-button {
+  min-height: 42px;
+  border-radius: 11px;
+  background: #edf0f7;
+  color: #3d4355;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.sync-button.primary {
+  background: var(--navy);
+  color: #fff;
+}
+
+.sync-button.danger {
+  grid-column: 1 / -1;
+  background: #ffe8e8;
+  color: #8d2d2d;
+}
+
+.sync-button.disabled,
+.sync-button:disabled {
+  opacity: 0.62;
+}
+
+.sync-message {
+  padding: 10px 12px;
+  border-radius: 11px;
+  background: #eef2ff;
+  color: #34407c;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.sync-message.success {
+  background: #e7f8e5;
+  color: #256b1f;
+}
+
+.sync-message.error {
+  background: #ffe8e8;
+  color: #8d2d2d;
+}
+
+.sync-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .empty {
   padding: 18px;
   border-radius: 14px;
@@ -519,10 +618,10 @@ button {
 
 .bottom-nav-inner {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   width: min(100%, 452px);
   margin: 0 auto;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tab-button {
@@ -532,7 +631,7 @@ button {
   border-radius: 14px;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
 }
 

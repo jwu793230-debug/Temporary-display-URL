@@ -2,15 +2,32 @@
   const PLAN = (window.TRAINING_PLAN || []).sort((a, b) => a.date.localeCompare(b.date));
   const planByDate = new Map(PLAN.map((item) => [item.date, item]));
   const STORAGE_KEY = "half-marathon-checkins-v1";
+  const TOKEN_KEY = "half-marathon-github-token-v1";
+  const SYNC_META_KEY = "half-marathon-sync-meta-v1";
+  const GITHUB_SYNC = {
+    owner: "jwu793230-debug",
+    repo: "Temporary-display-URL",
+    branch: "main",
+    path: "half-marathon-pwa/checkins.json",
+  };
+  const initialSyncMeta = loadSyncMeta();
 
   const state = {
     activeTab: "today",
     selectedDate: resolveInitialDate(),
     planFilter: "upcoming",
     records: loadRecords(),
+    sync: {
+      isSyncing: false,
+      tokenSaved: Boolean(loadGitHubToken()),
+      lastSyncedAt: initialSyncMeta.lastSyncedAt || "",
+      message: initialSyncMeta.lastSyncedAt ? "上次同步已记录" : "本地记录已保留，填写 token 后可同步到 GitHub",
+      messageType: "muted",
+    },
   };
 
   const app = document.getElementById("app");
+  let autoSyncTimer = null;
 
   function resolveInitialDate() {
     const today = toISO(new Date());
@@ -29,6 +46,40 @@
 
   function saveRecords() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.records));
+  }
+
+  function loadSyncMeta() {
+    try {
+      return JSON.parse(localStorage.getItem(SYNC_META_KEY) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function saveSyncMeta() {
+    localStorage.setItem(
+      SYNC_META_KEY,
+      JSON.stringify({
+        lastSyncedAt: state.sync.lastSyncedAt,
+      })
+    );
+  }
+
+  function loadGitHubToken() {
+    return localStorage.getItem(TOKEN_KEY) || "";
+  }
+
+  function saveGitHubToken(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+    state.sync.tokenSaved = true;
+  }
+
+  function clearGitHubToken() {
+    localStorage.removeItem(TOKEN_KEY);
+    state.sync.tokenSaved = false;
+    state.sync.message = "Token 已清除，本地打卡记录仍然保留在手机里";
+    state.sync.messageType = "muted";
+    render();
   }
 
   function parseISO(iso) {
@@ -105,6 +156,7 @@
       updatedAt: new Date().toISOString(),
     };
     saveRecords();
+    queueAutoSync();
     render();
   }
 
@@ -115,6 +167,199 @@
       updatedAt: new Date().toISOString(),
     };
     saveRecords();
+    queueAutoSync();
+  }
+
+  function recordCount(records = state.records) {
+    return Object.values(records).filter((record) => record && Object.keys(record).length).length;
+  }
+
+  function formatDateTime(iso) {
+    if (!iso) return "未同步";
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return "未同步";
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hour = String(date.getHours()).padStart(2, "0");
+    const minute = String(date.getMinutes()).padStart(2, "0");
+    return `${month}/${day} ${hour}:${minute}`;
+  }
+
+  function syncApiUrl() {
+    const encodedPath = GITHUB_SYNC.path.split("/").map(encodeURIComponent).join("/");
+    return `https://api.github.com/repos/${GITHUB_SYNC.owner}/${GITHUB_SYNC.repo}/contents/${encodedPath}`;
+  }
+
+  function githubHeaders(token) {
+    return {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "X-GitHub-Api-Version": "2022-11-28",
+    };
+  }
+
+  function encodeBase64Text(value) {
+    const bytes = new TextEncoder().encode(value);
+    let binary = "";
+    bytes.forEach((byte) => {
+      binary += String.fromCharCode(byte);
+    });
+    return btoa(binary);
+  }
+
+  function decodeBase64Text(value) {
+    const binary = atob(String(value || "").replace(/\s/g, ""));
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
+  async function githubError(response) {
+    let message = `GitHub 请求失败：${response.status}`;
+    try {
+      const body = await response.json();
+      if (body?.message) message = body.message;
+    } catch {
+      // Keep the status-based message.
+    }
+    const error = new Error(message);
+    error.status = response.status;
+    return error;
+  }
+
+  async function fetchRemoteCheckins(token) {
+    const response = await fetch(`${syncApiUrl()}?ref=${encodeURIComponent(GITHUB_SYNC.branch)}`, {
+      headers: githubHeaders(token),
+    });
+    if (response.status === 404) return { sha: null, records: {} };
+    if (!response.ok) throw await githubError(response);
+
+    const data = await response.json();
+    const text = decodeBase64Text(data.content);
+    const payload = JSON.parse(text);
+    const records = payload.records && typeof payload.records === "object" ? payload.records : payload;
+    return { sha: data.sha, records: records || {} };
+  }
+
+  async function putRemoteCheckins(token, records, sha) {
+    const payload = {
+      version: 1,
+      source: "half-marathon-pwa",
+      updatedAt: new Date().toISOString(),
+      records,
+    };
+    const body = {
+      branch: GITHUB_SYNC.branch,
+      message: "Sync half marathon checkins",
+      content: encodeBase64Text(`${JSON.stringify(payload, null, 2)}\n`),
+    };
+    if (sha) body.sha = sha;
+
+    const response = await fetch(syncApiUrl(), {
+      method: "PUT",
+      headers: githubHeaders(token),
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) throw await githubError(response);
+    return response.json();
+  }
+
+  function recordTime(record) {
+    const timestamp = Date.parse(record?.updatedAt || "");
+    return Number.isFinite(timestamp) ? timestamp : 0;
+  }
+
+  function mergeRecords(localRecords, remoteRecords) {
+    const merged = {};
+    const dates = new Set([...Object.keys(remoteRecords || {}), ...Object.keys(localRecords || {})]);
+    dates.forEach((date) => {
+      const local = localRecords?.[date] || null;
+      const remote = remoteRecords?.[date] || null;
+      if (!remote) {
+        merged[date] = { ...local };
+        return;
+      }
+      if (!local) {
+        merged[date] = { ...remote };
+        return;
+      }
+      if (recordTime(local) >= recordTime(remote)) {
+        merged[date] = { ...remote, ...local };
+      } else {
+        merged[date] = { ...local, ...remote };
+      }
+    });
+    return merged;
+  }
+
+  function renderSyncChange(force = false) {
+    if (force || state.activeTab === "sync") render();
+  }
+
+  function setSyncMessage(message, type = "muted", forceRender = false) {
+    state.sync.message = message;
+    state.sync.messageType = type;
+    renderSyncChange(forceRender);
+  }
+
+  function queueAutoSync() {
+    const token = loadGitHubToken();
+    if (!token) return;
+    window.clearTimeout(autoSyncTimer);
+    autoSyncTimer = window.setTimeout(() => {
+      syncNow({ silent: true });
+    }, 1800);
+  }
+
+  async function saveTokenAndSync() {
+    const input = app.querySelector("[data-token-input]");
+    const token = input?.value.trim();
+    if (token) saveGitHubToken(token);
+    if (!loadGitHubToken()) {
+      setSyncMessage("请先粘贴 GitHub token，再同步", "error", true);
+      return;
+    }
+    await syncNow({ silent: false });
+  }
+
+  async function syncNow({ silent = false } = {}) {
+    const token = loadGitHubToken();
+    if (!token) {
+      setSyncMessage("请先保存 GitHub token", "error", true);
+      return;
+    }
+    if (state.sync.isSyncing) return;
+
+    state.sync.isSyncing = true;
+    state.sync.tokenSaved = true;
+    state.sync.message = "正在合并手机本地记录和 GitHub 记录...";
+    state.sync.messageType = "muted";
+    renderSyncChange(!silent);
+
+    try {
+      let remote = await fetchRemoteCheckins(token);
+      let merged = mergeRecords(state.records, remote.records);
+      try {
+        await putRemoteCheckins(token, merged, remote.sha);
+      } catch (error) {
+        if (error.status !== 409) throw error;
+        remote = await fetchRemoteCheckins(token);
+        merged = mergeRecords(merged, remote.records);
+        await putRemoteCheckins(token, merged, remote.sha);
+      }
+      state.records = merged;
+      saveRecords();
+      state.sync.lastSyncedAt = new Date().toISOString();
+      saveSyncMeta();
+      state.sync.message = `已同步 ${recordCount(merged)} 天记录到 GitHub`;
+      state.sync.messageType = "success";
+    } catch (error) {
+      state.sync.message = `同步失败：${error.message || "请检查 token 权限和网络"}`;
+      state.sync.messageType = "error";
+    } finally {
+      state.sync.isSyncing = false;
+      renderSyncChange(!silent);
+    }
   }
 
   function escapeHTML(value) {
@@ -162,6 +407,7 @@
           ${tabButton("today", "今日")}
           ${tabButton("week", "周复盘")}
           ${tabButton("plan", "计划")}
+          ${tabButton("sync", "同步")}
         </div>
       </nav>
     `;
@@ -175,6 +421,7 @@
   function renderActiveTab() {
     if (state.activeTab === "week") return renderWeekTab();
     if (state.activeTab === "plan") return renderPlanTab();
+    if (state.activeTab === "sync") return renderSyncTab();
     return renderTodayTab();
   }
 
@@ -367,6 +614,46 @@
     `;
   }
 
+  function renderSyncTab() {
+    const tokenLabel = state.sync.tokenSaved ? "已保存" : "未保存";
+    const disabled = state.sync.isSyncing ? " disabled" : "";
+    const buttonDisabled = state.sync.isSyncing ? "disabled" : "";
+    const messageType = state.sync.messageType || "muted";
+    return `
+      <section class="section-title">
+        <h2>GitHub 同步</h2>
+        <span>${tokenLabel}</span>
+      </section>
+      <section class="card sync-card">
+        <div class="sync-stats">
+          <div class="sync-stat">
+            <span>本地记录</span>
+            <strong>${recordCount()}</strong>
+          </div>
+          <div class="sync-stat">
+            <span>云端文件</span>
+            <strong>checkins</strong>
+          </div>
+          <div class="sync-stat">
+            <span>上次同步</span>
+            <strong>${escapeHTML(formatDateTime(state.sync.lastSyncedAt))}</strong>
+          </div>
+        </div>
+        <div class="field full">
+          <label for="githubToken">GitHub token</label>
+          <input id="githubToken" type="password" autocomplete="off" data-token-input placeholder="${state.sync.tokenSaved ? "已保存；留空可直接同步" : "粘贴 fine-grained token"}" />
+        </div>
+        <div class="sync-actions">
+          <button class="sync-button primary${disabled}" data-action="save-token-sync" ${buttonDisabled}>保存并同步</button>
+          <button class="sync-button${disabled}" data-action="sync-now" ${buttonDisabled}>立即同步</button>
+          <button class="sync-button danger${disabled}" data-action="clear-token" ${buttonDisabled}>清除 token</button>
+        </div>
+        <div class="sync-message ${messageType}">${escapeHTML(state.sync.message)}</div>
+        <p class="sync-help">首次同步会合并手机本地记录和 GitHub 文件；同一天记录按更新时间保留较新的，时间相同保留手机本地。</p>
+      </section>
+    `;
+  }
+
   app.addEventListener("click", (event) => {
     const tab = event.target.closest("[data-tab]");
     if (tab) {
@@ -380,6 +667,18 @@
       if (action.dataset.action === "prev-day") state.selectedDate = addDays(state.selectedDate, -1);
       if (action.dataset.action === "next-day") state.selectedDate = addDays(state.selectedDate, 1);
       if (action.dataset.action === "today") state.selectedDate = resolveInitialDate();
+      if (action.dataset.action === "save-token-sync") {
+        saveTokenAndSync();
+        return;
+      }
+      if (action.dataset.action === "sync-now") {
+        syncNow({ silent: false });
+        return;
+      }
+      if (action.dataset.action === "clear-token") {
+        clearGitHubToken();
+        return;
+      }
       render();
       return;
     }
