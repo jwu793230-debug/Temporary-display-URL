@@ -1,0 +1,2127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>道路智慧管理系统大屏</title>
+  <style>
+    :root {
+      --accent: #0063A0;
+      --accent-soft: rgba(0, 99, 160, .56);
+      --cyan: #36e7ff;
+      --cyan-2: #05a8ff;
+      --green: #35f0a1;
+      --amber: #ffbd4a;
+      --red: #ff5268;
+      --violet: #8a7cff;
+      --text: #ecfbff;
+      --muted: #8fb9d3;
+      --panel: rgba(4, 25, 48, .78);
+      --panel-strong: rgba(5, 35, 68, .92);
+      --line: rgba(54, 231, 255, .35);
+      --dim: rgba(122, 189, 214, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #020814;
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body { position: relative; }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    .stage {
+      width: 1920px;
+      height: 1080px;
+      transform: scale(var(--scale, 1));
+      transform-origin: top left;
+      position: absolute;
+      left: var(--stage-left, 0px);
+      top: var(--stage-top, 0px);
+    }
+
+    .dashboard {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 9%, rgba(39, 164, 219, .42), transparent 26%),
+        radial-gradient(circle at 50% 50%, rgba(0, 99, 160, .18), transparent 44%),
+        linear-gradient(135deg, rgba(0, 99, 160, .18), transparent 28%),
+        linear-gradient(180deg, #061a32 0%, #031327 42%, #010711 100%);
+    }
+
+    .dashboard::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .34;
+      background-image:
+        linear-gradient(rgba(54, 231, 255, .13) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(54, 231, 255, .13) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse at center, #000 0%, transparent 75%);
+    }
+
+    .dashboard::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(0, 99, 160, .42), transparent 14%, transparent 86%, rgba(0, 99, 160, .42)),
+        linear-gradient(180deg, rgba(6, 38, 69, .06), transparent 48%, rgba(0, 0, 0, .36)),
+        repeating-linear-gradient(180deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 4px);
+      mix-blend-mode: screen;
+    }
+
+    .hud-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 16% 23%, rgba(54, 231, 255, .12), transparent 20%),
+        radial-gradient(circle at 85% 28%, rgba(0, 99, 160, .20), transparent 18%),
+        radial-gradient(circle at 50% 74%, rgba(53, 240, 161, .10), transparent 22%);
+      z-index: 1;
+    }
+
+    .topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 98px;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 455px 1fr 455px;
+      align-items: start;
+      padding: 16px 22px 0;
+      background:
+        linear-gradient(90deg, rgba(0, 99, 160, .28), transparent 18%, transparent 82%, rgba(0, 99, 160, .28)),
+        linear-gradient(180deg, rgba(4, 28, 54, .92), rgba(4, 28, 54, .16));
+      border-bottom: 1px solid rgba(54, 231, 255, .20);
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 445px;
+      right: 445px;
+      bottom: 6px;
+      height: 50px;
+      background:
+        linear-gradient(90deg, transparent, rgba(54, 231, 255, .40), transparent),
+        linear-gradient(180deg, rgba(0, 99, 160, .35), transparent);
+      clip-path: polygon(0 0, 26% 0, 34% 34%, 66% 34%, 74% 0, 100% 0, 93% 100%, 7% 100%);
+      opacity: .9;
+    }
+
+    .brand,
+    .status-cluster {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 48px;
+      color: #c6e8f7;
+      font-size: 17px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 42px;
+      position: relative;
+      border: 2px solid rgba(54, 231, 255, .72);
+      border-right: 0;
+      border-bottom: 0;
+      transform: skewX(-18deg);
+      filter: drop-shadow(0 0 10px rgba(54, 231, 255, .58));
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 14px rgba(54, 231, 255, .9);
+    }
+
+    .brand-mark::before {
+      width: 36px;
+      height: 3px;
+      left: 4px;
+      top: 22px;
+      transform: rotate(-22deg);
+    }
+
+    .brand-mark::after {
+      width: 9px;
+      height: 9px;
+      right: 6px;
+      top: 8px;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: #f4fdff;
+      font-size: 22px;
+      letter-spacing: 1px;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status-cluster {
+      justify-content: flex-end;
+      gap: 13px;
+    }
+
+    .status-pill {
+      min-width: 106px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(54, 231, 255, .32);
+      background: rgba(0, 99, 160, .16);
+      box-shadow: inset 0 0 18px rgba(0, 99, 160, .22);
+      color: #dff8ff;
+      border-radius: 4px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    .clock {
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      line-height: 1.25;
+      text-align: right;
+      color: #eafaff;
+    }
+
+    .clock small {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .title-wrap {
+      position: relative;
+      z-index: 3;
+      height: 82px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      height: 58px;
+      line-height: 58px;
+      font-size: 40px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-shadow:
+        0 0 10px rgba(54, 231, 255, .55),
+        0 0 26px rgba(0, 99, 160, .85);
+    }
+
+    .title-sub {
+      margin-top: -8px;
+      color: #91dfff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .module-nav {
+      position: absolute;
+      z-index: 6;
+      top: 76px;
+      left: 430px;
+      right: 430px;
+      height: 46px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      padding: 0 10px;
+    }
+
+    .module-nav button {
+      position: relative;
+      height: 44px;
+      border: 1px solid rgba(54, 231, 255, .34);
+      background:
+        linear-gradient(180deg, rgba(0, 99, 160, .18), rgba(2, 19, 39, .62)),
+        rgba(2, 22, 45, .78);
+      color: #d7f6ff;
+      clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%);
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .module-nav button::before {
+      content: "";
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      vertical-align: -4px;
+      background: currentColor;
+      opacity: .86;
+      clip-path: polygon(50% 0, 87% 23%, 87% 73%, 50% 100%, 13% 73%, 13% 23%);
+    }
+
+    .module-nav button:hover,
+    .module-nav button.active {
+      transform: translateY(-1px);
+      border-color: rgba(54, 231, 255, .9);
+      background:
+        linear-gradient(180deg, rgba(7, 181, 255, .50), rgba(0, 99, 160, .78)),
+        rgba(0, 99, 160, .74);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(54, 231, 255, .22), inset 0 0 18px rgba(255, 255, 255, .08);
+    }
+
+    .layout {
+      position: absolute;
+      z-index: 3;
+      left: 12px;
+      right: 12px;
+      top: 132px;
+      bottom: 40px;
+      display: grid;
+      grid-template-columns: 440px 1fr 440px;
+      grid-template-rows: 1fr 112px;
+      gap: 10px;
+    }
+
+    .side {
+      min-height: 0;
+      display: grid;
+      gap: 10px;
+      grid-row: 1 / 3;
+    }
+
+    .left-side { grid-template-rows: 224px 236px 214px 1fr; }
+    .right-side { grid-template-rows: 252px 252px 216px 1fr; }
+
+    .dashboard[data-view="earthwork"] .left-side {
+      grid-template-rows: 252px 246px 206px 1fr;
+    }
+
+    .dashboard[data-view="earthwork"] .right-side {
+      grid-template-rows: 254px 258px 216px 1fr;
+    }
+
+    .panel {
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(5, 37, 72, .86), rgba(2, 18, 38, .76)),
+        var(--panel);
+      border: 1px solid rgba(54, 231, 255, .30);
+      box-shadow:
+        inset 0 0 28px rgba(0, 99, 160, .22),
+        0 0 24px rgba(0, 0, 0, .22);
+      border-radius: 5px;
+    }
+
+    .panel::before,
+    .panel::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      inset: 0;
+    }
+
+    .panel::before {
+      border-top: 2px solid rgba(54, 231, 255, .58);
+      background:
+        linear-gradient(90deg, rgba(54, 231, 255, .18), transparent 38%),
+        linear-gradient(180deg, rgba(255, 255, 255, .05), transparent 23%);
+      opacity: .96;
+    }
+
+    .panel::after {
+      background:
+        linear-gradient(90deg, var(--cyan), var(--cyan)) left top / 30px 1px no-repeat,
+        linear-gradient(180deg, var(--cyan), var(--cyan)) left top / 1px 30px no-repeat,
+        linear-gradient(270deg, var(--cyan), var(--cyan)) right bottom / 30px 1px no-repeat,
+        linear-gradient(0deg, var(--cyan), var(--cyan)) right bottom / 1px 30px no-repeat;
+      opacity: .38;
+    }
+
+    .panel-head {
+      position: relative;
+      z-index: 1;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px 0 26px;
+      color: #f5fdff;
+      font-size: 19px;
+      font-weight: 800;
+      background:
+        linear-gradient(90deg, rgba(0, 99, 160, .46), rgba(0, 99, 160, .08)),
+        linear-gradient(180deg, rgba(255, 255, 255, .03), transparent);
+    }
+
+    .panel-head::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 14px;
+      width: 10px;
+      height: 10px;
+      background: var(--cyan);
+      transform: rotate(45deg);
+      box-shadow: 0 0 12px rgba(54, 231, 255, .9);
+    }
+
+    .panel-head small {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .panel-body {
+      position: relative;
+      z-index: 1;
+      height: calc(100% - 42px);
+      padding: 12px 14px 14px;
+    }
+
+    .main-scene {
+      grid-column: 2;
+      grid-row: 1;
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid rgba(54, 231, 255, .34);
+      border-radius: 6px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(54, 231, 255, .13), transparent 38%),
+        linear-gradient(180deg, rgba(5, 37, 72, .58), rgba(2, 13, 29, .74));
+      box-shadow:
+        inset 0 0 46px rgba(0, 99, 160, .34),
+        0 0 28px rgba(0, 0, 0, .26);
+    }
+
+    .main-scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(54, 231, 255, .18), transparent 18%, transparent 82%, rgba(54, 231, 255, .18)),
+        linear-gradient(180deg, rgba(54, 231, 255, .12), transparent 22%, transparent 78%, rgba(0, 99, 160, .20));
+      z-index: 1;
+    }
+
+    .scene-head {
+      position: absolute;
+      z-index: 4;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      pointer-events: none;
+    }
+
+    .scene-title-card {
+      width: 408px;
+      height: 58px;
+      padding: 9px 16px;
+      border: 1px solid rgba(54, 231, 255, .34);
+      background: rgba(2, 19, 39, .72);
+      border-radius: 5px;
+      box-shadow: inset 0 0 22px rgba(0, 99, 160, .26);
+      pointer-events: auto;
+    }
+
+    .scene-title-card strong {
+      display: block;
+      color: #fff;
+      font-size: 20px;
+      line-height: 22px;
+    }
+
+    .scene-title-card span {
+      display: block;
+      margin-top: 3px;
+      color: #9edfff;
+      font-size: 13px;
+    }
+
+    .sub-tabs {
+      display: none;
+      gap: 8px;
+      pointer-events: auto;
+      padding: 6px;
+      border: 1px solid rgba(54, 231, 255, .28);
+      background: rgba(2, 19, 39, .62);
+      border-radius: 5px;
+    }
+
+    .dashboard[data-view="earthwork"] .sub-tabs { display: flex; }
+
+    .sub-tabs button {
+      height: 36px;
+      min-width: 88px;
+      border: 1px solid rgba(54, 231, 255, .28);
+      background: rgba(0, 99, 160, .18);
+      color: #bfeeff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .sub-tabs button.active {
+      color: #fff;
+      border-color: rgba(54, 231, 255, .78);
+      background: linear-gradient(180deg, rgba(54, 231, 255, .36), rgba(0, 99, 160, .72));
+      box-shadow: 0 0 18px rgba(54, 231, 255, .22);
+    }
+
+    .tool-stack {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .tool-stack button {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(54, 231, 255, .42);
+      background: rgba(0, 99, 160, .20);
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      box-shadow: inset 0 0 18px rgba(0, 99, 160, .22);
+    }
+
+    .tool-stack button::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      opacity: .85;
+    }
+
+    .tool-stack button:nth-child(2)::before {
+      border-radius: 0;
+      transform: rotate(45deg);
+    }
+
+    .tool-stack button:nth-child(3)::before {
+      border-radius: 2px;
+      border-left: 0;
+      border-bottom: 0;
+    }
+
+    .terrain-stage {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(2, 13, 29, .12), rgba(2, 13, 29, .34)),
+        url("assets/smart-road-gis-scene-effect.png") center center / cover no-repeat;
+      filter: saturate(1.18) contrast(1.06);
+    }
+
+    .terrain-stage::before,
+    .terrain-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .terrain-stage::before {
+      z-index: 1;
+      background:
+        radial-gradient(circle at 47% 47%, transparent 0 34%, rgba(0, 99, 160, .13) 54%, rgba(0, 5, 14, .36) 100%),
+        linear-gradient(90deg, rgba(2, 13, 29, .38), transparent 18%, transparent 82%, rgba(2, 13, 29, .38));
+      mix-blend-mode: multiply;
+    }
+
+    .terrain-stage::after {
+      z-index: 2;
+      opacity: .62;
+      background:
+        linear-gradient(115deg, transparent 0 38%, rgba(54, 231, 255, .24) 48%, transparent 58%),
+        repeating-linear-gradient(180deg, rgba(255, 255, 255, .035) 0 1px, transparent 1px 5px);
+      background-size: 160% 100%, 100% 100%;
+      animation: mapScan 5.8s linear infinite;
+    }
+
+    #terrainCanvas {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .route-glow {
+      position: absolute;
+      left: 10%;
+      right: 9%;
+      bottom: 10%;
+      height: 35%;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 24% 40%, rgba(54, 231, 255, .22), transparent 18%),
+        radial-gradient(ellipse at 49% 30%, rgba(53, 240, 161, .15), transparent 15%),
+        radial-gradient(ellipse at 73% 62%, rgba(54, 231, 255, .20), transparent 20%);
+      filter: blur(12px);
+      opacity: .86;
+      z-index: 2;
+      animation: routeAura 4.6s ease-in-out infinite;
+    }
+
+    @keyframes mapScan {
+      0% { background-position: 150% 0, 0 0; }
+      100% { background-position: -60% 0, 0 0; }
+    }
+
+    @keyframes routeAura {
+      0%, 100% { opacity: .55; transform: translateY(0) scale(.98); }
+      50% { opacity: .92; transform: translateY(-6px) scale(1.03); }
+    }
+
+    .vertical-tools {
+      position: absolute;
+      z-index: 4;
+      right: 22px;
+      top: 106px;
+      display: grid;
+      gap: 6px;
+      width: 70px;
+    }
+
+    .vertical-tools button {
+      height: 48px;
+      border: 1px solid rgba(54, 231, 255, .34);
+      color: #c9f2ff;
+      background: rgba(4, 31, 60, .76);
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 13px;
+      writing-mode: horizontal-tb;
+    }
+
+    .vertical-tools button.active {
+      color: #fff;
+      border-color: rgba(54, 231, 255, .78);
+      background: rgba(0, 99, 160, .72);
+      box-shadow: 0 0 18px rgba(54, 231, 255, .22);
+    }
+
+    .marker-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .marker {
+      position: absolute;
+      min-width: 86px;
+      min-height: 34px;
+      border: 1px solid rgba(54, 231, 255, .55);
+      background: rgba(0, 54, 92, .72);
+      color: #ecfbff;
+      border-radius: 5px;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 18px rgba(0, 168, 255, .32);
+      cursor: pointer;
+      pointer-events: auto;
+      padding: 5px 10px 5px 27px;
+      text-align: left;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .marker::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 6px rgba(54, 231, 255, .16), 0 0 14px rgba(54, 231, 255, .9);
+      transform: translateY(-50%);
+    }
+
+    .marker::after {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 100%;
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(180deg, rgba(54, 231, 255, .75), transparent);
+    }
+
+    .marker:hover,
+    .marker.active {
+      transform: translate(-50%, -50%) scale(1.06);
+      border-color: rgba(255, 255, 255, .9);
+      background: rgba(0, 99, 160, .88);
+    }
+
+    .marker.green {
+      border-color: rgba(53, 240, 161, .48);
+      background: rgba(0, 112, 86, .70);
+    }
+
+    .marker.green::before { background: var(--green); box-shadow: 0 0 0 6px rgba(53, 240, 161, .15), 0 0 14px rgba(53, 240, 161, .85); }
+
+    .marker.amber {
+      border-color: rgba(255, 189, 74, .60);
+      background: rgba(122, 83, 19, .70);
+    }
+
+    .marker.amber::before { background: var(--amber); box-shadow: 0 0 0 6px rgba(255, 189, 74, .14), 0 0 14px rgba(255, 189, 74, .85); }
+
+    .marker.violet {
+      border-color: rgba(138, 124, 255, .62);
+      background: rgba(62, 51, 137, .72);
+    }
+
+    .marker.violet::before { background: var(--violet); box-shadow: 0 0 0 6px rgba(138, 124, 255, .15), 0 0 14px rgba(138, 124, 255, .85); }
+
+    .marker b {
+      display: block;
+      font-size: 17px;
+      line-height: 18px;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .marker small {
+      display: block;
+      margin-top: 2px;
+      color: #bcefff;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .zone-halo {
+      position: absolute;
+      z-index: 2;
+      transform: translate(-50%, -50%) rotateX(62deg) rotateZ(-18deg);
+      width: 168px;
+      height: 86px;
+      border: 2px solid rgba(53, 240, 161, .54);
+      border-radius: 50%;
+      background: rgba(53, 240, 161, .08);
+      box-shadow: 0 0 30px rgba(53, 240, 161, .22), inset 0 0 22px rgba(53, 240, 161, .12);
+      pointer-events: none;
+      animation: haloPulse 2.8s ease-in-out infinite;
+    }
+
+    .zone-halo.amber {
+      border-color: rgba(255, 189, 74, .58);
+      background: rgba(255, 189, 74, .08);
+      box-shadow: 0 0 28px rgba(255, 189, 74, .20), inset 0 0 22px rgba(255, 189, 74, .10);
+    }
+
+    .zone-halo.blue {
+      border-color: rgba(54, 231, 255, .55);
+      background: rgba(54, 231, 255, .08);
+      box-shadow: 0 0 28px rgba(54, 231, 255, .22), inset 0 0 22px rgba(54, 231, 255, .10);
+    }
+
+    @keyframes haloPulse {
+      0%, 100% { opacity: .52; transform: translate(-50%, -50%) rotateX(62deg) rotateZ(-18deg) scale(.96); }
+      50% { opacity: .98; transform: translate(-50%, -50%) rotateX(62deg) rotateZ(-18deg) scale(1.06); }
+    }
+
+    .scene-info {
+      position: absolute;
+      z-index: 4;
+      left: 42%;
+      top: 31%;
+      width: 306px;
+      min-height: 154px;
+      padding: 14px 16px;
+      border: 1px solid rgba(54, 231, 255, .42);
+      background: rgba(3, 22, 43, .74);
+      box-shadow: inset 0 0 22px rgba(0, 99, 160, .30), 0 0 26px rgba(0, 0, 0, .26);
+      border-radius: 5px;
+      pointer-events: none;
+    }
+
+    .scene-info h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 24px;
+      color: #fff;
+    }
+
+    .scene-info p {
+      margin: 0;
+      color: #c7e9f8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .scene-info .mini-metrics {
+      margin-top: 11px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .scene-info .mini-metrics div {
+      padding: 7px 8px;
+      border: 1px solid rgba(54, 231, 255, .16);
+      background: rgba(0, 99, 160, .14);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .scene-info .mini-metrics strong {
+      display: block;
+      margin-top: 2px;
+      color: #fff;
+      font-size: 18px;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .module-strip {
+      grid-column: 2;
+      grid-row: 2;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid rgba(54, 231, 255, .32);
+      border-radius: 6px;
+      background: rgba(3, 19, 39, .78);
+      box-shadow: inset 0 0 24px rgba(0, 99, 160, .25);
+    }
+
+    .module-strip button {
+      position: relative;
+      border: 0;
+      border-right: 1px solid rgba(54, 231, 255, .18);
+      background: transparent;
+      color: #b9e9f8;
+      cursor: pointer;
+      padding-top: 15px;
+    }
+
+    .module-strip button:last-child { border-right: 0; }
+
+    .module-strip button::before {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 28px;
+      margin: 0 auto 8px;
+      background:
+        linear-gradient(135deg, var(--cyan), var(--accent));
+      clip-path: polygon(50% 0, 92% 31%, 78% 100%, 22% 100%, 8% 31%);
+      filter: drop-shadow(0 0 8px rgba(54, 231, 255, .5));
+    }
+
+    .module-strip button.active {
+      color: #fff;
+      background: linear-gradient(180deg, rgba(0, 99, 160, .62), rgba(0, 99, 160, .18));
+    }
+
+    .module-strip button.active::after {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: 0;
+      height: 3px;
+      background: var(--cyan);
+      box-shadow: 0 0 12px rgba(54, 231, 255, .85);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      height: 100%;
+    }
+
+    .kpi {
+      min-width: 0;
+      border: 1px solid rgba(54, 231, 255, .18);
+      background: rgba(0, 99, 160, .12);
+      border-radius: 4px;
+      padding: 10px 9px;
+    }
+
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .kpi strong {
+      display: block;
+      margin-top: 6px;
+      color: #fff;
+      font-size: 26px;
+      line-height: 28px;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .kpi small {
+      color: #9fdfff;
+      font-size: 12px;
+      margin-left: 3px;
+    }
+
+    .sparkline {
+      height: 7px;
+      margin-top: 9px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .10);
+      overflow: hidden;
+    }
+
+    .sparkline i {
+      display: block;
+      height: 100%;
+      width: var(--w, 68%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan-2), var(--cyan));
+      box-shadow: 0 0 10px rgba(54, 231, 255, .56);
+      transition: width .4s ease;
+    }
+
+    .progress-table {
+      display: grid;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: 72px 80px 1fr 48px;
+      align-items: center;
+      gap: 9px;
+      color: #d7f3ff;
+      font-size: 13px;
+      min-height: 25px;
+    }
+
+    .progress-row strong {
+      color: #fff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 14px;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .10);
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      width: var(--w, 50%);
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      border-radius: inherit;
+      box-shadow: 0 0 10px rgba(54, 231, 255, .45);
+      transition: width .35s ease;
+    }
+
+    .dual-layout {
+      display: grid;
+      grid-template-columns: 142px 1fr;
+      gap: 12px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .ring {
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: auto;
+      background: conic-gradient(var(--cyan) var(--p, 72%), rgba(255, 255, 255, .10) 0);
+      position: relative;
+      box-shadow: 0 0 22px rgba(54, 231, 255, .22);
+    }
+
+    .ring::after {
+      content: "";
+      position: absolute;
+      inset: 17px;
+      border-radius: 50%;
+      background: #06192e;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, .45);
+    }
+
+    .ring strong {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 28px;
+    }
+
+    .ring span {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .kv-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .kv {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: #d8f5ff;
+      font-size: 14px;
+    }
+
+    .kv strong {
+      color: #fff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 17px;
+    }
+
+    .mini-chart {
+      position: relative;
+      height: 98px;
+      margin-top: 9px;
+      border-radius: 4px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .06) 1px, transparent 1px);
+      background-size: 100% 24px, 52px 100%;
+    }
+
+    .mini-chart svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mini-chart polyline {
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 7px rgba(54, 231, 255, .55));
+    }
+
+    .alert-list,
+    .suggest-list,
+    .event-list {
+      display: grid;
+      gap: 8px;
+      height: 100%;
+      align-content: start;
+    }
+
+    .alert-item,
+    .suggest-item,
+    .event-item {
+      display: grid;
+      grid-template-columns: 44px 1fr 58px;
+      align-items: center;
+      gap: 9px;
+      min-height: 36px;
+      border: 1px solid rgba(54, 231, 255, .14);
+      background: rgba(0, 99, 160, .12);
+      border-radius: 4px;
+      padding: 7px 8px;
+      color: #d9f6ff;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .suggest-item { grid-template-columns: 28px 1fr 58px; min-height: 46px; }
+    .event-item { grid-template-columns: 70px 1fr 68px; min-height: 38px; cursor: default; }
+
+    .alert-item:hover,
+    .suggest-item:hover {
+      border-color: rgba(54, 231, 255, .46);
+      background: rgba(0, 99, 160, .24);
+    }
+
+    .level {
+      width: 32px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+      font-weight: 800;
+      color: #fff;
+      background: var(--amber);
+      font-size: 13px;
+    }
+
+    .level.high { background: var(--red); }
+    .level.mid { background: var(--amber); }
+    .level.low { background: var(--green); color: #00251c; }
+
+    .item-main strong {
+      display: block;
+      color: #fff;
+      font-size: 14px;
+      line-height: 17px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-main span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-time {
+      justify-self: end;
+      color: #b3e8f8;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 12px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      height: 100%;
+    }
+
+    .video-tile {
+      position: relative;
+      overflow: hidden;
+      min-height: 86px;
+      border: 1px solid rgba(54, 231, 255, .22);
+      border-radius: 4px;
+      background:
+        linear-gradient(180deg, rgba(0, 99, 160, .10), rgba(2, 14, 30, .46)),
+        linear-gradient(140deg, rgba(80, 98, 102, .90), rgba(22, 47, 65, .88));
+      isolation: isolate;
+    }
+
+    .video-tile:nth-child(1) { background-image: linear-gradient(180deg, rgba(0, 30, 54, .20), rgba(0, 0, 0, .40)), url("assets/height-safety-ai-annotation.png"); background-size: cover; background-position: center; }
+    .video-tile:nth-child(2) { background-image: linear-gradient(180deg, rgba(0, 30, 54, .20), rgba(0, 0, 0, .40)), url("assets/vehicle-speed-radar-led-v6.png"); background-size: cover; background-position: center; }
+    .video-tile:nth-child(3) { background-image: linear-gradient(180deg, rgba(0, 30, 54, .20), rgba(0, 0, 0, .40)), url("assets/forest-thermal-fire-monitor.png"); background-size: cover; background-position: center; }
+    .video-tile:nth-child(4) { background-image: linear-gradient(180deg, rgba(0, 30, 54, .20), rgba(0, 0, 0, .40)), url("assets/earthwork-dispatch-truck-system.png"); background-size: cover; background-position: center; }
+
+    .video-tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px);
+      background-size: 100% 22px, 26px 100%;
+      opacity: .38;
+      z-index: 1;
+    }
+
+    .play {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 45%;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(255, 255, 255, .72);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, .20);
+    }
+
+    .play::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      width: 0;
+      height: 0;
+      border-left: 12px solid #fff;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+    }
+
+    .video-label {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 9px;
+      background: rgba(1, 12, 26, .68);
+      color: #dff8ff;
+      font-size: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 20px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: #00271d;
+      background: var(--green);
+    }
+
+    .tag.warn {
+      background: var(--amber);
+      color: #2b1500;
+    }
+
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      height: 100%;
+    }
+
+    .device {
+      min-width: 0;
+      text-align: center;
+      border: 1px solid rgba(54, 231, 255, .16);
+      background: rgba(0, 99, 160, .12);
+      border-radius: 4px;
+      padding: 9px 5px;
+    }
+
+    .device-icon {
+      width: 42px;
+      height: 27px;
+      margin: 0 auto 7px;
+      position: relative;
+      background: linear-gradient(135deg, var(--cyan), var(--accent));
+      border-radius: 5px 10px 4px 4px;
+      box-shadow: 0 0 12px rgba(54, 231, 255, .28);
+    }
+
+    .device-icon::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      bottom: -7px;
+      height: 8px;
+      background:
+        radial-gradient(circle at 6px 4px, #071426 0 4px, transparent 5px),
+        radial-gradient(circle at calc(100% - 6px) 4px, #071426 0 4px, transparent 5px);
+    }
+
+    .device strong {
+      display: block;
+      margin-top: 7px;
+      color: #fff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 23px;
+      line-height: 25px;
+    }
+
+    .device span {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .env-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      height: 100%;
+    }
+
+    .env-card {
+      border: 1px solid rgba(54, 231, 255, .16);
+      background: rgba(0, 99, 160, .12);
+      border-radius: 4px;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .env-card span {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .env-card strong {
+      display: block;
+      margin-top: 7px;
+      color: #fff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 24px;
+      line-height: 26px;
+    }
+
+    .bottom-mini {
+      position: absolute;
+      z-index: 4;
+      left: 462px;
+      right: 462px;
+      bottom: 154px;
+      height: 76px;
+      display: grid;
+      grid-template-columns: 1.1fr 1.35fr .9fr .95fr;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .mini-panel {
+      border: 1px solid rgba(54, 231, 255, .26);
+      background: rgba(3, 18, 38, .72);
+      border-radius: 5px;
+      padding: 8px 12px;
+      box-shadow: inset 0 0 18px rgba(0, 99, 160, .20);
+    }
+
+    .mini-panel h3 {
+      margin: 0 0 6px;
+      color: #f2fbff;
+      font-size: 15px;
+    }
+
+    .mini-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #bdefff;
+      font-size: 13px;
+    }
+
+    .mini-row strong {
+      color: #fff;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .ticker {
+      position: absolute;
+      z-index: 8;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 30px;
+      overflow: hidden;
+      border-top: 1px solid rgba(54, 231, 255, .22);
+      background: rgba(1, 11, 24, .86);
+      color: #aeeeff;
+      font-size: 14px;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+
+    .ticker span {
+      display: inline-block;
+      min-width: 100%;
+      padding-left: 100%;
+      animation: ticker 32s linear infinite;
+    }
+
+    @keyframes ticker {
+      to { transform: translateX(-100%); }
+    }
+
+    .empty-note {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      border: 1px dashed rgba(54, 231, 255, .20);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="dashboard" id="dashboard" data-view="road">
+      <div class="hud-glow"></div>
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-text">
+            <strong>智慧管控</strong>
+            <span>三维数字孪生 · 施工态势</span>
+          </div>
+        </div>
+        <div class="title-wrap">
+          <h1 id="screenTitle">道路智慧管理系统大屏</h1>
+          <div class="title-sub">MOUNTAIN ROAD DIGITAL TWIN COMMAND CENTER</div>
+        </div>
+        <div class="status-cluster">
+          <div class="status-pill"><i class="dot"></i>系统正常</div>
+          <div class="status-pill">多云 12~18°C</div>
+          <div class="clock"><span id="clockTime">--:--:--</span><small id="clockDate">----</small></div>
+        </div>
+      </header>
+
+      <nav class="module-nav" aria-label="系统模块">
+        <button class="active" data-view="road" data-mode="overview">道路总览</button>
+        <button data-view="road" data-mode="video">视频监控</button>
+        <button data-view="road" data-mode="people">人员安全</button>
+        <button data-view="road" data-mode="vehicle">车辆管控</button>
+        <button data-view="road" data-mode="fire">森林防火</button>
+        <button data-view="earthwork" data-mode="earthOverview">土石方智能管理</button>
+      </nav>
+
+      <div class="layout">
+        <aside class="side left-side" id="leftPanels"></aside>
+
+        <section class="main-scene">
+          <div class="terrain-stage">
+            <canvas id="terrainCanvas" width="1018" height="724"></canvas>
+            <div class="route-glow"></div>
+            <div class="marker-layer" id="halos"></div>
+            <div class="marker-layer" id="markers"></div>
+          </div>
+
+          <div class="scene-head">
+            <div class="scene-title-card">
+              <strong id="sceneModeTitle">全景总览 · 道路主对象</strong>
+              <span id="sceneModeDesc">高原山区 GIS 三维态势 / 路基、桥隧、边坡、营地、监测点一屏统览</span>
+            </div>
+            <div class="sub-tabs" id="earthTabs">
+              <button class="active" data-sub="earthOverview">土方总览</button>
+              <button data-sub="excavation">智能开挖</button>
+              <button data-sub="dispatch">智能调度</button>
+              <button data-sub="filling">智能填筑</button>
+            </div>
+            <div class="tool-stack" aria-label="地图工具">
+              <button title="图层"></button>
+              <button title="定位"></button>
+              <button title="刷新"></button>
+            </div>
+          </div>
+
+          <div class="vertical-tools">
+            <button class="active" data-layer="layer">图层</button>
+            <button data-layer="measure">测量</button>
+            <button data-layer="mark">标注</button>
+            <button data-layer="section">剖面</button>
+          </div>
+
+          <article class="scene-info" id="sceneInfo">
+            <h2>RD-A07 全线态势</h2>
+            <p>路基、桥隧、边坡、视频、车辆与人员安全数据统一叠加，当前重点关注 K24+600 与 SG-02 作业面。</p>
+            <div class="mini-metrics">
+              <div>在线率<strong>98.6%</strong></div>
+              <div>风险点<strong>12</strong></div>
+              <div>处置率<strong>94%</strong></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="module-strip" id="moduleStrip" aria-label="快捷模块">
+          <button class="active" data-view="road" data-mode="overview">总览</button>
+          <button data-view="road" data-mode="video">视频点</button>
+          <button data-view="road" data-mode="people">人员</button>
+          <button data-view="road" data-mode="vehicle">车辆</button>
+          <button data-view="road" data-mode="fire">防火</button>
+          <button data-view="earthwork" data-mode="earthOverview">土石方</button>
+        </section>
+
+        <aside class="side right-side" id="rightPanels"></aside>
+      </div>
+
+      <div class="bottom-mini">
+        <div class="mini-panel">
+          <h3>设备运行状态</h3>
+          <div class="mini-row"><span>视频 / 雷达 / 传感</span><strong id="miniDevice">362 在线</strong></div>
+          <div class="mini-row"><span>离线 / 告警</span><strong id="miniAlarm">8 / 12</strong></div>
+        </div>
+        <div class="mini-panel">
+          <h3>环境监测</h3>
+          <div class="mini-row"><span>风速 2.4m/s · 温度 14.6°C · 湿度 62%</span><strong>正常</strong></div>
+          <div class="mini-row"><span>能见度 18.3km · 降雨 0mm</span><strong>适宜施工</strong></div>
+        </div>
+        <div class="mini-panel">
+          <h3>监测点状态</h3>
+          <div class="mini-row"><span>在线</span><strong id="miniOnline">136</strong></div>
+          <div class="mini-row"><span>告警 / 复核</span><strong id="miniReview">5 / 7</strong></div>
+        </div>
+        <div class="mini-panel">
+          <h3>数据质量</h3>
+          <div class="mini-row"><span>高质量</span><strong id="miniQuality">96.7%</strong></div>
+          <div class="mini-row"><span>延迟</span><strong>&lt; 3s</strong></div>
+        </div>
+      </div>
+
+      <div class="ticker"><span id="tickerText">系统提示：RD-A07 全线链路稳定，SG-02 作业面完成班前健康打卡；K24+600 视频点位在线；VH-088 超速事件进入复核；FIRE-03 热成像巡检完成。</span></div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    const state = {
+      view: "road",
+      mode: "overview",
+      earthSub: "earthOverview",
+      t: 0,
+      activeMarker: "RD-A07",
+      frame: 0,
+      markers: []
+    };
+
+    const roadMarkers = [
+      { code: "RD-A07", type: "blue", x: 58, y: 46, name: "道路主线", desc: "桥隧、边坡与路基监测融合，当前交通组织平稳。", a: "98.6%", b: "12", c: "94%" },
+      { code: "K18+300", type: "blue", x: 72, y: 24, name: "高边坡监测", desc: "GNSS、裂缝计、雨量与视频联动，位移趋势处于可控范围。", a: "0.8mm", b: "3级", c: "正常" },
+      { code: "SG-02", type: "amber", x: 37, y: 62, name: "作业面联动", desc: "人员定位、健康监测、高空作业围栏与班前教育记录已汇聚。", a: "128人", b: "4处", c: "92%" },
+      { code: "TUN-03", type: "violet", x: 25, y: 72, name: "隧道口管控", desc: "门禁、视频、车辆排队与有害气体监测保持在线。", a: "16台", b: "2项", c: "稳定" },
+      { code: "BR-06", type: "violet", x: 67, y: 58, name: "桥梁施工区", desc: "临边防护、吊装作业与视频 AI 识别联动，今日无未闭环事项。", a: "8处", b: "0", c: "闭环" },
+      { code: "FIRE-03", type: "green", x: 82, y: 34, name: "森林防火点", desc: "热成像、烟火识别、气象站与无人巡检联合监测。", a: "0火点", b: "2.4m/s", c: "低风险" }
+    ];
+
+    const earthMarkers = [
+      { code: "EW-02", type: "green", x: 55, y: 52, name: "核心开挖区", desc: "3D 引导、坡比复核、超欠挖分析与方量核验同步更新。", a: "48.36万m³", b: "81%", c: "低风险" },
+      { code: "CUT-A1", type: "green", x: 35, y: 67, name: "智能开挖区", desc: "挖机引导面与设计面偏差控制在阈值内，待复核边线 2 条。", a: "+8.65", b: "2条", c: "复核" },
+      { code: "HAUL-06", type: "blue", x: 48, y: 64, name: "运输路线", desc: "车辆排队、料源点、装卸点与弃方点联动，当前无拥堵。", a: "86辆", b: "14min", c: "畅通" },
+      { code: "DP-02", type: "amber", x: 30, y: 75, name: "弃渣调配区", desc: "剩余容量 18%，建议分流至 DP-03 并调整 2 个车队班次。", a: "18%", b: "2队", c: "建议" },
+      { code: "FILL-B3", type: "green", x: 73, y: 43, name: "填筑作业区", desc: "摊铺层厚、含水率、碾压遍数与压实质量自动采集。", a: "98.2%", b: "23cm", c: "合格" },
+      { code: "COMP-C2", type: "violet", x: 63, y: 74, name: "压实控制区", desc: "连续压实覆盖率达标，弱碾压网格已推送返工指令。", a: "97.8%", b: "3格", c: "闭环" }
+    ];
+
+    const roadPanels = {
+      left: `
+        <section class="panel">
+          <div class="panel-head">项目总览 <small>RD-A07</small></div>
+          <div class="panel-body">
+            <div class="kpi-grid">
+              <div class="kpi"><span>路线长度</span><strong id="routeLen">118.6<small>km</small></strong><div class="sparkline"><i style="--w:82%"></i></div></div>
+              <div class="kpi"><span>作业工点</span><strong id="workCount">42<small>处</small></strong><div class="sparkline"><i style="--w:76%"></i></div></div>
+              <div class="kpi"><span>总体进度</span><strong id="totalProgress">72.6<small>%</small></strong><div class="sparkline"><i style="--w:72%"></i></div></div>
+              <div class="kpi"><span>在线设备</span><strong id="deviceCount">362<small>台</small></strong><div class="sparkline"><i style="--w:96%"></i></div></div>
+              <div class="kpi"><span>在线人员</span><strong id="peopleCount">910<small>人</small></strong><div class="sparkline"><i style="--w:88%"></i></div></div>
+              <div class="kpi"><span>今日闭环</span><strong id="closeRate">94<small>%</small></strong><div class="sparkline"><i style="--w:94%"></i></div></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">工区网络与视频 <small>实时</small></div>
+          <div class="panel-body">
+            <div class="dual-layout">
+              <div class="ring" style="--p:98%"><div><strong id="netRate">98.6%</strong><span>在线率</span></div></div>
+              <div class="kv-list">
+                <div class="kv"><span>骨干光纤链路</span><strong>12/12</strong></div>
+                <div class="kv"><span>无线专网基站</span><strong>36/38</strong></div>
+                <div class="kv"><span>视频监控点</span><strong>128/132</strong></div>
+                <div class="kv"><span>边缘计算节点</span><strong>8/8</strong></div>
+                <div class="kv"><span>弱覆盖工区</span><strong>SG-05</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">人员健康与高空作业 <small>班组</small></div>
+          <div class="panel-body">
+            <div class="progress-table">
+              <div class="progress-row"><span>健康打卡</span><strong>904/910</strong><div class="bar"><i style="--w:99%"></i></div><span>正常</span></div>
+              <div class="progress-row"><span>心率异常</span><strong>3</strong><div class="bar"><i style="--w:18%"></i></div><span>复核</span></div>
+              <div class="progress-row"><span>血氧低值</span><strong>2</strong><div class="bar"><i style="--w:12%"></i></div><span>关注</span></div>
+              <div class="progress-row"><span>高空围栏</span><strong>18/18</strong><div class="bar"><i style="--w:100%"></i></div><span>开启</span></div>
+              <div class="progress-row"><span>未佩戴</span><strong>5</strong><div class="bar"><i style="--w:24%"></i></div><span>派单</span></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">车辆超速趋势 <small>近 7 日</small></div>
+          <div class="panel-body">
+            <div class="mini-chart">
+              <svg viewBox="0 0 380 98" preserveAspectRatio="none">
+                <polyline stroke="#36e7ff" points="0,62 54,50 108,56 162,38 216,42 270,25 324,33 380,20"></polyline>
+                <polyline stroke="#ffbd4a" points="0,78 54,72 108,74 162,68 216,61 270,56 324,52 380,45"></polyline>
+              </svg>
+            </div>
+            <div class="kv-list" style="margin-top: 10px">
+              <div class="kv"><span>重点车辆</span><strong>VH-088</strong></div>
+              <div class="kv"><span>今日超速</span><strong id="speedEvents">7 起</strong></div>
+            </div>
+          </div>
+        </section>`,
+      right: `
+        <section class="panel">
+          <div class="panel-head">风险预警 <small>最近 5 条</small></div>
+          <div class="panel-body">
+            <div class="alert-list" id="alertList"></div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">关键监控画面 <small>更多</small></div>
+          <div class="panel-body">
+            <div class="video-grid">
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>K24+600 高空作业</span><span class="tag">在线</span></div></div>
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>RD-A07 车辆测速</span><span class="tag">在线</span></div></div>
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>FIRE-03 热成像</span><span class="tag warn">复核</span></div></div>
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>EW-02 作业面</span><span class="tag">在线</span></div></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">森林防火与环境 <small>联动</small></div>
+          <div class="panel-body">
+            <div class="env-grid">
+              <div class="env-card"><span>热成像点</span><strong>64</strong></div>
+              <div class="env-card"><span>烟火识别</span><strong>0</strong></div>
+              <div class="env-card"><span>风险等级</span><strong>低</strong></div>
+              <div class="env-card"><span>风速</span><strong>2.4</strong></div>
+              <div class="env-card"><span>湿度</span><strong>62%</strong></div>
+              <div class="env-card"><span>巡检架次</span><strong>9</strong></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">联动处置 <small>闭环</small></div>
+          <div class="panel-body">
+            <div class="event-list">
+              <div class="event-item"><span>09:42</span><div class="item-main"><strong>SG-02 高空围栏越界</strong><span>视频截图、人员定位、班组长确认</span></div><span class="tag warn">处理中</span></div>
+              <div class="event-item"><span>09:31</span><div class="item-main"><strong>VH-088 超速复核</strong><span>测速雷达与车载定位双源比对</span></div><span class="tag">闭环</span></div>
+              <div class="event-item"><span>09:18</span><div class="item-main"><strong>FIRE-03 热点排查</strong><span>热成像误报，现场已确认</span></div><span class="tag">闭环</span></div>
+            </div>
+          </div>
+        </section>`
+    };
+
+    const earthPanels = {
+      left: `
+        <section class="panel">
+          <div class="panel-head">土石方总体概况 <small>EW-RD07</small></div>
+          <div class="panel-body">
+            <div class="kpi-grid">
+              <div class="kpi"><span>总挖方</span><strong id="cutTotal">238.45<small>万m³</small></strong><div class="sparkline"><i style="--w:78%"></i></div></div>
+              <div class="kpi"><span>总填方</span><strong id="fillTotal">186.72<small>万m³</small></strong><div class="sparkline"><i style="--w:68%"></i></div></div>
+              <div class="kpi"><span>净方量</span><strong id="netTotal">51.73<small>万m³</small></strong><div class="sparkline"><i style="--w:46%"></i></div></div>
+              <div class="kpi"><span>计划完成率</span><strong id="earthPlan">72.4<small>%</small></strong><div class="sparkline"><i style="--w:72%"></i></div></div>
+              <div class="kpi"><span>方量利用率</span><strong id="earthUse">89.1<small>%</small></strong><div class="sparkline"><i style="--w:89%"></i></div></div>
+              <div class="kpi"><span>调度响应</span><strong id="dispatchTime">14<small>min</small></strong><div class="sparkline"><i style="--w:84%"></i></div></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">分区土方进度 <small>开挖 / 填筑</small></div>
+          <div class="panel-body">
+            <div class="progress-table">
+              <div class="progress-row"><span>EW-01</span><strong>52.41</strong><div class="bar"><i style="--w:78%"></i></div><span>78%</span></div>
+              <div class="progress-row"><span>EW-02</span><strong>48.36</strong><div class="bar"><i style="--w:81%"></i></div><span>81%</span></div>
+              <div class="progress-row"><span>EW-03</span><strong>33.21</strong><div class="bar"><i style="--w:67%"></i></div><span>67%</span></div>
+              <div class="progress-row"><span>EW-04</span><strong>41.75</strong><div class="bar"><i style="--w:70%"></i></div><span>70%</span></div>
+              <div class="progress-row"><span>EW-05</span><strong>31.42</strong><div class="bar"><i style="--w:65%"></i></div><span>65%</span></div>
+              <div class="progress-row"><span>EW-06</span><strong>31.30</strong><div class="bar"><i style="--w:58%"></i></div><span>58%</span></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">料源与调度平衡 <small>推荐</small></div>
+          <div class="panel-body">
+            <div class="dual-layout">
+              <div class="ring" style="--p:89%"><div><strong>89.1%</strong><span>利用率</span></div></div>
+              <div class="kv-list">
+                <div class="kv"><span>可用料源</span><strong>MS-04</strong></div>
+                <div class="kv"><span>优先装点</span><strong>CUT-A1</strong></div>
+                <div class="kv"><span>优先卸点</span><strong>FILL-B3</strong></div>
+                <div class="kv"><span>分流建议</span><strong>DP-03</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">设备运行状态 <small>实时</small></div>
+          <div class="panel-body">
+            <div class="device-grid">
+              <div class="device"><div class="device-icon"></div><span>挖掘机</span><strong>28/32</strong></div>
+              <div class="device"><div class="device-icon"></div><span>自卸车</span><strong>86/112</strong></div>
+              <div class="device"><div class="device-icon"></div><span>推土机</span><strong>16/20</strong></div>
+              <div class="device"><div class="device-icon"></div><span>压路机</span><strong>8/10</strong></div>
+            </div>
+          </div>
+        </section>`,
+      right: `
+        <section class="panel">
+          <div class="panel-head">土方风险预警 <small>更多</small></div>
+          <div class="panel-body">
+            <div class="alert-list" id="alertList"></div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">作业面监控画面 <small>实时</small></div>
+          <div class="panel-body">
+            <div class="video-grid">
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>EW-02 开挖面</span><span class="tag">在线</span></div></div>
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>CUT-A1 挖机引导</span><span class="tag">在线</span></div></div>
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>HAUL-06 运输线路</span><span class="tag">在线</span></div></div>
+              <div class="video-tile"><span class="play"></span><div class="video-label"><span>FILL-B3 填筑碾压</span><span class="tag warn">复核</span></div></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">土石方调度建议 <small>自动生成</small></div>
+          <div class="panel-body">
+            <div class="suggest-list">
+              <div class="suggest-item"><span class="level low">优</span><div class="item-main"><strong>EW-02 区域挖方充足</strong><span>建议优先调配至 FILL-B3</span></div><span class="tag">查看</span></div>
+              <div class="suggest-item"><span class="level mid">调</span><div class="item-main"><strong>DP-02 剩余容量 18%</strong><span>建议分流至 DP-03</span></div><span class="tag warn">调整</span></div>
+              <div class="suggest-item"><span class="level high">急</span><div class="item-main"><strong>HAUL-06 午后拥堵风险</strong><span>建议错峰运输 2 个班次</span></div><span class="tag warn">派单</span></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">填筑质量闭环 <small>压实 / 含水</small></div>
+          <div class="panel-body">
+            <div class="env-grid">
+              <div class="env-card"><span>覆盖率</span><strong>98.2%</strong></div>
+              <div class="env-card"><span>层厚</span><strong>23cm</strong></div>
+              <div class="env-card"><span>含水率</span><strong>7.8%</strong></div>
+              <div class="env-card"><span>弱碾格</span><strong>3</strong></div>
+              <div class="env-card"><span>返工闭环</span><strong>92%</strong></div>
+              <div class="env-card"><span>验收批次</span><strong>18</strong></div>
+            </div>
+          </div>
+        </section>`
+    };
+
+    const alerts = {
+      road: [
+        ["high", "RISK-07", "高边坡位移预警", "K18+300 右侧", "10:22"],
+        ["high", "SAFE-03", "高空作业围栏越界", "SG-02 桥台", "10:18"],
+        ["mid", "VH-088", "车辆超速待复核", "K27+300", "10:05"],
+        ["mid", "CAM-077", "摄像机遮挡", "K72+900", "09:58"],
+        ["low", "FIRE-03", "热成像巡检完成", "林区边界", "09:45"]
+      ],
+      earthwork: [
+        ["high", "EW-02", "边坡变形趋势抬升", "K23+150 右侧", "10:22"],
+        ["high", "DP-02", "弃渣场容量不足", "剩余 18%", "10:08"],
+        ["mid", "HAUL-06", "运输线路拥堵风险", "午后班次", "09:57"],
+        ["mid", "CUT-A1", "超欠挖局部复核", "开挖边线", "09:41"],
+        ["low", "FILL-B3", "压实覆盖率达标", "第 5 层", "09:26"]
+      ]
+    };
+
+    const sceneModes = {
+      overview: ["全景总览 · 道路主对象", "路基、桥隧、边坡、营地、车辆、视频、监测点一屏联动"],
+      video: ["视频监控 · AI 巡检", "重点摄像机、边缘识别、遮挡告警与视频派单叠加"],
+      people: ["人员安全 · 健康高空", "健康手环、定位围栏、高空作业、班组风险同步展示"],
+      vehicle: ["车辆管控 · 超速治理", "车载定位、雷达测速、运输线路与复核闭环联动"],
+      fire: ["森林防火 · 热成像", "热成像、烟火识别、气象站与巡检航线融合监测"],
+      earthOverview: ["土方总览 · 子界面", "开挖、运输、弃方、填筑、压实、验收统一到道路大屏"],
+      excavation: ["智能开挖 · 3D 引导", "设计面、实挖面、超欠挖、坡比复核与设备引导叠加"],
+      dispatch: ["智能调度 · 方量平衡", "料源点、装卸点、运输路线、车队排队和弃方容量联动"],
+      filling: ["智能填筑 · 质量闭环", "摊铺层厚、含水率、碾压遍数、连续压实覆盖率动态呈现"]
+    };
+
+    function fitStage() {
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      document.documentElement.style.setProperty("--scale", scale);
+      document.documentElement.style.setProperty("--stage-left", `${Math.max(0, (window.innerWidth - 1920 * scale) / 2)}px`);
+      document.documentElement.style.setProperty("--stage-top", `${Math.max(0, (window.innerHeight - 1080 * scale) / 2)}px`);
+    }
+
+    function setClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString("zh-CN", { hour12: false });
+      const date = now.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", weekday: "long" });
+      $("#clockTime").textContent = time;
+      $("#clockDate").textContent = date;
+    }
+
+    function renderPanels() {
+      $("#leftPanels").innerHTML = state.view === "earthwork" ? earthPanels.left : roadPanels.left;
+      $("#rightPanels").innerHTML = state.view === "earthwork" ? earthPanels.right : roadPanels.right;
+      renderAlerts();
+    }
+
+    function renderAlerts() {
+      const list = alerts[state.view].map((item, index) => {
+        const [level, code, title, place, time] = item;
+        const label = level === "high" ? "高" : level === "mid" ? "中" : "低";
+        return `
+          <button class="alert-item" data-alert="${index}">
+            <span class="level ${level}">${label}</span>
+            <span class="item-main"><strong>${code} ${title}</strong><span>${place}</span></span>
+            <span class="item-time">${time}</span>
+          </button>`;
+      }).join("");
+      const target = $("#alertList");
+      if (target) target.innerHTML = list;
+      $$(".alert-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          const data = alerts[state.view][Number(item.dataset.alert)];
+          updateSceneInfo(data[1], data[2] + "，位置：" + data[3] + "。已生成联动处置单并同步到现场负责人。", "风险", data[0] === "high" ? "高" : "中", data[4]);
+        });
+      });
+    }
+
+    function markerHtml(marker) {
+      return `
+        <button class="marker ${marker.type}" data-code="${marker.code}" style="left:${marker.x}%;top:${marker.y}%">
+          <b>${marker.code}</b>
+          <small>${marker.name}</small>
+        </button>`;
+    }
+
+    function haloHtml(marker, i) {
+      const haloType = marker.type === "amber" ? "amber" : marker.type === "blue" ? "blue" : "";
+      const width = state.view === "earthwork" ? 176 + (i % 2) * 24 : 138 + (i % 3) * 18;
+      return `<span class="zone-halo ${haloType}" style="left:${marker.x}%;top:${marker.y + 6}%;width:${width}px"></span>`;
+    }
+
+    function renderMarkers() {
+      state.markers = state.view === "earthwork" ? earthMarkers : roadMarkers;
+      $("#markers").innerHTML = state.markers.map(markerHtml).join("");
+      $("#halos").innerHTML = state.markers.filter((_, i) => i % 2 === 0 || state.view === "earthwork").map(haloHtml).join("");
+      $$(".marker").forEach((marker) => {
+        marker.addEventListener("click", () => {
+          $$(".marker").forEach((m) => m.classList.remove("active"));
+          marker.classList.add("active");
+          const data = state.markers.find((item) => item.code === marker.dataset.code);
+          if (data) updateSceneInfo(data.code + " " + data.name, data.desc, data.a, data.b, data.c);
+        });
+      });
+      const first = state.markers[0];
+      updateSceneInfo(first.code + " " + first.name, first.desc, first.a, first.b, first.c);
+      const firstButton = $(`.marker[data-code="${first.code}"]`);
+      if (firstButton) firstButton.classList.add("active");
+    }
+
+    function updateSceneInfo(title, desc, a, b, c) {
+      $("#sceneInfo").innerHTML = `
+        <h2>${title}</h2>
+        <p>${desc}</p>
+        <div class="mini-metrics">
+          <div>指标一<strong>${a}</strong></div>
+          <div>指标二<strong>${b}</strong></div>
+          <div>状态<strong>${c}</strong></div>
+        </div>`;
+    }
+
+    function setMode(view, mode) {
+      state.view = view;
+      state.mode = mode;
+      if (view === "earthwork") state.earthSub = mode === "earthOverview" ? state.earthSub : mode;
+      $("#dashboard").dataset.view = view;
+      $("#screenTitle").textContent = view === "earthwork" ? "道路智慧管理系统大屏 · 土石方子界面" : "道路智慧管理系统大屏";
+
+      $$(".module-nav button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.view === view && (view === "road" ? button.dataset.mode === mode : button.dataset.view === "earthwork"));
+      });
+      $$("#moduleStrip button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.view === view && (view === "road" ? button.dataset.mode === mode : button.dataset.view === "earthwork"));
+      });
+      $$("#earthTabs button").forEach((button) => button.classList.toggle("active", button.dataset.sub === state.earthSub));
+
+      const sceneKey = view === "earthwork" ? state.earthSub : mode;
+      $("#sceneModeTitle").textContent = sceneModes[sceneKey][0];
+      $("#sceneModeDesc").textContent = sceneModes[sceneKey][1];
+      $("#tickerText").textContent = view === "earthwork"
+        ? "系统提示：土石方智能管理已作为道路大屏子界面加载；EW-02 开挖、HAUL-06 调度、FILL-B3 填筑与 COMP-C2 压实数据实时联动。"
+        : "系统提示：RD-A07 全线链路稳定，SG-02 作业面完成班前健康打卡；K24+600 视频点位在线；VH-088 超速事件进入复核；FIRE-03 热成像巡检完成。";
+      renderPanels();
+      renderMarkers();
+    }
+
+    function bindInteractions() {
+      $$(".module-nav button, #moduleStrip button").forEach((button) => {
+        button.addEventListener("click", () => {
+          const view = button.dataset.view;
+          const mode = button.dataset.mode;
+          setMode(view, mode);
+        });
+      });
+      $$("#earthTabs button").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.earthSub = button.dataset.sub;
+          setMode("earthwork", state.earthSub);
+        });
+      });
+      $$(".vertical-tools button").forEach((button) => {
+        button.addEventListener("click", () => {
+          $$(".vertical-tools button").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+          const name = button.textContent.trim();
+          updateSceneInfo("GIS " + name + "工具", "当前工具已切换，可在三维场景中查看道路、土方、视频、监测点与风险图层。", "已启用", "1:2000", "正常");
+        });
+      });
+    }
+
+    function tickNumbers() {
+      const rand = (base, span, fixed = 0) => (base + (Math.random() - .5) * span).toFixed(fixed);
+      const setText = (id, value) => { const el = $("#" + id); if (el) el.textContent = value; };
+      setText("peopleCount", Math.round(rand(910, 18)) + "");
+      setText("deviceCount", Math.round(rand(362, 8)) + "");
+      setText("closeRate", Math.round(rand(94, 3)) + "%");
+      setText("netRate", rand(98.6, .6, 1) + "%");
+      setText("speedEvents", Math.max(4, Math.round(rand(7, 4))) + " 起");
+      setText("cutTotal", rand(238.45, .32, 2) + "万m³");
+      setText("fillTotal", rand(186.72, .26, 2) + "万m³");
+      setText("earthPlan", rand(72.4, .7, 1) + "%");
+      setText("earthUse", rand(89.1, .6, 1) + "%");
+      setText("dispatchTime", Math.round(rand(14, 3)) + "min");
+      $("#miniDevice").textContent = Math.round(rand(362, 9)) + " 在线";
+      $("#miniAlarm").textContent = Math.max(5, Math.round(rand(8, 4))) + " / " + Math.max(10, Math.round(rand(12, 3)));
+      $("#miniOnline").textContent = Math.round(rand(136, 5));
+      $("#miniReview").textContent = Math.max(3, Math.round(rand(5, 3))) + " / " + Math.max(5, Math.round(rand(7, 3)));
+      $("#miniQuality").textContent = rand(96.7, .5, 1) + "%";
+    }
+
+    const canvas = $("#terrainCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function syncCanvasSize() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const nextW = Math.max(1, Math.round(rect.width * dpr));
+      const nextH = Math.max(1, Math.round(rect.height * dpr));
+      if (canvas.width !== nextW || canvas.height !== nextH) {
+        canvas.width = nextW;
+        canvas.height = nextH;
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { w: rect.width, h: rect.height };
+    }
+
+    function drawOverlay() {
+      const { w, h } = syncCanvasSize();
+      state.t += .008;
+      state.frame += 1;
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+
+      drawAmbientParticles(w, h);
+      drawRoadPath(w, h);
+      drawVehicles(w, h);
+      drawSensorScans(w, h);
+      ctx.globalCompositeOperation = "source-over";
+      requestAnimationFrame(drawOverlay);
+    }
+
+    function pathPoints(w, h) {
+      const road = state.view === "earthwork"
+        ? [[.02,.86],[.16,.76],[.27,.68],[.40,.65],[.53,.58],[.64,.51],[.72,.40],[.83,.31],[.94,.23]]
+        : [[.02,.84],[.16,.75],[.28,.66],[.43,.63],[.56,.56],[.66,.50],[.73,.38],[.84,.30],[.94,.22]];
+      return road.map(([x, y]) => [x * w, y * h]);
+    }
+
+    function drawSmoothPath(points, stroke, width, dash = null, offset = 0) {
+      ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length - 1; i += 1) {
+        const xc = (points[i][0] + points[i + 1][0]) / 2;
+        const yc = (points[i][1] + points[i + 1][1]) / 2;
+        ctx.quadraticCurveTo(points[i][0], points[i][1], xc, yc);
+      }
+      ctx.quadraticCurveTo(points[points.length - 1][0], points[points.length - 1][1], points[points.length - 1][0], points[points.length - 1][1]);
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.setLineDash(dash || []);
+      ctx.lineDashOffset = offset;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.lineDashOffset = 0;
+    }
+
+    function drawRoadPath(w, h) {
+      const points = pathPoints(w, h);
+      const color = state.view === "earthwork" ? "53,240,161" : "54,231,255";
+      drawSmoothPath(points, `rgba(${color},.22)`, 30);
+      drawSmoothPath(points, `rgba(${color},.42)`, 14);
+      drawSmoothPath(points, "rgba(255,255,255,.76)", 2, [11, 16], -state.frame * .9);
+      drawSmoothPath(points, `rgba(${color},.92)`, 5, [24, 30], -state.frame * 1.8);
+
+      if (state.view === "earthwork") {
+        drawEarthworkPatches(w, h);
+      } else {
+        drawRoadFocusRings(w, h);
+      }
+    }
+
+    function drawEarthworkPatches(w, h) {
+      const patches = [
+        [.33, .68, "53,240,161"], [.55, .55, "53,240,161"], [.73, .44, "255,189,74"], [.62, .74, "138,124,255"]
+      ];
+      patches.forEach(([x, y, color], i) => {
+        ctx.save();
+        ctx.translate(x * w, y * h);
+        ctx.rotate(-0.32);
+        ctx.scale(1.8, .62);
+        ctx.beginPath();
+        ctx.arc(0, 0, 34 + i * 4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${color},.10)`;
+        ctx.strokeStyle = `rgba(${color},.78)`;
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+        ctx.setLineDash([10, 12]);
+        ctx.lineDashOffset = -state.frame * .45;
+        ctx.strokeStyle = `rgba(${color},.40)`;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+      });
+    }
+
+    function drawRoadFocusRings(w, h) {
+      const sites = [[.37,.62],[.58,.50],[.71,.35],[.82,.29]];
+      sites.forEach(([x, y], i) => {
+        const radius = 18 + ((state.frame + i * 12) % 80) * .55;
+        ctx.beginPath();
+        ctx.ellipse(x * w, y * h, radius * 1.45, radius * .48, -.32, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(54,231,255,${Math.max(.02, .26 - radius / 380)})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+    }
+
+    function pointAlong(points, progress) {
+      const scaled = progress * (points.length - 1);
+      const idx = Math.floor(scaled);
+      const frac = scaled - idx;
+      const a = points[idx];
+      const b = points[Math.min(idx + 1, points.length - 1)];
+      return [a[0] + (b[0] - a[0]) * frac, a[1] + (b[1] - a[1]) * frac];
+    }
+
+    function drawVehicles(w, h) {
+      const points = pathPoints(w, h);
+      const count = state.view === "earthwork" ? 10 : 7;
+      for (let i = 0; i < count; i += 1) {
+        const p = (state.t * (state.view === "earthwork" ? .24 : .18) + i / count) % 1;
+        const [x, y] = pointAlong(points, p);
+        const color = state.view === "earthwork" && i % 3 === 0 ? "#ffbd4a" : "#36e7ff";
+        ctx.save();
+        ctx.translate(x, y - 6);
+        ctx.rotate(-0.18 + Math.sin(state.t * 3 + i) * .08);
+        ctx.fillStyle = color;
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = color;
+        ctx.fillRect(-8, -4, 16, 8);
+        ctx.beginPath();
+        ctx.arc(10, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = .35;
+        ctx.fillRect(-28, -2, 20, 4);
+        ctx.restore();
+      }
+    }
+
+    function drawSensorScans(w, h) {
+      const scans = state.view === "earthwork"
+        ? [[.35,.67,"53,240,161"], [.55,.52,"53,240,161"], [.73,.43,"255,189,74"], [.63,.74,"138,124,255"]]
+        : [[.37,.62,"255,189,74"], [.58,.47,"54,231,255"], [.72,.34,"54,231,255"], [.82,.32,"53,240,161"]];
+      scans.forEach(([x, y, color], i) => {
+        const cx = x * w;
+        const cy = y * h;
+        const base = (state.frame * 1.2 + i * 26) % 120;
+        for (let r = 0; r < 3; r += 1) {
+          const radius = 16 + ((base + r * 38) % 120) * .55;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(${color},${Math.max(.03, .34 - radius / 210)})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+        const sweep = state.t * 2.4 + i;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, 56, sweep, sweep + .42);
+        ctx.closePath();
+        ctx.fillStyle = `rgba(${color},.08)`;
+        ctx.fill();
+      });
+    }
+
+    function drawAmbientParticles(w, h) {
+      for (let i = 0; i < 56; i += 1) {
+        const x = (i * 89 + state.frame * .9) % w;
+        const y = 80 + ((i * 53) % Math.max(180, h - 150));
+        const alpha = .05 + ((i + state.frame * .03) % 1) * .12;
+        ctx.fillStyle = `rgba(54,231,255,${alpha})`;
+        ctx.fillRect(x, y, 1.4, 1.4);
+      }
+    }
+
+    function init() {
+      fitStage();
+      setClock();
+      bindInteractions();
+      setMode("road", "overview");
+      drawOverlay();
+      setInterval(setClock, 1000);
+      setInterval(tickNumbers, 2600);
+    }
+
+    window.addEventListener("resize", fitStage);
+    init();
+  </script>
+</body>
+</html>
