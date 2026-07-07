@@ -4,5 +4,5 @@ GitHub Pages 上传方式：
 
 1. 将本目录下的全部内容上传到仓库根目录，或上传到 `docs/` 后在 Pages 设置中选择 `docs` 目录。
 2. 入口文件为 `index.html`。
-3. 图片资源在 `assets/`，字体资源在 `_shared/fonts/`，均为相对路径。
+3. 图片资源在 `assets/`，字体资源在 `shared/fonts/`，均为相对路径。
 4. 不依赖本地 `file:///` 路径，可直接作为静态站点发布。
