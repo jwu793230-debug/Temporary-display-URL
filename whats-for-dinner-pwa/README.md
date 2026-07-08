@@ -30,6 +30,7 @@ http://127.0.0.1:8788/index.html
 - 业务数据：`localStorage` 的 `wfd.state.v1`。
 - 主题习惯：`localStorage` 的 `wfd.theme`，只保存在本机。
 - GitHub Token：`localStorage` 的 `wfd.github.token`，不会进入导出的 JSON。
+- GitHub 同步默认仓库：`jwu793230-debug/Temporary-display-URL`。
 - GitHub 同步文件默认路径：`whats-for-dinner-pwa/data/whats-for-dinner.json`。
 
 ## 初始家庭默认

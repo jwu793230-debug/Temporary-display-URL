@@ -1,9 +1,9 @@
-const CACHE_NAME = "wfd-pwa-v3";
+const CACHE_NAME = "wfd-pwa-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=3",
-  "./app.js?v=3",
+  "./styles.css?v=4",
+  "./app.js?v=4",
   "./manifest.json",
   "./assets/icon.svg",
   "./assets/kitchen-hero.png"

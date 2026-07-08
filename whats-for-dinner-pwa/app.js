@@ -7,6 +7,12 @@
   const DEVICE_KEY = "wfd.device.v1";
   const ROUTES = ["home", "kitchen", "family", "plans", "sync"];
   const CURRENT_STATE_VERSION = "local-pwa-v2-meal-defaults";
+  const defaultSyncConfig = {
+    owner: "jwu793230-debug",
+    repo: "Temporary-display-URL",
+    branch: "main",
+    path: "whats-for-dinner-pwa/data/whats-for-dinner.json"
+  };
 
   const mealTypes = [
     { id: "breakfast", label: "早餐" },
@@ -291,10 +297,7 @@
       activity: [],
       pendingEvents: [],
       sync: {
-        owner: "",
-        repo: "",
-        branch: "main",
-        path: "whats-for-dinner-pwa/data/whats-for-dinner.json",
+        ...defaultSyncConfig,
         remoteSha: "",
         lastPulledAt: "",
         lastPushedAt: "",
@@ -344,6 +347,7 @@
     next.activity = Array.isArray(next.activity) ? next.activity.slice(0, 80) : [];
     next.pendingEvents = Array.isArray(next.pendingEvents) ? next.pendingEvents.slice(0, 80) : [];
     next.sync = { ...base.sync, ...(next.sync || {}) };
+    next.sync = normalizeSyncConfig(next.sync);
     delete next.sync.token;
     next.route = ROUTES.includes(next.route) ? next.route : "home";
     next.selectedMeal = mealTypes.some((meal) => meal.id === next.selectedMeal) ? next.selectedMeal : "dinner";
@@ -419,6 +423,16 @@
       area: item.area || "常温",
       expiresAt: item.expiresAt || "",
       updatedAt: item.updatedAt || new Date().toISOString()
+    };
+  }
+
+  function normalizeSyncConfig(sync) {
+    return {
+      ...sync,
+      owner: String(sync.owner || defaultSyncConfig.owner).trim(),
+      repo: String(sync.repo || defaultSyncConfig.repo).trim(),
+      branch: String(sync.branch || defaultSyncConfig.branch).trim(),
+      path: String(sync.path || defaultSyncConfig.path).trim()
     };
   }
 
@@ -762,43 +776,43 @@
 
   function renderSync() {
     const token = localStorage.getItem(TOKEN_KEY) || "";
-    const sync = state.sync;
+    const sync = normalizeSyncConfig(state.sync);
     const progress = state.pendingEvents.length ? 68 : 100;
     return `
       <div class="view-head">
         <div>
           <h1 class="view-title">GitHub 同步</h1>
-          <p class="view-subtitle">前端部署在 GitHub Pages，家庭数据写入一个私有仓库 JSON 文件；Token 只保存在当前浏览器。</p>
+          <p class="view-subtitle">GitHub 用户名、仓库、分支和数据路径已经默认填好；第一次只需要粘贴 token 并保存。Token 只保存在当前浏览器。</p>
         </div>
       </div>
 
       <section class="grid cols-3">
         ${metricCard("待同步", `${state.pendingEvents.length} 条`, state.pendingEvents.length ? "本机有新变化" : "没有待推送变化", "yellow")}
         ${metricCard("最近推送", sync.lastPushedAt ? formatDate(sync.lastPushedAt) : "未推送", sync.lastSyncedBy ? `设备 ${sync.lastSyncedBy.slice(-6)}` : "本地演示数据", "blue")}
-        ${metricCard("远端文件", sync.remoteSha ? sync.remoteSha.slice(0, 7) : "未连接", sync.path || "whats-for-dinner-pwa/data/whats-for-dinner.json", "green")}
+        ${metricCard("远端文件", sync.remoteSha ? sync.remoteSha.slice(0, 7) : "未连接", sync.path, "green")}
       </section>
 
       <form class="form-card sync-box" data-form="sync">
         <div class="form-grid">
           <div class="field">
             <label>Owner</label>
-            <input name="owner" value="${escapeAttr(sync.owner)}" placeholder="GitHub 用户名">
+            <input name="owner" value="${escapeAttr(sync.owner)}">
           </div>
           <div class="field">
             <label>Repo</label>
-            <input name="repo" value="${escapeAttr(sync.repo)}" placeholder="私有仓库名">
+            <input name="repo" value="${escapeAttr(sync.repo)}">
           </div>
           <div class="field">
             <label>Branch</label>
-            <input name="branch" value="${escapeAttr(sync.branch || "main")}">
+            <input name="branch" value="${escapeAttr(sync.branch)}">
           </div>
           <div class="field">
             <label>Data Path</label>
-            <input name="path" value="${escapeAttr(sync.path || "whats-for-dinner-pwa/data/whats-for-dinner.json")}">
+            <input name="path" value="${escapeAttr(sync.path)}">
           </div>
           <div class="field full">
             <label>Fine-grained Token</label>
-            <input name="token" type="password" autocomplete="off" value="${escapeAttr(token)}" placeholder="只保存在本机浏览器">
+            <input name="token" type="password" autocomplete="off" value="${escapeAttr(token)}" placeholder="这里粘贴一次 token">
           </div>
           <div class="field full">
             <button class="btn green" type="submit">保存同步配置</button>
@@ -1030,10 +1044,10 @@
 
   function saveSyncForm(form) {
     const data = Object.fromEntries(new FormData(form).entries());
-    state.sync.owner = String(data.owner || "").trim();
-    state.sync.repo = String(data.repo || "").trim();
-    state.sync.branch = String(data.branch || "main").trim();
-    state.sync.path = String(data.path || "whats-for-dinner-pwa/data/whats-for-dinner.json").trim();
+    state.sync.owner = String(data.owner || defaultSyncConfig.owner).trim();
+    state.sync.repo = String(data.repo || defaultSyncConfig.repo).trim();
+    state.sync.branch = String(data.branch || defaultSyncConfig.branch).trim();
+    state.sync.path = String(data.path || defaultSyncConfig.path).trim();
     localStorage.setItem(TOKEN_KEY, String(data.token || "").trim());
     recordChange("sync_config_saved", "保存 GitHub 同步配置", {
       owner: state.sync.owner,
@@ -1227,11 +1241,12 @@
   }
 
   function readGithubConfig() {
+    const sync = normalizeSyncConfig(state.sync);
     return {
-      owner: state.sync.owner.trim(),
-      repo: state.sync.repo.trim(),
-      branch: (state.sync.branch || "main").trim(),
-      path: (state.sync.path || "whats-for-dinner-pwa/data/whats-for-dinner.json").trim(),
+      owner: sync.owner,
+      repo: sync.repo,
+      branch: sync.branch,
+      path: sync.path,
       token: (localStorage.getItem(TOKEN_KEY) || "").trim()
     };
   }
