@@ -1,0 +1,19 @@
+{
+  "name": "What’s-for-dinner 家庭菜单",
+  "short_name": "Dinner PWA",
+  "description": "一个家庭自用的库存、餐单和做饭协作 PWA。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff9ec",
+  "theme_color": "#ffc928",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
