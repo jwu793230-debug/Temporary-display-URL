@@ -283,6 +283,9 @@
       color: #d7f6ff;
       clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%);
       cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       transition: transform .2s ease, border-color .2s ease, background .2s ease;
     }
 
@@ -478,6 +481,9 @@
       color: #fff;
       font-size: 20px;
       line-height: 22px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .scene-title-card span {
@@ -485,6 +491,9 @@
       margin-top: 3px;
       color: #9edfff;
       font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .sub-tabs {
@@ -507,6 +516,7 @@
       color: #bfeeff;
       border-radius: 4px;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .sub-tabs button.active {
@@ -665,6 +675,7 @@
     .marker {
       position: absolute;
       min-width: 86px;
+      max-width: 132px;
       min-height: 34px;
       border: 1px solid rgba(54, 231, 255, .55);
       background: rgba(0, 54, 92, .72);
@@ -735,6 +746,9 @@
       font-size: 17px;
       line-height: 18px;
       font-family: Consolas, "Microsoft YaHei", monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .marker small {
@@ -743,6 +757,8 @@
       color: #bcefff;
       font-size: 12px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .zone-halo {
@@ -824,8 +840,12 @@
       display: block;
       margin-top: 2px;
       color: #fff;
-      font-size: 18px;
+      font-size: 17px;
+      line-height: 19px;
       font-family: Consolas, "Microsoft YaHei", monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .module-strip {
@@ -844,12 +864,17 @@
 
     .module-strip button {
       position: relative;
+      min-width: 0;
       border: 0;
       border-right: 1px solid rgba(54, 231, 255, .18);
       background: transparent;
       color: #b9e9f8;
       cursor: pointer;
       padding-top: 15px;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .module-strip button:last-child { border-right: 0; }
@@ -891,6 +916,7 @@
 
     .kpi {
       min-width: 0;
+      overflow: hidden;
       border: 1px solid rgba(54, 231, 255, .18);
       background: rgba(0, 99, 160, .12);
       border-radius: 4px;
@@ -911,12 +937,27 @@
       font-size: 26px;
       line-height: 28px;
       font-family: Consolas, "Microsoft YaHei", monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
     }
 
     .kpi small {
       color: #9fdfff;
       font-size: 12px;
       margin-left: 3px;
+      white-space: nowrap;
+    }
+
+    .dashboard[data-view="earthwork"] .kpi strong {
+      font-size: 20px;
+      line-height: 23px;
+      margin-top: 5px;
+    }
+
+    .dashboard[data-view="earthwork"] .kpi small {
+      font-size: 10px;
+      margin-left: 2px;
     }
 
     .sparkline {
@@ -957,6 +998,18 @@
       color: #fff;
       font-family: Consolas, "Microsoft YaHei", monospace;
       font-size: 14px;
+    }
+
+    .progress-row span,
+    .progress-row strong {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .progress-row span:last-child {
+      text-align: right;
     }
 
     .bar {
@@ -1094,6 +1147,12 @@
       cursor: pointer;
     }
 
+    .alert-item > *,
+    .suggest-item > *,
+    .event-item > * {
+      min-width: 0;
+    }
+
     .suggest-item { grid-template-columns: 28px 1fr 58px; min-height: 46px; }
     .event-item { grid-template-columns: 70px 1fr 68px; min-height: 38px; cursor: default; }
 
@@ -1144,6 +1203,7 @@
       color: #b3e8f8;
       font-family: Consolas, "Microsoft YaHei", monospace;
       font-size: 12px;
+      white-space: nowrap;
     }
 
     .video-grid {
@@ -1223,10 +1283,18 @@
       font-size: 12px;
     }
 
+    .video-label span:first-child {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .tag {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex: 0 0 auto;
       min-width: 40px;
       height: 20px;
       border-radius: 3px;
@@ -1358,9 +1426,18 @@
       font-size: 13px;
     }
 
+    .mini-row span {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .mini-row strong {
+      flex: 0 0 auto;
       color: #fff;
       font-family: Consolas, "Microsoft YaHei", monospace;
+      white-space: nowrap;
     }
 
     .ticker {
@@ -1536,7 +1613,7 @@
     };
 
     const roadMarkers = [
-      { code: "RD-A07", type: "blue", x: 58, y: 46, name: "道路主线", desc: "桥隧、边坡与路基监测融合，当前交通组织平稳。", a: "98.6%", b: "12", c: "94%" },
+      { code: "RD-A07", type: "blue", x: 51, y: 58, name: "道路主线", desc: "桥隧、边坡与路基监测融合，当前交通组织平稳。", a: "98.6%", b: "12", c: "94%" },
       { code: "K18+300", type: "blue", x: 72, y: 24, name: "高边坡监测", desc: "GNSS、裂缝计、雨量与视频联动，位移趋势处于可控范围。", a: "0.8mm", b: "3级", c: "正常" },
       { code: "SG-02", type: "amber", x: 37, y: 62, name: "作业面联动", desc: "人员定位、健康监测、高空作业围栏与班前教育记录已汇聚。", a: "128人", b: "4处", c: "92%" },
       { code: "TUN-03", type: "violet", x: 25, y: 72, name: "隧道口管控", desc: "门禁、视频、车辆排队与有害气体监测保持在线。", a: "16台", b: "2项", c: "稳定" },
@@ -1545,7 +1622,7 @@
     ];
 
     const earthMarkers = [
-      { code: "EW-02", type: "green", x: 55, y: 52, name: "核心开挖区", desc: "3D 引导、坡比复核、超欠挖分析与方量核验同步更新。", a: "48.36万m³", b: "81%", c: "低风险" },
+      { code: "EW-02", type: "green", x: 50, y: 57, name: "核心开挖区", desc: "3D 引导、坡比复核、超欠挖分析与方量核验同步更新。", a: "48.36万m³", b: "81%", c: "低风险" },
       { code: "CUT-A1", type: "green", x: 35, y: 67, name: "智能开挖区", desc: "挖机引导面与设计面偏差控制在阈值内，待复核边线 2 条。", a: "+8.65", b: "2条", c: "复核" },
       { code: "HAUL-06", type: "blue", x: 48, y: 64, name: "运输路线", desc: "车辆排队、料源点、装卸点与弃方点联动，当前无拥堵。", a: "86辆", b: "14min", c: "畅通" },
       { code: "DP-02", type: "amber", x: 30, y: 75, name: "弃渣调配区", desc: "剩余容量 18%，建议分流至 DP-03 并调整 2 个车队班次。", a: "18%", b: "2队", c: "建议" },
@@ -1772,7 +1849,7 @@
       people: ["人员安全 · 健康高空", "健康手环、定位围栏、高空作业、班组风险同步展示"],
       vehicle: ["车辆管控 · 超速治理", "车载定位、雷达测速、运输线路与复核闭环联动"],
       fire: ["森林防火 · 热成像", "热成像、烟火识别、气象站与巡检航线融合监测"],
-      earthOverview: ["土方总览 · 子界面", "开挖、运输、弃方、填筑、压实、验收统一到道路大屏"],
+      earthOverview: ["土方总览 · 智能管理", "开挖、运输、弃方、填筑、压实、验收统一到道路大屏"],
       excavation: ["智能开挖 · 3D 引导", "设计面、实挖面、超欠挖、坡比复核与设备引导叠加"],
       dispatch: ["智能调度 · 方量平衡", "料源点、装卸点、运输路线、车队排队和弃方容量联动"],
       filling: ["智能填筑 · 质量闭环", "摊铺层厚、含水率、碾压遍数、连续压实覆盖率动态呈现"]
@@ -1868,7 +1945,7 @@
       state.mode = mode;
       if (view === "earthwork") state.earthSub = mode === "earthOverview" ? state.earthSub : mode;
       $("#dashboard").dataset.view = view;
-      $("#screenTitle").textContent = view === "earthwork" ? "道路智慧管理系统大屏 · 土石方子界面" : "道路智慧管理系统大屏";
+      $("#screenTitle").textContent = view === "earthwork" ? "道路智慧管理系统大屏 · 土石方智能管理" : "道路智慧管理系统大屏";
 
       $$(".module-nav button").forEach((button) => {
         button.classList.toggle("active", button.dataset.view === view && (view === "road" ? button.dataset.mode === mode : button.dataset.view === "earthwork"));
@@ -1882,7 +1959,7 @@
       $("#sceneModeTitle").textContent = sceneModes[sceneKey][0];
       $("#sceneModeDesc").textContent = sceneModes[sceneKey][1];
       $("#tickerText").textContent = view === "earthwork"
-        ? "系统提示：土石方智能管理已作为道路大屏子界面加载；EW-02 开挖、HAUL-06 调度、FILL-B3 填筑与 COMP-C2 压实数据实时联动。"
+        ? "系统提示：土石方智能管理已加载；EW-02 开挖、HAUL-06 调度、FILL-B3 填筑与 COMP-C2 压实数据实时联动。"
         : "系统提示：RD-A07 全线链路稳定，SG-02 作业面完成班前健康打卡；K24+600 视频点位在线；VH-088 超速事件进入复核；FIRE-03 热成像巡检完成。";
       renderPanels();
       renderMarkers();
