@@ -1,0 +1,290 @@
+{
+  "version": "local-pwa-v2-meal-defaults",
+  "route": "sync",
+  "selectedMeal": "dinner",
+  "selectedParticipants": [
+    "lulu",
+    "lumeier",
+    "tuantuan"
+  ],
+  "mealDefaults": {
+    "breakfast": [
+      "lumeier",
+      "tuantuan"
+    ],
+    "lunch": [
+      "lumeier"
+    ],
+    "dinner": [
+      "lulu",
+      "lumeier",
+      "tuantuan"
+    ],
+    "snack": [
+      "lumeier",
+      "tuantuan"
+    ]
+  },
+  "family": [
+    {
+      "id": "lulu",
+      "name": "噜噜",
+      "role": "家庭成员",
+      "prefer": "玉米、牛肉、鸡蛋、高蛋白",
+      "avoid": "重油重盐",
+      "defaultParticipant": false
+    },
+    {
+      "id": "lumeier",
+      "name": "噜妹儿",
+      "role": "家庭成员",
+      "prefer": "少油、蔬菜多一点、汤菜",
+      "avoid": "太辣",
+      "defaultParticipant": false
+    },
+    {
+      "id": "tuantuan",
+      "name": "团团",
+      "role": "家庭成员",
+      "prefer": "鸡蛋、番茄、面条、口味温和",
+      "avoid": "辣椒、盐",
+      "defaultParticipant": false
+    }
+  ],
+  "inventory": [
+    {
+      "id": "item_7abkk6v_mrbyaihl",
+      "name": "番茄",
+      "qty": 4,
+      "unit": "个",
+      "category": "蔬菜",
+      "area": "冷藏",
+      "expiresAt": "2026-07-10",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_3nv8te3_mrbyaihl",
+      "name": "鸡蛋",
+      "qty": 8,
+      "unit": "个",
+      "category": "肉蛋",
+      "area": "冷藏",
+      "expiresAt": "2026-07-16",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_yxihkyn_mrbyaihl",
+      "name": "牛肉",
+      "qty": 380,
+      "unit": "克",
+      "category": "肉蛋",
+      "area": "冷冻",
+      "expiresAt": "2026-07-18",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_jyp0srq_mrbyaihl",
+      "name": "西兰花",
+      "qty": 1,
+      "unit": "颗",
+      "category": "蔬菜",
+      "area": "冷藏",
+      "expiresAt": "2026-07-11",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_pszw9nf_mrbyaihl",
+      "name": "娃娃菜",
+      "qty": 2,
+      "unit": "颗",
+      "category": "蔬菜",
+      "area": "冷藏",
+      "expiresAt": "2026-07-13",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_trj3tf5_mrbyaihl",
+      "name": "米饭",
+      "qty": 3,
+      "unit": "份",
+      "category": "主食",
+      "area": "冷藏",
+      "expiresAt": "2026-07-09",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_l2p9anj_mrbyaihl",
+      "name": "面条",
+      "qty": 4,
+      "unit": "份",
+      "category": "主食",
+      "area": "常温",
+      "expiresAt": "2026-08-07",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_10rqshz_mrbyaihl",
+      "name": "肉丸",
+      "qty": 10,
+      "unit": "个",
+      "category": "肉蛋",
+      "area": "冷冻",
+      "expiresAt": "2026-07-22",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_avx73ks_mrbyaihl",
+      "name": "青菜",
+      "qty": 1,
+      "unit": "把",
+      "category": "蔬菜",
+      "area": "冷藏",
+      "expiresAt": "2026-07-10",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_r7fwyeu_mrbyaihl",
+      "name": "香蕉",
+      "qty": 3,
+      "unit": "根",
+      "category": "水果",
+      "area": "厨房台面",
+      "expiresAt": "2026-07-12",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    },
+    {
+      "id": "item_u4a0qg1_mrbyaihl",
+      "name": "酸奶",
+      "qty": 2,
+      "unit": "盒",
+      "category": "水果",
+      "area": "冷藏",
+      "expiresAt": "2026-07-14",
+      "updatedAt": "2026-07-08T10:44:18.585Z"
+    }
+  ],
+  "recommendations": [],
+  "selectedDishes": [],
+  "plans": [],
+  "logs": [],
+  "activity": [
+    {
+      "id": "evt_cq4o928_mrbyivyh",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "jwu793230-debug",
+        "repo": "Temporary-display-URL",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:50:49.289Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_udmwmgr_mrbyinqu",
+      "type": "family_updated",
+      "label": "更新成员：团团",
+      "payload": {
+        "memberId": "tuantuan"
+      },
+      "at": "2026-07-08T10:50:38.646Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_h4rn4el_mrbyi3gk",
+      "type": "family_updated",
+      "label": "更新成员：噜噜",
+      "payload": {
+        "memberId": "lulu"
+      },
+      "at": "2026-07-08T10:50:12.356Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_lhtulue_mrbyg2bz",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "",
+        "repo": "",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:48:37.583Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_re4jp7f_mrbyg27t",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "",
+        "repo": "",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:48:37.433Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_rip7b3u_mrbyg23c",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "",
+        "repo": "",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:48:37.272Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_9uob9kn_mrbyg1hk",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "",
+        "repo": "",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:48:36.488Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_b8mxtkv_mrbyc02q",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "",
+        "repo": "",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:45:28.034Z",
+      "deviceId": "device_tswm5e5b"
+    },
+    {
+      "id": "evt_97d6p9j_mrbybz1u",
+      "type": "sync_config_saved",
+      "label": "保存 GitHub 同步配置",
+      "payload": {
+        "owner": "",
+        "repo": "",
+        "path": "whats-for-dinner-pwa/data/whats-for-dinner.json"
+      },
+      "at": "2026-07-08T10:45:26.706Z",
+      "deviceId": "device_tswm5e5b"
+    }
+  ],
+  "pendingEvents": [],
+  "sync": {
+    "owner": "jwu793230-debug",
+    "repo": "Temporary-display-URL",
+    "branch": "main",
+    "path": "whats-for-dinner-pwa/data/whats-for-dinner.json",
+    "remoteSha": "",
+    "lastPulledAt": "",
+    "lastPushedAt": "2026-07-08T10:50:53.244Z",
+    "lastSyncedBy": "device_tswm5e5b"
+  },
+  "createdAt": "2026-07-08T10:44:18.581Z",
+  "updatedAt": "2026-07-08T10:50:49.289Z",
+  "exportedAt": "2026-07-08T10:50:53.245Z"
+}
