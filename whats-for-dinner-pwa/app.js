@@ -294,7 +294,7 @@
         owner: "",
         repo: "",
         branch: "main",
-        path: "data/whats-for-dinner.json",
+        path: "whats-for-dinner-pwa/data/whats-for-dinner.json",
         remoteSha: "",
         lastPulledAt: "",
         lastPushedAt: "",
@@ -775,7 +775,7 @@
       <section class="grid cols-3">
         ${metricCard("待同步", `${state.pendingEvents.length} 条`, state.pendingEvents.length ? "本机有新变化" : "没有待推送变化", "yellow")}
         ${metricCard("最近推送", sync.lastPushedAt ? formatDate(sync.lastPushedAt) : "未推送", sync.lastSyncedBy ? `设备 ${sync.lastSyncedBy.slice(-6)}` : "本地演示数据", "blue")}
-        ${metricCard("远端文件", sync.remoteSha ? sync.remoteSha.slice(0, 7) : "未连接", sync.path || "data/whats-for-dinner.json", "green")}
+        ${metricCard("远端文件", sync.remoteSha ? sync.remoteSha.slice(0, 7) : "未连接", sync.path || "whats-for-dinner-pwa/data/whats-for-dinner.json", "green")}
       </section>
 
       <form class="form-card sync-box" data-form="sync">
@@ -794,7 +794,7 @@
           </div>
           <div class="field">
             <label>Data Path</label>
-            <input name="path" value="${escapeAttr(sync.path || "data/whats-for-dinner.json")}">
+            <input name="path" value="${escapeAttr(sync.path || "whats-for-dinner-pwa/data/whats-for-dinner.json")}">
           </div>
           <div class="field full">
             <label>Fine-grained Token</label>
@@ -1033,7 +1033,7 @@
     state.sync.owner = String(data.owner || "").trim();
     state.sync.repo = String(data.repo || "").trim();
     state.sync.branch = String(data.branch || "main").trim();
-    state.sync.path = String(data.path || "data/whats-for-dinner.json").trim();
+    state.sync.path = String(data.path || "whats-for-dinner-pwa/data/whats-for-dinner.json").trim();
     localStorage.setItem(TOKEN_KEY, String(data.token || "").trim());
     recordChange("sync_config_saved", "保存 GitHub 同步配置", {
       owner: state.sync.owner,
@@ -1231,7 +1231,7 @@
       owner: state.sync.owner.trim(),
       repo: state.sync.repo.trim(),
       branch: (state.sync.branch || "main").trim(),
-      path: (state.sync.path || "data/whats-for-dinner.json").trim(),
+      path: (state.sync.path || "whats-for-dinner-pwa/data/whats-for-dinner.json").trim(),
       token: (localStorage.getItem(TOKEN_KEY) || "").trim()
     };
   }
