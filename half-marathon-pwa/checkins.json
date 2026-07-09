@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "half-marathon-pwa",
-  "updatedAt": "2026-07-06T23:43:08.991Z",
+  "updatedAt": "2026-07-09T00:44:53.244Z",
   "records": {
     "2026-06-27": {
       "actualDistance": "3.01",
@@ -53,13 +53,21 @@
     },
     "2026-07-06": {
       "activityType": "run",
-      "updatedAt": "2026-07-06T07:54:38.245Z"
+      "updatedAt": "2026-07-06T23:44:22.409Z",
+      "status": "missed",
+      "note": "休息了"
     },
     "2026-07-07": {
       "actualDistance": "3.77",
-      "updatedAt": "2026-07-06T23:43:08.324Z",
+      "updatedAt": "2026-07-06T23:44:11.923Z",
       "durationDone": "00:30:00",
-      "rpe": "4"
+      "rpe": "4",
+      "note": "太热了，跑步过程还挺爽，就是太热了。\n平均心率155。体感略累。",
+      "status": "done"
+    },
+    "2026-07-08": {
+      "status": "missed",
+      "updatedAt": "2026-07-09T00:44:52.780Z"
     }
   }
 }
