@@ -256,24 +256,24 @@ window.TRAINING_PLAN = [
     "week": "第3周",
     "weekday": "周二",
     "start": "06:10",
-    "category": "短质量课",
-    "content": "30分钟内：慢跑热身8分钟 + 轻快跑1分钟x6组，组间慢跑1分钟 + 慢跑冷身5分钟。",
-    "duration": "28-30分钟",
-    "distance": 4.0,
-    "intensity": "快段7'00\"-7'20\"/km",
-    "reminder": "动作轻快但不冲刺；如果前两天疲劳，就改轻松跑3.5km。"
+    "category": "恢复跑",
+    "content": "30分钟内：先快走3分钟；膝、踝无痛再慢跑3-3.5km，全程能说完整句子。任何疼痛改为快走20分钟。",
+    "duration": "25-30分钟",
+    "distance": 3.5,
+    "intensity": "8'20\"-9'10\"/km",
+    "reminder": "本周不做快段；跑中或跑后疼痛加重就结束。"
   },
   {
     "date": "2026-07-15",
     "week": "第3周",
     "weekday": "周三",
     "start": "21:00",
-    "category": "力量",
-    "content": "20-25分钟力量：深蹲、箭步蹲、臀桥、提踵、平板支撑，各2组；结束后拉伸小腿和臀部。",
-    "duration": "20-25分钟",
+    "category": "轻力量",
+    "content": "15-20分钟轻力量：臀桥、蚌式开合、鸟狗、平板支撑，各2组；膝踝有痛时不做深蹲、箭步蹲、跳跃。",
+    "duration": "15-20分钟",
     "distance": 0.0,
-    "intensity": "RPE 5-6",
-    "reminder": "控制在30分钟内，不练到酸爆。"
+    "intensity": "RPE 3-4",
+    "reminder": "只做不诱发疼痛的动作；结束后轻柔放松，不练到酸。"
   },
   {
     "date": "2026-07-16",
@@ -304,24 +304,24 @@ window.TRAINING_PLAN = [
     "week": "第3周",
     "weekday": "周六",
     "start": "07:30",
-    "category": "轻松跑",
-    "content": "轻松跑4km；轻松收，不加速。",
-    "duration": "32-36分钟",
-    "distance": 4.0,
-    "intensity": "8'00\"-8'45\"/km",
-    "reminder": "周日长距离前一天保持松。"
+    "category": "恢复跑",
+    "content": "30分钟内：膝踝无痛时轻松跑3km；有任何不适，改为平路散步20-30分钟。",
+    "duration": "25-30分钟",
+    "distance": 3.0,
+    "intensity": "8'20\"-9'10\"/km",
+    "reminder": "本周末不安排骑行；不以运动量补偿上周。"
   },
   {
     "date": "2026-07-19",
     "week": "第3周",
     "weekday": "周日",
     "start": "07:30",
-    "category": "长距离",
-    "content": "长距离10-11km；前2km慢热身，中段稳定，最后1km不冲。",
-    "duration": "80-95分钟",
-    "distance": 10.5,
-    "intensity": "7'50\"-8'40\"/km",
-    "reminder": "如果心率飘高或体感累，10km即可收。"
+    "category": "恢复长跑",
+    "content": "长距离7km；仅在周二、周四和周六都无痛且体感轻松时，最多8km。前2km慢热身，全程能聊天，最后不加速。",
+    "duration": "56-72分钟",
+    "distance": 7.0,
+    "intensity": "8'20\"-9'10\"/km",
+    "reminder": "膝踝任何不适就改散步或结束；本周不补上周跑量。"
   },
   {
     "date": "2026-07-20",
