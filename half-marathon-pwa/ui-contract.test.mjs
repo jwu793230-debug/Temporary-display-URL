@@ -5,6 +5,11 @@ const app = readFileSync(new URL("./app.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("./styles.css", import.meta.url), "utf8");
 
 assert.match(app, /activeTab:\s*"calendar"/, "calendar stays as the default tab");
+assert.match(
+  app,
+  /function isGitHubVersionConflict\([\s\S]*?error\?\.status === 409[\s\S]*?error\?\.status === 422[\s\S]*?does not match/i,
+  "GitHub content SHA mismatches returned as 422 are retried as version conflicts"
+);
 assert.doesNotMatch(app, /tabButton\("today"/, "bottom navigation should not include 今日");
 assert.match(app, /tabButton\("calendar",\s*"日历"\)/, "calendar tab remains");
 assert.match(app, /tabButton\("plan",\s*"计划"\)/, "plan tab remains");
