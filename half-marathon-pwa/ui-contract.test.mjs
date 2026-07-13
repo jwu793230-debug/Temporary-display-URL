@@ -1,10 +1,34 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 
 const app = readFileSync(new URL("./app.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("./styles.css", import.meta.url), "utf8");
+const planData = readFileSync(new URL("./plan-data.js", import.meta.url), "utf8");
+const sw = readFileSync(new URL("./sw.js", import.meta.url), "utf8");
+const planContext = { window: {} };
+runInNewContext(planData, planContext);
+const planByDate = new Map(planContext.window.TRAINING_PLAN.map((item) => [item.date, item]));
+const july14 = planByDate.get("2026-07-14");
+const july18 = planByDate.get("2026-07-18");
+const july19 = planByDate.get("2026-07-19");
 
 assert.match(app, /activeTab:\s*"calendar"/, "calendar stays as the default tab");
+assert.deepEqual(
+  { category: july14.category, distance: july14.distance },
+  { category: "恢复跑", distance: 3.5 },
+  "the short quality session is reduced to a pain-aware recovery run"
+);
+assert.match(july14.reminder, /不做快段/, "the recovery run excludes speed work");
+assert.deepEqual(
+  { category: july19.category, distance: july19.distance },
+  { category: "恢复长跑", distance: 7 },
+  "the long run is reduced to seven kilometres"
+);
+assert.match(july19.content, /最多8km/, "the long run has an eight-kilometre ceiling");
+assert.match(july19.reminder, /不补上周跑量/, "the long run does not make up missed mileage");
+assert.match(july18.reminder, /本周末不安排骑行/, "weekend cycling is removed while knee and ankle symptoms settle");
+assert.match(sw, /half-marathon-pwa-v10/, "the plan change invalidates the installed PWA cache");
 assert.match(
   app,
   /function isGitHubVersionConflict\([\s\S]*?error\?\.status === 409[\s\S]*?error\?\.status === 422[\s\S]*?does not match/i,
