@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "half-marathon-pwa",
-  "updatedAt": "2026-07-09T00:44:53.244Z",
+  "updatedAt": "2026-07-13T03:33:49.000Z",
   "records": {
     "2026-06-27": {
       "actualDistance": "3.01",
@@ -67,7 +67,30 @@
     },
     "2026-07-08": {
       "status": "missed",
-      "updatedAt": "2026-07-09T00:44:52.780Z"
+      "updatedAt": "2026-07-09T00:44:56.418Z"
+    },
+    "2026-07-09": {
+      "actualDistance": "3.74",
+      "updatedAt": "2026-07-09T00:46:43.540Z",
+      "rpe": "4",
+      "durationDone": "00:30:00",
+      "note": "工作日控制跑步30分钟，有一点点点雨水，平均心率152，跑到最后有二次呼吸的感觉，但是不敢跑久了，上班容易困"
+    },
+    "2026-07-10": {
+      "status": "done",
+      "updatedAt": "2026-07-12T13:54:54.827Z"
+    },
+    "2026-07-11": {
+      "activityType": "bike",
+      "updatedAt": "2026-07-12T13:55:31.068Z",
+      "actualDistance": "51.59",
+      "rpe": "4"
+    },
+    "2026-07-12": {
+      "status": "adjusted",
+      "updatedAt": "2026-07-12T13:55:58.156Z",
+      "actualDistance": "0",
+      "note": "休息一日"
     }
   }
 }
