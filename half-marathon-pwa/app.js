@@ -427,6 +427,11 @@
     return error;
   }
 
+  function isGitHubVersionConflict(error) {
+    const message = String(error?.message || "");
+    return error?.status === 409 || (error?.status === 422 && /does not match/i.test(message));
+  }
+
   async function fetchRemoteCheckins(token) {
     const response = await fetch(`${syncApiUrl()}?ref=${encodeURIComponent(GITHUB_SYNC.branch)}`, {
       headers: githubHeaders(token),
@@ -542,7 +547,7 @@
       try {
         await putRemoteCheckins(token, merged, remote.sha);
       } catch (error) {
-        if (error.status !== 409) throw error;
+        if (!isGitHubVersionConflict(error)) throw error;
         remote = await fetchRemoteCheckins(token);
         merged = mergeRecords(merged, remote.records);
         await putRemoteCheckins(token, merged, remote.sha);
