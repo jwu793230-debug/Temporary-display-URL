@@ -1,4 +1,4 @@
-const CACHE_NAME = "half-marathon-pwa-v8";
+const CACHE_NAME = "half-marathon-pwa-v9";
 const ASSETS = [
   "./half-marathon-pwa-v1.html",
   "./styles.css",
