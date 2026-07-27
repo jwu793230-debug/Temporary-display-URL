@@ -1,0 +1,53 @@
+<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>深入探索 ChatGPT 这样的 LLM｜视频精讲</title><style>:root{--ink:#102846;--blue:#1769d1;--coral:#e45d49;--muted:#5c708a;--line:#dce4ec;--wash:#f4f8fc}*{box-sizing:border-box}body{max-width:940px;margin:auto;padding:28px 32px 70px;color:var(--ink);background:#fff;font:17px/1.9 'PingFang SC','Microsoft YaHei',sans-serif}a{color:var(--blue);text-underline-offset:3px}.back{font-size:14px;text-decoration:none}.source{margin:18px 0 28px;padding:15px 18px;background:var(--wash);border-left:4px solid var(--coral)}.listen{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:13px;padding:13px 16px;margin:20px 0 34px}.listen b{font-size:14px}.listen audio{height:35px;flex:1;min-width:240px}h1{font-size:clamp(33px,5vw,52px);line-height:1.2;letter-spacing:-.035em;margin:23px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word}h2{font-size:clamp(25px,4vw,35px);line-height:1.3;margin:50px 0 16px;padding-top:20px;border-top:1px solid var(--line);max-width:100%;overflow-wrap:anywhere;word-break:break-word}h3{color:var(--blue);font-size:21px;margin:29px 0 9px}p,li{max-width:820px}strong{color:#0a55a8}blockquote{margin:20px 0;padding:15px 18px;background:var(--wash);border-left:4px solid var(--coral);color:#34506d}pre{overflow:auto;background:#f4f8fc;color:#102846;border:1px solid var(--line);padding:17px;border-radius:12px;font-size:13px;line-height:1.65}table{width:100%;border-collapse:collapse;font-size:14px;margin:18px 0}th{background:#eaf3ff}th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}hr{border:0;border-top:2px solid var(--ink);margin:48px 0}code{background:#edf4fc;padding:2px 5px;border-radius:4px}@media(max-width:600px){body{padding:20px 18px 54px;font-size:16px}h1{font-size:30px;overflow-wrap:anywhere}h2{font-size:27px}h3{font-size:20px}table{font-size:13px}.listen audio{min-width:100%}}</style></head><body><a class='back' href='../AI视频精讲学习地图.html#video-textbooks'>← 返回六视频学习地图</a><div class='source'><b>对应原视频：</b><a target='_blank' rel='noopener' href='https://www.bilibili.com/video/BV16cNEeXEer/'>【1080P】安德烈·卡帕西：深入探索像ChatGPT这样的大语言模型｜Andrej Karpathy-哔哩哔哩 ↗</a></div><div class='listen'><b>配套中文精讲音频</b><audio controls preload='metadata' src='../中文精讲/audio_natural/02_ChatGPT和LLM到底怎样工作.mp3'></audio></div><h1>深入探索 ChatGPT 这样的 LLM</h1>
+<blockquote>
+<p>这是一份按单个视频组织的原创中文图文精讲。先用通俗语言建立概念，再补充结构化技术要点；它不是逐字字幕或完整替代原视频。</p>
+</blockquote>
+<h2>第一遍：零基础讲解</h2>
+<h1>第二集：ChatGPT 和 LLM 到底怎样工作</h1>
+<h2>开场：会说话不等于有一座真相图书馆</h2>
+<p>ChatGPT 这类系统最容易被误解成“装着全世界答案的机器”。更接近的说法是：它读过巨大数量的文字，学会在一段文字后面接什么最像人会写出的下一段。这个看似简单的训练目标，在规模足够大时会长出翻译、写代码、归纳和推理等能力；同时也解释了它为什么会一本正经地说错话。</p>
+<h2>今天的路线图</h2>
+<p>我们依次看 token、预训练、Transformer、后训练、检索和工具，以及幻觉为什么不是“偶尔的小毛病”。</p>
+<h2>一、Token：模型读的不是整句</h2>
+<p>模型把文字切成 token，可以理解为一小块一小块的积木：有时是一个字，有时是一个词的一部分，有时是标点。它每次估计“下一块积木”最可能是什么。它并非逐个字母地看世界，因此数字符、拼写罕见单词和机械计数常会出错。</p>
+<h2>二、预训练：海量完形填空</h2>
+<p>训练时，系统读到“今天天气很”，目标可能是“好”；读到一段代码，目标可能是下一个符号。预测错了就微调内部数值，预测对了就保留方向。反复进行后，模型把语言、事实片段、写作结构和代码规律压缩进大量参数中。它像读过无数书的人，却不能保证记得每一本书的页码，也分不清训练材料里所有真假。</p>
+<h2>三、Transformer：为什么它能看上下文</h2>
+<p>Transformer 的关键是注意力机制。可以把它想成读一句长话时，一边读到“它”，一边回头判断“它”指的是前面哪个名词；读合同中的金额时，也会注意到前后日期和条件。许多层这样的“看哪里更相关”和“怎样组合信息”叠起来，形成对上下文的表征。但它的工作窗口有限，窗口外的信息不会自动永久记住。</p>
+<h2>四、后训练：从续写机器变成助手</h2>
+<p>基础模型只会接着写互联网风格的文字。后训练拿来大量“用户提问—助手回答”的示例，让它习惯听指令、采用有帮助的语气、避免危险回答。之后还可通过偏好比较或强化学习，让更清楚、更安全、更正确的回答被奖励。这里要注意：礼貌、条理和安全边界变好了，不代表所有事实都变正确。</p>
+<h2>五、RAG、工具和幻觉</h2>
+<p>当问题依赖最新资料，可靠方法不是逼模型“回忆”，而是先检索权威文件，再让它只根据检索结果回答，这叫检索增强生成。计算交给计算器，查库存交给数据库，执行程序交给受限工具。幻觉则是模型在信息不足时仍然努力把一句话续写完整；它听起来合理，恰恰更危险。因此要问来源、区分已知与猜测，并核对关键结论。</p>
+<h2>场景：问药和修代码</h2>
+<p>问健康问题时，模型可以把化验单术语翻成白话，帮你准备就诊问题，却不能替代医生诊断。修代码时，它能解释报错、给出候选补丁；真正的裁判是测试是否通过、程序是否在真实数据上正确运行。</p>
+<h2>最常见的误区</h2>
+<p>不要把模型的“记忆”当数据库；不要把长推理当证明；不要把拒答或自信当能力大小的精确刻度。它是一种强大的语言和模式工具，可靠性要由资料、测试、权限和人共同补齐。</p>
+<h2>复盘</h2>
+<p>LLM 的底层动作是预测下一个 token；Transformer 让预测能利用上下文；后训练把续写器塑造成助手；检索和工具把它接回现实；核验是使用链条不可省略的一环。</p>
+<hr>
+<h2>第二遍：技术与应用补充</h2>
+<h2>2. Karpathy：深入探索 ChatGPT 类 LLM（3:31:24）</h2>
+<p>来源：B 站 BV16cNEeXEer；原讲链接为 YouTube <code>7xTGNNLPyMI</code>。</p>
+<p><strong>一句话</strong>：ChatGPT 是“预训练的下一个 token 预测器”经对话微调、强化学习、工具与检索包装后形成的产品；理解各层，才能理解其能力和失误。</p>
+<h3>讲稿式详细提纲</h3>
+<ol>
+<li><strong>预训练</strong>：收集网页、书籍、代码等文本，清洗、去重、tokenize；模型在海量“前缀 → 下一个 token”样本上最小化预测误差。</li>
+<li><strong>Transformer</strong>：token 先变为向量，位置编码加入顺序；多层自注意力让当前位置按相关性读取上下文，MLP 做非线性变换；训练用反向传播更新参数。</li>
+<li><strong>基础模型</strong>：它模仿互联网文本分布，因此本来是“文本续写器”，会扮演不同文体、复述错误信息，也可能在不确定时继续编造。</li>
+<li><strong>后训练（SFT）</strong>：把高质量的“用户—助手”对话写成同一 token 序列继续训练，令模型习得助手格式、指令遵循与拒答边界。</li>
+<li><strong>偏好/RL</strong>：针对可验证题或人类偏好，比较候选回答、优化能获得高奖励的轨迹；推理模型特别依赖让它生成更长的可检查推导与工具调用。</li>
+<li><strong>可靠性补丁</strong>：不确定性训练、系统提示、RAG、函数调用与外部验证分别处理不同缺陷；它们不是让模型“天然知道真相”。</li>
+<li><strong>结论</strong>：LLM 有“参差不齐”的能力面——可写很强的代码却数错字符。用它时把高风险点变成可测试、可检索、可复核的环节。</li>
+</ol>
+<pre><code class="language-mermaid">flowchart TB
+  A[互联网与代码语料] --&gt; B[清洗、去重、Tokenizer]
+  B --&gt; C[预训练：预测下一个 Token]
+  C --&gt; D[Base Model]
+  E[人工/合成对话] --&gt; F[SFT：指令与对话格式]
+  D --&gt; F --&gt; G[Assistant Model]
+  H[偏好比较或可验证奖励] --&gt; I[RL / 偏好优化]
+  G --&gt; I --&gt; J[推理/聊天模型]
+  K[RAG、工具、系统策略] --&gt; L[应用层]
+  J --&gt; L
+</code></pre>
+</body></html>

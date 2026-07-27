@@ -1,0 +1,47 @@
+<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>AI 时代的软件｜视频精讲</title><style>:root{--ink:#102846;--blue:#1769d1;--coral:#e45d49;--muted:#5c708a;--line:#dce4ec;--wash:#f4f8fc}*{box-sizing:border-box}body{max-width:940px;margin:auto;padding:28px 32px 70px;color:var(--ink);background:#fff;font:17px/1.9 'PingFang SC','Microsoft YaHei',sans-serif}a{color:var(--blue);text-underline-offset:3px}.back{font-size:14px;text-decoration:none}.source{margin:18px 0 28px;padding:15px 18px;background:var(--wash);border-left:4px solid var(--coral)}.listen{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:13px;padding:13px 16px;margin:20px 0 34px}.listen b{font-size:14px}.listen audio{height:35px;flex:1;min-width:240px}h1{font-size:clamp(33px,5vw,52px);line-height:1.2;letter-spacing:-.035em;margin:23px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word}h2{font-size:clamp(25px,4vw,35px);line-height:1.3;margin:50px 0 16px;padding-top:20px;border-top:1px solid var(--line);max-width:100%;overflow-wrap:anywhere;word-break:break-word}h3{color:var(--blue);font-size:21px;margin:29px 0 9px}p,li{max-width:820px}strong{color:#0a55a8}blockquote{margin:20px 0;padding:15px 18px;background:var(--wash);border-left:4px solid var(--coral);color:#34506d}pre{overflow:auto;background:#f4f8fc;color:#102846;border:1px solid var(--line);padding:17px;border-radius:12px;font-size:13px;line-height:1.65}table{width:100%;border-collapse:collapse;font-size:14px;margin:18px 0}th{background:#eaf3ff}th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}hr{border:0;border-top:2px solid var(--ink);margin:48px 0}code{background:#edf4fc;padding:2px 5px;border-radius:4px}@media(max-width:600px){body{padding:20px 18px 54px;font-size:16px}h1{font-size:30px;overflow-wrap:anywhere}h2{font-size:27px}h3{font-size:20px}table{font-size:13px}.listen audio{min-width:100%}}</style></head><body><a class='back' href='../AI视频精讲学习地图.html#video-textbooks'>← 返回六视频学习地图</a><div class='source'><b>对应原视频：</b><a target='_blank' rel='noopener' href='https://www.bilibili.com/video/BV1CLNtzyEP4/'>大神Andrej Karpathy最新演讲：AI时代的软件-哔哩哔哩 ↗</a></div><div class='listen'><b>配套中文精讲音频</b><audio controls preload='metadata' src='../中文精讲/audio_natural/03_AI时代的软件怎样变化.mp3'></audio></div><h1>AI 时代的软件</h1>
+<blockquote>
+<p>这是一份按单个视频组织的原创中文图文精讲。先用通俗语言建立概念，再补充结构化技术要点；它不是逐字字幕或完整替代原视频。</p>
+</blockquote>
+<h2>第一遍：零基础讲解</h2>
+<h1>第三集：AI 时代的软件怎样变化</h1>
+<h2>开场：软件正在多出一种写法</h2>
+<p>过去，人把每条规则写成代码：如果温度高于某数值就报警。后来，人更多地准备数据，让神经网络自己从例子里学出识别规则。现在，大语言模型又让普通人可以用自然语言描述一部分程序行为。三种方式没有谁彻底取代谁；聪明的系统会把它们放在各自擅长的位置。</p>
+<h2>今天的路线图</h2>
+<p>理解 Software 1.0、2.0、3.0；理解为什么模型产品要保留人工接管；以及未来数字系统为什么要同时服务人和 Agent。</p>
+<h2>一、三种软件</h2>
+<p>Software 1.0 是传统代码，规则由工程师写清楚。它适合转账、权限、税率和任何必须稳定、可审计的事情。Software 2.0 是神经网络权重：你不直接写“怎样识别猫”，而是给足够多猫和非猫的图片，让训练过程形成内部参数。它适合视觉、语音、推荐这类很难穷举规则的任务。Software 3.0 指用提示词、上下文、范例、工具和评测来引导 LLM。它适合解释、归纳、草拟、在模糊语言中找线索。</p>
+<h2>二、自然语言编程的机会和边界</h2>
+<p>自然语言降低了表达需求的门槛。不会写代码的人也能描述“把这份会议记录变成待办清单，再按负责人分组”。但自然语言也天然有歧义：所谓“尽快”“重要”“合适”需要人定义。因此提示词不是按钮，而像一份不断完善的需求说明书。</p>
+<h2>三、部分自治比全自动更实用</h2>
+<p>成熟产品不必一开始就让 AI 独立完成一切。更好的方式是自治滑杆：低风险的分类、草稿、信息抽取可以自动做；发款、签约、删除数据、对外承诺等高风险动作必须展示理由并等待确认。人负责目标和最后责任，模型负责把中间的大量重复工作变快。</p>
+<h2>场景：客服和报销</h2>
+<p>客服系统可先读邮件、提取订单号、找出知识库答案、写一版回复，涉及退款或投诉升级时交给员工。报销系统可识别票据并建议分类，但金额异常、重复票据和政策例外应进入人工队列。这样既能提速，也能留下可审计轨迹。</p>
+<h2>四、为 Agent 重修数字道路</h2>
+<p>过去很多系统只为人类点按钮而设计。Agent 需要更清晰的 API、稳定字段、可读说明、细粒度权限、操作日志和可撤销步骤。网页界面不会消失，但未来优秀系统会让人、传统程序和 AI 都能安全协作。</p>
+<h2>误区与复盘</h2>
+<p>误区是把“能演示”当成“可无人值守”。真正难的是异常、权限、责任和恢复。带走三点：传统代码保底线，模型处理模糊信息，人始终能看见、纠正和接管关键流程。</p>
+<hr>
+<h2>第二遍：技术与应用补充</h2>
+<h2>3. Karpathy：AI 时代的软件（39:32）</h2>
+<p>来源：B 站 BV1CLNtzyEP4；原讲为 YC AI Startup School 的 <em>Software Is Changing (Again)</em>。</p>
+<p><strong>核心论点</strong>：软件正在从“人写规则”到“训练权重”，再到“用自然语言编程 LLM”的第三次表达方式迁移；但 1.0/2.0/3.0 将长期并存。</p>
+<ul>
+<li><strong>Software 1.0</strong>：C++、Python、SQL 等显式规则；稳定、精确、可审计。</li>
+<li><strong>Software 2.0</strong>：训练数据和优化器“写出”神经网络权重；适合感知和难以手工写规则的模式。</li>
+<li><strong>Software 3.0</strong>：提示词、上下文、工具与评测共同“编程”LLM；自然语言成为接口，迭代速度更快。</li>
+<li>LLM 既像按量调用的公共设施，也像集中制造的“fab”，还像有记忆、权限、工具和多任务的“新 OS”。这些类比提醒我们：今天仍非常早期。</li>
+<li>产品策略不是追求全自动：优先做“部分自治”。人设定目标、看到过程、能中断/接管；机器承担起草、检索、分类、执行低风险步骤。</li>
+<li>数字世界需要面向 Agent 重构：给机器可读文档、稳定 API、身份/权限、可观察状态和可验证操作，而非只给人类 GUI。</li>
+</ul>
+<pre><code class="language-mermaid">flowchart LR
+  S1[Software 1.0\n人写程序] --&gt; H[确定性系统、API、权限]
+  S2[Software 2.0\n数据+优化得到权重] --&gt; H
+  S3[Software 3.0\nPrompt+Context+Tools] --&gt; A[LLM Agent]
+  H --&gt; A
+  A --&gt; R[候选行动]
+  R --&gt; Q{风险/置信度检查}
+  Q --&gt;|低风险| X[执行]
+  Q --&gt;|高风险| U[人类确认/接管]
+  U --&gt; X
+</code></pre>
+</body></html>

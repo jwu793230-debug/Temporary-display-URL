@@ -1,0 +1,32 @@
+<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Agent、AGI 与可靠性｜视频精讲</title><style>:root{--ink:#102846;--blue:#1769d1;--coral:#e45d49;--muted:#5c708a;--line:#dce4ec;--wash:#f4f8fc}*{box-sizing:border-box}body{max-width:940px;margin:auto;padding:28px 32px 70px;color:var(--ink);background:#fff;font:17px/1.9 'PingFang SC','Microsoft YaHei',sans-serif}a{color:var(--blue);text-underline-offset:3px}.back{font-size:14px;text-decoration:none}.source{margin:18px 0 28px;padding:15px 18px;background:var(--wash);border-left:4px solid var(--coral)}.listen{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:13px;padding:13px 16px;margin:20px 0 34px}.listen b{font-size:14px}.listen audio{height:35px;flex:1;min-width:240px}h1{font-size:clamp(33px,5vw,52px);line-height:1.2;letter-spacing:-.035em;margin:23px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word}h2{font-size:clamp(25px,4vw,35px);line-height:1.3;margin:50px 0 16px;padding-top:20px;border-top:1px solid var(--line);max-width:100%;overflow-wrap:anywhere;word-break:break-word}h3{color:var(--blue);font-size:21px;margin:29px 0 9px}p,li{max-width:820px}strong{color:#0a55a8}blockquote{margin:20px 0;padding:15px 18px;background:var(--wash);border-left:4px solid var(--coral);color:#34506d}pre{overflow:auto;background:#f4f8fc;color:#102846;border:1px solid var(--line);padding:17px;border-radius:12px;font-size:13px;line-height:1.65}table{width:100%;border-collapse:collapse;font-size:14px;margin:18px 0}th{background:#eaf3ff}th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}hr{border:0;border-top:2px solid var(--ink);margin:48px 0}code{background:#edf4fc;padding:2px 5px;border-radius:4px}@media(max-width:600px){body{padding:20px 18px 54px;font-size:16px}h1{font-size:30px;overflow-wrap:anywhere}h2{font-size:27px}h3{font-size:20px}table{font-size:13px}.listen audio{min-width:100%}}</style></head><body><a class='back' href='../AI视频精讲学习地图.html#video-textbooks'>← 返回六视频学习地图</a><div class='source'><b>对应原视频：</b><a target='_blank' rel='noopener' href='https://www.bilibili.com/video/BV1YvWpzcEdS/'>Andrej Karpathy：距离AGI的实现，还需十年时间-哔哩哔哩 ↗</a></div><div class='listen'><b>配套中文精讲音频</b><audio controls preload='metadata' src='../中文精讲/audio_natural/05_Agent和AGI离我们还有多远.mp3'></audio></div><h1>Agent、AGI 与可靠性</h1>
+<blockquote>
+<p>这是一份按单个视频组织的原创中文图文精讲。先用通俗语言建立概念，再补充结构化技术要点；它不是逐字字幕或完整替代原视频。</p>
+</blockquote>
+<h2>第一遍：零基础讲解</h2>
+<h1>第五集：Agent 和 AGI 离我们还有多远</h1>
+<h2>开场：会聊天，不等于能稳定上班</h2>
+<p>今天的模型能写文章、生成代码、操作部分工具，因此很容易让人以为它很快就会成为全天候的数字员工。更冷静的判断是：它们已经是有用的助手，却还不是可靠的长期代理。一次回答做对，和连续几天处理模糊任务、发现错误、请求帮助、对结果负责，是完全不同的难度。</p>
+<h2>今天的路线图</h2>
+<p>解释 Agent 是什么；为什么长任务难；“AGI 还要十年”这种说法意味着什么；以及“幽灵而非动物”的比喻。</p>
+<h2>一、Agent 不是聊天框加自动点击</h2>
+<p>一个真正的 Agent 需要理解目标、把任务拆开、调用工具、记住进度、观察结果、发现失败后调整，还要在该停下时停下。你让它“订一次差旅”时，它要处理预算、日期冲突、偏好、付款权限和改签。每多一步，出错机会就更多；错误还会层层传递。</p>
+<h2>二、可靠性的九</h2>
+<p>如果一个小步骤有百分之九十九正确率，连续做一百步并不意味着还百分之九十九可靠。高风险任务需要多层保护：明确权限、可撤销动作、外部验证、关键节点确认和完整日志。因此实际产品往往先做“部分自治”：AI 准备材料和执行低风险步骤，人批准不可逆决定。</p>
+<h2>三、幽灵而非动物</h2>
+<p>把当前 LLM 想成“从人类留下的文字里召唤出的幽灵”很有帮助。它能模仿人类表达和知识，却没有动物那样的身体、成长经历、求生压力和持续内驱力。小斑马出生后很快会站立，并不是现场试错学出来的，而是进化留下大量先天结构。模型的训练路径不同，所以它会呈现很强但参差不齐的能力。</p>
+<h2>场景：软件工程和家用助手</h2>
+<p>在软件团队，Agent 可以读报错、写测试、提出补丁；合并代码前仍需测试和审查。家用助手可以整理购物清单、比较航班；付款、门锁、医疗预约等动作应有清晰确认。越接近现实世界，越需要刹车、后视镜和方向盘。</p>
+<h2>误区与复盘</h2>
+<p>“十年”是对难度和节奏的个人判断，不是日历上的承诺。当前最值得关注的不是某天突然出现 AGI，而是记忆、多模态、工具使用、持续学习和可靠性一步步变好。把 AI 当能力很强但需要监督的伙伴，既不低估它，也不把希望押在魔法上。</p>
+<hr>
+<h2>第二遍：技术与应用补充</h2>
+<h2>5. Karpathy：AGI 仍需十年（2:26:08）</h2>
+<p>来源：B 站 BV1YvWpzcEdS；原讲为 Dwarkesh Patel 的 <em>We’re Summoning Ghosts, Not Building Animals</em>。</p>
+<p><strong>一句话</strong>：当前 LLM 已很强，但距离可长期、稳定、自主完成几乎所有经济任务的 Agent 仍有大量“可靠性九”的工程与研究工作；因此是“agents 的十年”，不是“agents 的一年”。</p>
+<ul>
+<li>反对把会聊天、会写一段代码等同于成熟员工；开放环境任务要求持续目标、记忆、世界交互、错误恢复与长期学习。</li>
+<li>“幽灵而非动物”：模型是人类文本的统计蒸馏与模拟，主要由模仿训练而来；动物智能还受进化、身体、内驱力和持续环境反馈塑形。</li>
+<li>RL 是目前重要的增量工具，却在稀疏奖励、长时程信用分配和奖励投机上很脆弱。需要更好的环境、验证器、课程与训练配方。</li>
+<li>进展大概率是渐进的：数据、算法、算力、工具、产品与组织流程共同改进，而不是单一“AGI 开关”。</li>
+</ul>
+</body></html>
