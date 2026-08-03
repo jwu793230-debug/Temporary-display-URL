@@ -4,6 +4,7 @@ import { runInNewContext } from "node:vm";
 
 const app = readFileSync(new URL("./app.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("./styles.css", import.meta.url), "utf8");
+const html = readFileSync(new URL("./half-marathon-pwa-v1.html", import.meta.url), "utf8");
 const planData = readFileSync(new URL("./plan-data.js", import.meta.url), "utf8");
 const sw = readFileSync(new URL("./sw.js", import.meta.url), "utf8");
 const planContext = { window: {} };
@@ -34,7 +35,10 @@ assert.match(july18.reminder, /本周末不安排骑行/, "weekend cycling is re
 assert.equal(nov15.category, "漳州半马", "Zhangzhou is the A-priority race");
 assert.match(aug8.content, /方案A.*骑行.*方案B.*LSD/, "Saturday has cycling and LSD alternatives");
 assert.match(nov29.category, /赛后恢复/, "Nov 29 is recovery rather than a second race");
-assert.match(sw, /half-marathon-pwa-v11/, "the plan change invalidates the installed PWA cache");
+assert.match(sw, /half-marathon-pwa-v12/, "the plan change invalidates the installed PWA cache");
+assert.match(html, /plan-data\.js\?v=20260803-sync/, "fresh plan data bypasses an old app-shell cache");
+assert.match(html, /app\.js\?v=20260803-sync/, "fresh app code bypasses an old app-shell cache");
+assert.match(app, /serviceWorker\.register\("\.\/sw\.js\?v=20260803-sync"\)/, "service worker registration receives the current revision");
 assert.match(
   app,
   /function isGitHubVersionConflict\([\s\S]*?error\?\.status === 409[\s\S]*?error\?\.status === 422[\s\S]*?does not match/i,
