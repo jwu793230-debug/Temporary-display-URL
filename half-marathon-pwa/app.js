@@ -1027,17 +1027,20 @@
     const nextRace = nextRaceAfter(metrics.weekEnd);
     const daysToRace = nextRace ? daysBetween(metrics.weekEnd, nextRace.date) : 0;
 
-    if (race?.category === "10km测试") {
-      return "10km测试周：别把它跑成半马模拟赛，目标是检验均匀配速和心率漂移；测试后两天只恢复，不补量。";
+    if (race?.category === "苏州10km测试") {
+      return "苏州10km检验周：别把它跑成半马模拟赛，目标是检验均匀配速和心率漂移；测试后两天只恢复，不补量。";
     }
-    if (race?.category === "杭州半马") {
-      return "杭州半马比赛周：这是减量兑现周，周二唤醒、周四轻松跑都只为保持腿感；本地参赛也要提前到起点，前5km务必保守。";
+    if (race?.category === "西安半马备用模拟") {
+      return "西安半马备用模拟周：仅在桐庐未中签时参加，16-18km按RPE 6稳定完成；若不去西安，当天改LSD，不需要赶一场比赛。";
+    }
+    if (race?.category === "桐庐半马优先模拟") {
+      return "桐庐半马优先模拟周：仅在没有跑西安时参加，练补给、鞋袜和均匀配速；全程控制在RPE 6，不为成绩透支漳州。";
     }
     if (race?.category === "漳州半马") {
-      return "漳州半马比赛周：周五高铁到漳州后不跑步，补水、早点睡；周六只做2km适应或散步，比赛按杭州赛后恢复决定是否提速。";
+      return "漳州A目标比赛周：周五高铁到漳州后不跑步，补水、早点睡；周六只做2km适应或散步。前5km务必稳住，15km后再根据状态决定是否向2:30推进。";
     }
-    if (weekHas(metrics, /赛后恢复|恢复走|恢复跑|恢复长跑/)) {
-      return "杭州赛后恢复周：不要补杭州半马消耗掉的跑量，先观察膝踝小腿；周末8km也只是恢复耐力，为漳州留身体余地。";
+    if (weekHas(metrics, /赛后恢复|恢复走|恢复跑|恢复骑行/)) {
+      return "漳州赛后恢复周：不要补比赛消耗掉的跑量，先观察膝踝小腿；跑步和骑行都只为恢复，任何关节不适都优先改走路或休息。";
     }
     if (weekHas(metrics, /高铁|赛前适应/)) {
       return "漳州出行减量周：跑步只是保持节奏，周五高铁优先活动下肢和补水；到漳州后宁可少跑，也不要带疲劳上赛道。";
@@ -1063,14 +1066,17 @@
     if (weekHas(metrics, /短质量课|状态检查|赛前唤醒/)) {
       return "质量适应周：短质量课只练动作和节奏，不追绝对速度；只要第二天腿不沉，就是有效刺激。";
     }
-    if (metrics.plannedDistance <= 20 && nextRace?.category === "杭州半马" && daysToRace <= 14) {
-      return "杭州半马前减量周：跑量下降是为了吸收训练，不是退步；这周重点睡眠、补水和整理比赛装备。";
+    if (nextRace?.category === "苏州10km测试") {
+      return `苏州10km检验倒计时${daysToRace}天：继续稳住工作日短跑，周末不需要再叠加骑行和LSD；比赛以均匀节奏完成。`;
     }
-    if (nextRace?.category === "杭州半马") {
-      return `杭州半马倒计时${daysToRace}天：继续稳住基础跑量，周末长距离跑完应有余力；A目标先放在训练完成率上。`;
+    if (["西安半马备用模拟", "桐庐半马优先模拟"].includes(nextRace?.category)) {
+      return `半马模拟倒计时${daysToRace}天：西安和桐庐只能选一场；不论是否参赛，都以RPE 6完成耐力训练，别影响漳州主目标。`;
     }
     if (nextRace?.category === "漳州半马") {
-      return `漳州半马倒计时${daysToRace}天：这段不是重新冲峰值，而是杭州赛后恢复基础上再找节奏，长距离完成感比速度重要。`;
+      if (metrics.plannedDistance <= 20 && daysToRace <= 14) {
+        return "漳州A目标前减量周：跑量下降是为了吸收训练，不是退步；重点是睡眠、补水和整理比赛装备。";
+      }
+      return `漳州A目标倒计时${daysToRace}天：继续稳住基础跑量，周末二选一不叠加；长距离完成感比速度重要。`;
     }
     return "打底周：先把固定训练节奏跑顺，轻松跑保持能聊天，周末长距离结束后应还能正常走路。";
   }
