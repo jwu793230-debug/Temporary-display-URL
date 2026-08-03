@@ -12,6 +12,9 @@ const planByDate = new Map(planContext.window.TRAINING_PLAN.map((item) => [item.
 const july14 = planByDate.get("2026-07-14");
 const july18 = planByDate.get("2026-07-18");
 const july19 = planByDate.get("2026-07-19");
+const aug8 = planByDate.get("2026-08-08");
+const nov15 = planByDate.get("2026-11-15");
+const nov29 = planByDate.get("2026-11-29");
 
 assert.match(app, /activeTab:\s*"calendar"/, "calendar stays as the default tab");
 assert.deepEqual(
@@ -28,7 +31,10 @@ assert.deepEqual(
 assert.match(july19.content, /最多8km/, "the long run has an eight-kilometre ceiling");
 assert.match(july19.reminder, /不补上周跑量/, "the long run does not make up missed mileage");
 assert.match(july18.reminder, /本周末不安排骑行/, "weekend cycling is removed while knee and ankle symptoms settle");
-assert.match(sw, /half-marathon-pwa-v10/, "the plan change invalidates the installed PWA cache");
+assert.equal(nov15.category, "漳州半马", "Zhangzhou is the A-priority race");
+assert.match(aug8.content, /方案A.*骑行.*方案B.*LSD/, "Saturday has cycling and LSD alternatives");
+assert.match(nov29.category, /赛后恢复/, "Nov 29 is recovery rather than a second race");
+assert.match(sw, /half-marathon-pwa-v11/, "the plan change invalidates the installed PWA cache");
 assert.match(
   app,
   /function isGitHubVersionConflict\([\s\S]*?error\?\.status === 409[\s\S]*?error\?\.status === 422[\s\S]*?does not match/i,
@@ -48,10 +54,12 @@ assert.match(app, /function renderWeeklyPlanReview\(/, "weekly training analysis
 assert.match(app, /function plannedWeeklyAdvice\(/, "future weekly advice uses the planned training phase");
 assert.match(app, /function weekRace\(/, "weekly advice can detect race weeks");
 assert.match(app, /function nextRaceAfter\(/, "weekly advice can look ahead to the next race");
-assert.match(app, /10km测试周/, "weekly advice mentions the 10km test week");
-assert.match(app, /杭州半马比赛周/, "weekly advice mentions Hangzhou race week");
-assert.match(app, /杭州赛后恢复周/, "weekly advice mentions the post-Hangzhou recovery week");
-assert.match(app, /漳州半马比赛周/, "weekly advice mentions Zhangzhou race week");
+assert.match(app, /苏州10km检验周/, "weekly advice mentions the Suzhou 10km test week");
+assert.match(app, /西安半马备用模拟周/, "weekly advice explains the Xi'an fallback race");
+assert.match(app, /桐庐半马优先模拟周/, "weekly advice explains the Tonglu preferred simulation");
+assert.match(app, /漳州A目标比赛周/, "weekly advice marks Zhangzhou as the A race");
+assert.match(app, /漳州赛后恢复周/, "weekly advice covers post-race recovery");
+assert.doesNotMatch(app, /杭州半马比赛周|杭州赛后恢复周/, "old Hangzhou race advice is removed");
 assert.match(app, /周五高铁/, "Zhangzhou race advice includes Friday train travel");
 assert.match(app, /峰值长距离/, "peak long-run weeks get specific guidance");
 
