@@ -66,6 +66,23 @@ test("portal groups the approved engineering assets and keeps the hero compact",
     assert.equal(await page.locator('a[href*="half-marathon-pwa"]').count(), 0);
     assert.equal(await page.locator('a[href*="ai-learning-map"]').count(), 0);
 
+    const destinationLinkBehavior = await page.locator(".catalog .card, .repo").evaluateAll((nodes) => nodes.map((node) => ({
+      target: node.getAttribute("target"),
+      rel: node.getAttribute("rel")?.split(/\s+/).sort(),
+    })));
+    assert.equal(destinationLinkBehavior.length, 9);
+    assert.deepEqual(destinationLinkBehavior, Array.from({ length: 9 }, () => ({
+      target: "_blank",
+      rel: ["noopener", "noreferrer"],
+    })));
+
+    const cardStyleSignatures = await page.locator(".catalog .card").evaluateAll((nodes) => nodes.map((node) => {
+      const style = getComputedStyle(node);
+      const labelStyle = getComputedStyle(node.querySelector("small"));
+      return [style.backgroundColor, style.backgroundImage, style.borderColor, labelStyle.color, labelStyle.borderColor].join("|");
+    }));
+    assert.equal(new Set(cardStyleSignatures).size, 1);
+
     const desktopLayout = await page.evaluate(() => {
       const hero = document.querySelector(".hero");
       const solutions = document.querySelector("#solutions");
