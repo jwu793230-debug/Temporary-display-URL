@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="澳门人工岛污水处理厂项目盾构机实时监测看板">
+  <title>澳门人工岛污水处理厂项目｜盾构机实时监测中心</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="dashboard-shell" aria-label="盾构机实时监测中心">
+    <header class="topbar">
+      <div class="project-heading">
+        <div>
+          <p>澳门人工岛污水处理厂项目</p>
+          <h1>盾构机实时监测中心</h1>
+        </div>
+      </div>
+      <div class="machine-status" aria-label="设备运行状态">
+        <span class="status-dot" aria-hidden="true"></span>
+        <div><small>TBM-01</small><strong>掘进中</strong></div>
+      </div>
+      <time class="current-time" data-clock datetime="2026-08-04T14:36:28">
+        <span data-date>2026-08-04</span><strong data-time>14:36:28</strong>
+      </time>
+    </header>
+
+    <section class="main-grid" aria-label="实时监测总览">
+      <aside class="parameter-rail panel-frame" aria-label="核心参数">
+        <div class="panel-title"><h2>核心参数</h2></div>
+        <div class="metrics-list">
+          <article class="metric-card">
+            <div><span class="metric-index">01</span><h3>当前环号</h3></div>
+            <p><strong data-value="currentRing">0864</strong><small>环</small></p>
+          </article>
+          <article class="metric-card">
+            <div><span class="metric-index">02</span><h3>累计掘进</h3></div>
+            <p><strong data-value="totalDistance">1,296.0</strong><small>m</small></p>
+          </article>
+          <article class="metric-card">
+            <div><span class="metric-index">03</span><h3>掘进速度</h3></div>
+            <p><strong data-value="speed">42.6</strong><small>mm/min</small></p>
+          </article>
+          <article class="metric-card">
+            <div><span class="metric-index">04</span><h3>刀盘转速</h3></div>
+            <p><strong data-value="rotation">1.42</strong><small>rpm</small></p>
+          </article>
+          <article class="metric-card">
+            <div><span class="metric-index">05</span><h3>总推力</h3></div>
+            <p><strong data-value="thrust">22,480</strong><small>kN</small></p>
+          </article>
+        </div>
+      </aside>
+
+      <section class="tbm-visual panel-frame" aria-label="盾构机姿态">
+        <div class="panel-title visual-title"><h2>盾构机实时态势</h2><b>当前里程 <em data-value="mileage">K1+296.0</em></b></div>
+        <div class="visual-stage">
+          <div class="coordinate-grid" aria-hidden="true"></div>
+          <div class="axis-line axis-horizontal" aria-hidden="true"><span>设计轴线</span></div>
+          <div class="axis-line axis-vertical" aria-hidden="true"></div>
+          <img src="assets/tbm-side.png" alt="TBM-01 盾构机二维侧视技术示意">
+          <div class="machine-label"><span>TBM-01</span><strong>盾构机</strong></div>
+        </div>
+        <div class="attitude-strip" aria-label="盾构机姿态偏差">
+          <div><span class="axis-icon horizontal-icon" aria-hidden="true"></span><small>水平偏差</small><strong>+8 <em>mm</em></strong></div>
+          <div><span class="axis-icon vertical-icon" aria-hidden="true"></span><small>垂直偏差</small><strong>-5 <em>mm</em></strong></div>
+        </div>
+      </section>
+
+      <aside class="condition-column" aria-label="关键工况与设备健康">
+        <section class="condition-panel panel-frame">
+          <div class="panel-title"><h2>关键工况</h2></div>
+          <dl class="condition-list">
+            <div data-metric="pressure"><dt>土仓压力</dt><dd><strong data-value="pressure">2.31</strong><span>bar</span></dd></div>
+            <div data-metric="torque"><dt>刀盘扭矩</dt><dd><strong data-value="torque">3,860</strong><span>kN·m</span></dd></div>
+            <div><dt>螺旋机转速</dt><dd><strong data-value="screwSpeed">8.40</strong><span>rpm</span></dd></div>
+            <div><dt>同步注浆</dt><dd class="state-normal"><i></i><strong>正常</strong></dd></div>
+            <div data-metric="bearingTemp"><dt>主轴承温度</dt><dd><strong data-value="bearingTemp">47.8</strong><span>℃</span></dd></div>
+          </dl>
+        </section>
+
+        <section class="health-panel panel-frame">
+          <div class="panel-title"><h2>设备健康</h2></div>
+          <div class="health-summary">
+            <div class="health-ring" aria-label="设备综合健康度 92%"><span><strong data-health>92</strong><small>%</small></span></div>
+            <div><strong>运行稳定</strong><p>主驱动、液压及润滑系统状态正常</p></div>
+          </div>
+          <div class="health-systems">
+            <span><i></i>主驱动</span><span><i></i>液压系统</span><span><i></i>润滑系统</span>
+          </div>
+          <div class="alarm-total"><span>今日告警</span><strong>2</strong><small>条</small></div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="bottom-grid" aria-label="趋势与运行事件">
+      <section class="trend-panel panel-frame">
+        <div class="panel-title inline-title"><div><h2>最近 30 分钟趋势</h2></div><div class="chart-legend"><span class="speed-line">掘进速度</span><span class="pressure-line">土仓压力</span></div></div>
+        <div class="chart-wrap">
+          <div class="chart-labels"><span>50</span><span>42.5</span><span>35</span></div>
+          <svg class="trend-chart" viewBox="0 0 1000 150" preserveAspectRatio="none" role="img" aria-label="掘进速度和土仓压力趋势图">
+            <g class="chart-grid" aria-hidden="true"><path d="M0 15H1000M0 75H1000M0 135H1000"></path><path d="M0 0V150M200 0V150M400 0V150M600 0V150M800 0V150M1000 0V150"></path></g>
+            <polyline data-line="speed" class="line-speed" points=""></polyline>
+            <polyline data-line="pressure" class="line-pressure" points=""></polyline>
+          </svg>
+          <div class="chart-times"><span>14:06</span><span>14:12</span><span>14:18</span><span>14:24</span><span>14:30</span><span>现在</span></div>
+        </div>
+      </section>
+
+      <section class="events-panel panel-frame">
+        <div class="panel-title inline-title"><div><h2>最新运行事件</h2></div><b class="event-count"><i></i>系统在线</b></div>
+        <ol class="event-list">
+          <li class="event-warning"><time>14:31</time><span><strong>刀盘扭矩短时偏高</strong><small>持续 18 秒，当前已恢复正常</small></span><b>已恢复</b></li>
+          <li><time>14:18</time><span><strong>第 864 环开始推进</strong><small>姿态复核完成，推进系统启动</small></span><b>运行</b></li>
+          <li><time>13:52</time><span><strong>同步注浆参数确认</strong><small>注浆压力与流量处于设定范围</small></span><b>正常</b></li>
+        </ol>
+      </section>
+    </section>
+  </main>
+
+  <aside class="screen-size-message" aria-label="屏幕尺寸提示">
+    <div class="project-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+    <h2>盾构机实时监测中心</h2>
+    <p>请使用横屏监控大屏或电脑查看完整看板</p>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>
