@@ -133,63 +133,16 @@
       opacity: .9;
     }
 
-    .brand,
     .status-cluster {
       position: relative;
       z-index: 2;
+      grid-column: 3;
       display: flex;
       align-items: center;
       gap: 16px;
       min-height: 48px;
       color: #c6e8f7;
       font-size: 17px;
-    }
-
-    .brand-mark {
-      width: 52px;
-      height: 42px;
-      position: relative;
-      border: 2px solid rgba(54, 231, 255, .72);
-      border-right: 0;
-      border-bottom: 0;
-      transform: skewX(-18deg);
-      filter: drop-shadow(0 0 10px rgba(54, 231, 255, .58));
-    }
-
-    .brand-mark::before,
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      background: var(--cyan);
-      box-shadow: 0 0 14px rgba(54, 231, 255, .9);
-    }
-
-    .brand-mark::before {
-      width: 36px;
-      height: 3px;
-      left: 4px;
-      top: 22px;
-      transform: rotate(-22deg);
-    }
-
-    .brand-mark::after {
-      width: 9px;
-      height: 9px;
-      right: 6px;
-      top: 8px;
-    }
-
-    .brand-text strong {
-      display: block;
-      color: #f4fdff;
-      font-size: 22px;
-      letter-spacing: 1px;
-    }
-
-    .brand-text span {
-      color: var(--muted);
-      font-size: 14px;
     }
 
     .status-cluster {
@@ -235,6 +188,7 @@
     .title-wrap {
       position: relative;
       z-index: 3;
+      grid-column: 2;
       height: 82px;
       text-align: center;
     }
@@ -526,43 +480,6 @@
       box-shadow: 0 0 18px rgba(54, 231, 255, .22);
     }
 
-    .tool-stack {
-      display: flex;
-      gap: 8px;
-      pointer-events: auto;
-    }
-
-    .tool-stack button {
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(54, 231, 255, .42);
-      background: rgba(0, 99, 160, .20);
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      box-shadow: inset 0 0 18px rgba(0, 99, 160, .22);
-    }
-
-    .tool-stack button::before {
-      content: "";
-      position: absolute;
-      inset: 12px;
-      border: 2px solid currentColor;
-      border-radius: 50%;
-      opacity: .85;
-    }
-
-    .tool-stack button:nth-child(2)::before {
-      border-radius: 0;
-      transform: rotate(45deg);
-    }
-
-    .tool-stack button:nth-child(3)::before {
-      border-radius: 2px;
-      border-left: 0;
-      border-bottom: 0;
-    }
-
     .terrain-stage {
       position: absolute;
       inset: 0;
@@ -610,31 +527,9 @@
       mix-blend-mode: screen;
     }
 
-    .route-glow {
-      position: absolute;
-      left: 10%;
-      right: 9%;
-      bottom: 10%;
-      height: 35%;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse at 24% 40%, rgba(54, 231, 255, .22), transparent 18%),
-        radial-gradient(ellipse at 49% 30%, rgba(53, 240, 161, .15), transparent 15%),
-        radial-gradient(ellipse at 73% 62%, rgba(54, 231, 255, .20), transparent 20%);
-      filter: blur(12px);
-      opacity: .86;
-      z-index: 2;
-      animation: routeAura 4.6s ease-in-out infinite;
-    }
-
     @keyframes mapScan {
       0% { background-position: 150% 0, 0 0; }
       100% { background-position: -60% 0, 0 0; }
-    }
-
-    @keyframes routeAura {
-      0%, 100% { opacity: .55; transform: translateY(0) scale(.98); }
-      50% { opacity: .92; transform: translateY(-6px) scale(1.03); }
     }
 
     .vertical-tools {
@@ -1485,13 +1380,6 @@
       <div class="hud-glow"></div>
 
       <header class="topbar">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true"></div>
-          <div class="brand-text">
-            <strong>智慧管控</strong>
-            <span>三维数字孪生 · 施工态势</span>
-          </div>
-        </div>
         <div class="title-wrap">
           <h1 id="screenTitle">道路智慧管理系统大屏</h1>
           <div class="title-sub">MOUNTAIN ROAD DIGITAL TWIN COMMAND CENTER</div>
@@ -1518,7 +1406,6 @@
         <section class="main-scene">
           <div class="terrain-stage">
             <canvas id="terrainCanvas" width="1018" height="724"></canvas>
-            <div class="route-glow"></div>
             <div class="marker-layer" id="halos"></div>
             <div class="marker-layer" id="markers"></div>
           </div>
@@ -1533,11 +1420,6 @@
               <button data-sub="excavation">智能开挖</button>
               <button data-sub="dispatch">智能调度</button>
               <button data-sub="filling">智能填筑</button>
-            </div>
-            <div class="tool-stack" aria-label="地图工具">
-              <button title="图层"></button>
-              <button title="定位"></button>
-              <button title="刷新"></button>
             </div>
           </div>
 
@@ -2033,53 +1915,14 @@
       ctx.globalCompositeOperation = "lighter";
 
       drawAmbientParticles(w, h);
-      drawRoadPath(w, h);
-      drawVehicles(w, h);
-      drawSensorScans(w, h);
-      ctx.globalCompositeOperation = "source-over";
-      requestAnimationFrame(drawOverlay);
-    }
-
-    function pathPoints(w, h) {
-      const road = state.view === "earthwork"
-        ? [[.02,.86],[.16,.76],[.27,.68],[.40,.65],[.53,.58],[.64,.51],[.72,.40],[.83,.31],[.94,.23]]
-        : [[.02,.84],[.16,.75],[.28,.66],[.43,.63],[.56,.56],[.66,.50],[.73,.38],[.84,.30],[.94,.22]];
-      return road.map(([x, y]) => [x * w, y * h]);
-    }
-
-    function drawSmoothPath(points, stroke, width, dash = null, offset = 0) {
-      ctx.beginPath();
-      ctx.moveTo(points[0][0], points[0][1]);
-      for (let i = 1; i < points.length - 1; i += 1) {
-        const xc = (points[i][0] + points[i + 1][0]) / 2;
-        const yc = (points[i][1] + points[i + 1][1]) / 2;
-        ctx.quadraticCurveTo(points[i][0], points[i][1], xc, yc);
-      }
-      ctx.quadraticCurveTo(points[points.length - 1][0], points[points.length - 1][1], points[points.length - 1][0], points[points.length - 1][1]);
-      ctx.strokeStyle = stroke;
-      ctx.lineWidth = width;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.setLineDash(dash || []);
-      ctx.lineDashOffset = offset;
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.lineDashOffset = 0;
-    }
-
-    function drawRoadPath(w, h) {
-      const points = pathPoints(w, h);
-      const color = state.view === "earthwork" ? "53,240,161" : "54,231,255";
-      drawSmoothPath(points, `rgba(${color},.22)`, 30);
-      drawSmoothPath(points, `rgba(${color},.42)`, 14);
-      drawSmoothPath(points, "rgba(255,255,255,.76)", 2, [11, 16], -state.frame * .9);
-      drawSmoothPath(points, `rgba(${color},.92)`, 5, [24, 30], -state.frame * 1.8);
-
       if (state.view === "earthwork") {
         drawEarthworkPatches(w, h);
       } else {
         drawRoadFocusRings(w, h);
       }
+      drawSensorScans(w, h);
+      ctx.globalCompositeOperation = "source-over";
+      requestAnimationFrame(drawOverlay);
     }
 
     function drawEarthworkPatches(w, h) {
@@ -2117,38 +1960,6 @@
         ctx.lineWidth = 2;
         ctx.stroke();
       });
-    }
-
-    function pointAlong(points, progress) {
-      const scaled = progress * (points.length - 1);
-      const idx = Math.floor(scaled);
-      const frac = scaled - idx;
-      const a = points[idx];
-      const b = points[Math.min(idx + 1, points.length - 1)];
-      return [a[0] + (b[0] - a[0]) * frac, a[1] + (b[1] - a[1]) * frac];
-    }
-
-    function drawVehicles(w, h) {
-      const points = pathPoints(w, h);
-      const count = state.view === "earthwork" ? 10 : 7;
-      for (let i = 0; i < count; i += 1) {
-        const p = (state.t * (state.view === "earthwork" ? .24 : .18) + i / count) % 1;
-        const [x, y] = pointAlong(points, p);
-        const color = state.view === "earthwork" && i % 3 === 0 ? "#ffbd4a" : "#36e7ff";
-        ctx.save();
-        ctx.translate(x, y - 6);
-        ctx.rotate(-0.18 + Math.sin(state.t * 3 + i) * .08);
-        ctx.fillStyle = color;
-        ctx.shadowBlur = 18;
-        ctx.shadowColor = color;
-        ctx.fillRect(-8, -4, 16, 8);
-        ctx.beginPath();
-        ctx.arc(10, 0, 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = .35;
-        ctx.fillRect(-28, -2, 20, 4);
-        ctx.restore();
-      }
     }
 
     function drawSensorScans(w, h) {
