@@ -73,41 +73,32 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
   padding: 16px 32px;
   display: grid;
-  grid-template-columns: 280px 1fr auto;
+  grid-template-columns: 390px 1fr auto;
   gap: 24px;
   align-items: center;
 }
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   min-width: 0;
 }
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  position: relative;
-  box-shadow: 0 10px 26px rgba(0, 99, 160, .24);
+.brand-logo {
+  width: 126px;
+  height: auto;
+  flex: 0 0 auto;
 }
-.brand-mark::before,
-.brand-mark::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-  background: rgba(255,255,255,.92);
+.brand-copy {
+  min-width: 0;
 }
-.brand-mark::before { width: 20px; height: 5px; left: 11px; top: 13px; }
-.brand-mark::after { width: 5px; height: 18px; left: 18px; top: 20px; }
-.brand b {
+.brand-copy b {
   display: block;
   color: var(--navy);
   font-size: 18px;
   line-height: 1.2;
   white-space: nowrap;
 }
-.brand span {
+.brand-copy span {
   display: block;
   color: var(--muted);
   font-size: 12px;
@@ -561,42 +552,6 @@ a { color: inherit; text-decoration: none; }
   margin: 18px 4px 4px;
 }
 
-.roadmap {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  counter-reset: step;
-}
-.roadmap-step {
-  background: white;
-  border: 1px solid rgba(0, 99, 160, .12);
-  border-radius: 20px;
-  padding: 24px;
-  position: relative;
-  min-height: 210px;
-}
-.roadmap-step::before {
-  counter-increment: step;
-  content: "0" counter(step);
-  display: inline-flex;
-  color: white;
-  background: var(--blue);
-  border-radius: 10px;
-  padding: 6px 10px;
-  font-family: "Geist Mono", monospace;
-  margin-bottom: 22px;
-}
-.roadmap-step h3 {
-  margin: 0;
-  color: var(--navy);
-  font-size: 22px;
-}
-.roadmap-step p {
-  margin: 10px 0 0;
-  color: var(--muted);
-  line-height: 1.65;
-}
-
 .footer {
   background: var(--navy);
   color: white;
@@ -619,16 +574,21 @@ a { color: inherit; text-decoration: none; }
   .topbar-inner { grid-template-columns: 1fr; }
   .top-action { display: none; }
   .hero, .architecture, .split, .earthwork-tabs, .tab-panel.active { grid-template-columns: 1fr; }
-  .scenario-grid, .dashboard-grid, .roadmap { grid-template-columns: repeat(2, 1fr); }
+  .scenario-grid, .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 760px) {
   .topbar-inner { padding: 12px 16px; }
+  .brand { gap: 12px; }
+  .brand-logo { width: 112px; }
+  .brand-copy b { font-size: 16px; }
+  .nav { justify-content: flex-start; width: 100%; }
   .section { padding: 44px 18px; }
   .section-title { display: block; }
   .section-title p { margin-top: 14px; }
   .hero { min-height: auto; padding-top: 34px; }
+  .hero-copy h1 { font-size: 40px; }
   .hero-media, .hero-media img { min-height: 360px; }
-  .hero-panel, .stats-grid, .arch-stack, .scenario-grid, .dashboard-grid, .roadmap { grid-template-columns: 1fr; }
+  .hero-panel, .stats-grid, .arch-stack, .scenario-grid, .dashboard-grid { grid-template-columns: 1fr; }
   .media-frame img, .tab-panel img, .dashboard-card img { height: 300px; }
 }
 </style>
@@ -638,8 +598,8 @@ a { color: inherit; text-decoration: none; }
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#home" aria-label="道路项目智能化施工首页">
-        <span class="brand-mark"></span>
-        <span>
+        <img class="brand-logo" src="./assets/uniubi-logo.svg" alt="宇泛智能">
+        <span class="brand-copy">
           <b>道路项目智能化施工</b>
           <span>管理系统标准化方案</span>
         </span>
@@ -651,7 +611,6 @@ a { color: inherit; text-decoration: none; }
         <button data-view-target="ai">AI安全</button>
         <button data-view-target="earthwork">土石方</button>
         <button data-view-target="dashboards">系统大屏</button>
-        <button data-view-target="delivery">实施路径</button>
       </nav>
       <button class="top-action" data-view-target="dashboards">查看大屏</button>
     </div>
@@ -675,7 +634,7 @@ a { color: inherit; text-decoration: none; }
           </div>
         </div>
         <div class="hero-media">
-          <img src="./assets/road-smart-dashboard-concept-sanitized.png" alt="道路智慧管理系统大屏概念图">
+          <img src="./assets/road-smart-dashboard-live.png" alt="道路智慧管理系统大屏真实界面">
           <div class="hero-panel">
             <div><b>全线态势</b><span>道路、工点、视频、告警统一上图</span></div>
             <div><b>安全生产</b><span>AI识别、人员健康、车辆测速联动</span></div>
@@ -855,30 +814,15 @@ a { color: inherit; text-decoration: none; }
         </div>
         <div class="dashboard-grid single">
           <article class="dashboard-card">
-            <a href="https://jwu793230-debug.github.io/Temporary-display-URL/road-smart-integrated-3d-dashboard.html" target="_blank" rel="noopener">
-              <img src="./assets/road-smart-dashboard-concept-sanitized.png" alt="道路智慧管理大屏平台界面">
+            <a href="https://jwu793230-debug.github.io/Temporary-display-URL/road-smart-integrated-3d-dashboard.html?v=30d6f4e" target="_blank" rel="noopener">
+              <img src="./assets/road-smart-dashboard-live.png" alt="道路智慧管理大屏平台真实界面">
             </a>
             <h3>道路智慧管理大屏平台</h3>
             <p>以全线三维态势为主入口，统一呈现视频、告警、人员车辆、森林防火、高边坡和土石方专题子界面。</p>
             <div class="dashboard-actions">
-              <a class="btn secondary" href="https://jwu793230-debug.github.io/Temporary-display-URL/road-smart-integrated-3d-dashboard.html" target="_blank" rel="noopener">打开平台大屏</a>
+              <a class="btn secondary" href="https://jwu793230-debug.github.io/Temporary-display-URL/road-smart-integrated-3d-dashboard.html?v=30d6f4e" target="_blank" rel="noopener">打开平台大屏</a>
             </div>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="view" id="view-delivery">
-      <div class="section">
-        <div class="section-title">
-          <h2>实施路径建议按先基础、再场景、后运营推进</h2>
-          <p>先把通信、视频和主数据底座建起来，再分场景接入设备，最后沉淀大屏、工单、报表和运维台账。</p>
-        </div>
-        <div class="roadmap">
-          <div class="roadmap-step"><h3>基础接入</h3><p>建设网络覆盖、视频联网、设备台账和统一账号权限，保证现场数据能稳定回传。</p></div>
-          <div class="roadmap-step"><h3>安全场景</h3><p>优先接入 AI 识别、人员健康、车辆测速和森林防火，形成高频风险闭环。</p></div>
-          <div class="roadmap-step"><h3>土石方深化</h3><p>围绕开挖、调度、填筑三大系统完成车载终端、批次轨迹、压实过程和报表报警。</p></div>
-          <div class="roadmap-step"><h3>运营呈现</h3><p>形成道路智慧管理大屏平台、专题子界面、移动端看板、报表中心和资料归档机制。</p></div>
         </div>
       </div>
     </section>
