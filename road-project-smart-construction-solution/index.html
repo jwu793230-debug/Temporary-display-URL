@@ -581,7 +581,13 @@ a { color: inherit; text-decoration: none; }
   .brand { gap: 12px; }
   .brand-logo { width: 112px; }
   .brand-copy b { font-size: 16px; }
-  .nav { justify-content: flex-start; width: 100%; }
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    overflow: visible;
+  }
+  .nav button { padding: 9px 6px; }
   .section { padding: 44px 18px; }
   .section-title { display: block; }
   .section-title p { margin-top: 14px; }
