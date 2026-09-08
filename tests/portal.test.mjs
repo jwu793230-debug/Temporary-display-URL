@@ -14,9 +14,7 @@ const expectedDashboards = [
   "road-smart-integrated-3d-dashboard.html",
   "pump-storage-smart-platform-dashboard.html",
   "pump-storage-3d-twin-dashboard.html",
-  "macau-tbm-monitoring-dashboard/",
-  "dam-ship-lock-3d-model-glb.html",
-  "dam-ship-lock-3d-model.html",
+  "tbm-monitoring-dashboard/",
 ];
 
 test("portal groups the approved engineering assets and keeps the hero compact", async () => {
@@ -56,9 +54,9 @@ test("portal groups the approved engineering assets and keeps the hero compact",
 
     const stats = await page.locator(".summary-item").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
     assert.deepEqual(stats, [
-      "8 项展示成果",
+      "6 项展示成果",
       "2 项方案类成果",
-      "6 项大屏与三维展示",
+      "4 项大屏与三维展示",
     ]);
 
     assert.deepEqual(await page.locator("#solutions .card").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href"))), expectedSolutions);
@@ -70,8 +68,8 @@ test("portal groups the approved engineering assets and keeps the hero compact",
       target: node.getAttribute("target"),
       rel: node.getAttribute("rel")?.split(/\s+/).sort(),
     })));
-    assert.equal(destinationLinkBehavior.length, 9);
-    assert.deepEqual(destinationLinkBehavior, Array.from({ length: 9 }, () => ({
+    assert.equal(destinationLinkBehavior.length, 7);
+    assert.deepEqual(destinationLinkBehavior, Array.from({ length: 7 }, () => ({
       target: "_blank",
       rel: ["noopener", "noreferrer"],
     })));
