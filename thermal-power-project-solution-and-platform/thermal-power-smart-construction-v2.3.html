@@ -114,7 +114,7 @@
     }
 
     .section-head {
-      max-width: 820px;
+      max-width: 1180px;
       margin-bottom: 44px;
     }
 
@@ -145,9 +145,10 @@
 
     h2 {
       margin: 14px 0 16px;
-      font-size: clamp(30px, 4vw, 48px);
+      font-size: clamp(30px, 3.2vw, 44px);
       line-height: 1.18;
       letter-spacing: 0;
+      text-wrap: balance;
     }
 
     h3 { letter-spacing: 0; }
@@ -374,43 +375,54 @@
     .arch-row:nth-child(3) .arch-cell { border-color: rgba(92, 235, 213, .25); }
     .arch-row:nth-child(4) .arch-cell { border-color: rgba(255, 113, 56, .28); }
 
+    .platform-section .shell {
+      width: min(1600px, calc(100vw - 48px));
+    }
+
+    .platform-section .section-head {
+      max-width: 1180px;
+    }
+
     .platform-shell {
+      --platform-scale: .625;
       position: relative;
+      aspect-ratio: 64 / 27;
       border: 1px solid rgba(92, 235, 213, .28);
       background: #06100f;
       box-shadow: 0 38px 100px rgba(0,0,0,.5), inset 0 0 80px rgba(92,235,213,.025);
       overflow: hidden;
+      cursor: pointer;
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
 
-    .platform-live-toolbar {
-      min-height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 12px 18px;
-      border-bottom: 1px solid rgba(92, 235, 213, .18);
-      background: linear-gradient(90deg, rgba(92,235,213,.06), rgba(255,113,56,.04));
+    .platform-shell:hover {
+      border-color: rgba(92, 235, 213, .62);
+      box-shadow: 0 38px 100px rgba(0,0,0,.5), 0 0 32px rgba(92,235,213,.08);
     }
 
-    .platform-live-copy { display: grid; gap: 4px; }
-    .platform-live-copy strong { font-size: 15px; }
-    .platform-live-copy span { color: var(--muted); font-size: 11px; }
-
-    .platform-open-link {
-      padding: 9px 14px;
-      border: 1px solid rgba(92, 235, 213, .42);
-      color: var(--data);
-      font-size: 11px;
-      white-space: nowrap;
+    .platform-preview-link {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      cursor: pointer;
     }
-    .platform-open-link:hover { color: var(--text); border-color: var(--data); }
+
+    .platform-preview-link:focus-visible {
+      outline: 2px solid var(--data);
+      outline-offset: -4px;
+    }
+
     .platform-frame {
-      display: block;
-      width: 100%;
-      height: 720px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2560px;
+      height: 1080px;
       border: 0;
       background: #020908;
+      pointer-events: none;
+      transform: scale(var(--platform-scale));
+      transform-origin: top left;
     }
 
     .platform-topbar {
@@ -887,7 +899,7 @@
       </div>
     </section>
 
-    <section id="platform" class="section">
+    <section id="platform" class="section platform-section">
       <div class="shell">
         <div class="section-head">
           <span class="section-index">04 · 平台大屏</span>
@@ -895,15 +907,9 @@
           <p>基建MIS作为平台业务与数据基座，支持完整建设和既有系统集成两种模式；驾驶舱负责汇聚展示现场智能化、AI、视频、物联、工程业务和数字孪生数据。</p>
         </div>
 
-        <div class="platform-shell" aria-label="火电工程智慧建造平台驾驶舱">
-          <div class="platform-live-toolbar">
-            <div class="platform-live-copy">
-              <strong>火电工程智慧建造平台驾驶舱</strong>
-              <span>独立平台界面 · 支持全屏访问</span>
-            </div>
-            <a class="platform-open-link" href="https://jwu793230-debug.github.io/Temporary-display-URL/thermal-power-project-solution-and-platform/thermal-power-smart-platform-dashboard-v1.1.html" target="_blank" rel="noopener noreferrer">打开完整平台界面 ↗</a>
-          </div>
-          <iframe class="platform-frame" src="thermal-power-smart-platform-dashboard-v1.1.html" title="火电工程智慧建造平台驾驶舱" loading="lazy"></iframe>
+        <div class="platform-shell" aria-label="火电工程智慧建造平台驾驶舱预览">
+          <iframe class="platform-frame" src="thermal-power-smart-platform-dashboard-v1.1.html" title="火电工程智慧建造平台驾驶舱" loading="lazy" scrolling="no"></iframe>
+          <a class="platform-preview-link" href="https://jwu793230-debug.github.io/Temporary-display-URL/thermal-power-project-solution-and-platform/thermal-power-smart-platform-dashboard-v1.1.html" target="_blank" rel="noopener noreferrer" aria-label="打开火电工程智慧建造平台驾驶舱"></a>
         </div>
       </div>
     </section>
@@ -1200,6 +1206,19 @@
         platformDescription.textContent = button.dataset.description;
       });
     });
+
+    const platformShell = document.querySelector('.platform-shell');
+    if (platformShell) {
+      const syncPlatformPreview = function() {
+        platformShell.style.setProperty('--platform-scale', String(platformShell.clientWidth / 2560));
+      };
+      syncPlatformPreview();
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(syncPlatformPreview).observe(platformShell);
+      } else {
+        window.addEventListener('resize', syncPlatformPreview);
+      }
+    }
 
     const navLinks = Array.from(document.querySelectorAll('.main-nav a'));
     const observedSections = navLinks.map(function(link) {

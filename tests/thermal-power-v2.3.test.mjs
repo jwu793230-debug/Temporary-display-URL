@@ -90,3 +90,76 @@ test("published thermal solution opens the real dashboard and all subsystem imag
     await new Promise((done) => server.close(done));
   }
 });
+
+test("section headings stay on one line at the desktop presentation width", async () => {
+  const { server, baseUrl } = await startStaticServer();
+  const browser = await chromium.launch({
+    headless: true,
+    executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  });
+  const page = await browser.newPage({ viewport: { width: 1424, height: 900 } });
+
+  try {
+    await page.goto(baseUrl + solutionRoute, { waitUntil: "load" });
+    const wrappedHeadings = await page.locator("h2").evaluateAll((headings) => headings.flatMap((heading) => {
+      const textNode = heading.firstChild;
+      if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return [];
+      const lines = new Map();
+      for (let index = 0; index < textNode.textContent.length; index += 1) {
+        const range = document.createRange();
+        range.setStart(textNode, index);
+        range.setEnd(textNode, index + 1);
+        const top = Math.round(range.getBoundingClientRect().top);
+        lines.set(top, (lines.get(top) ?? "") + textNode.textContent[index]);
+      }
+      const renderedLines = [...lines.values()].filter((line) => line.trim());
+      return renderedLines.length > 1 ? [heading.textContent.trim()] : [];
+    }));
+    assert.deepEqual(wrappedHeadings, []);
+  } finally {
+    await browser.close();
+    await new Promise((done) => server.close(done));
+  }
+});
+
+test("platform preview is wide, headerless, complete, and opens the dashboard", async () => {
+  const { server, baseUrl } = await startStaticServer();
+  const browser = await chromium.launch({
+    headless: true,
+    executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  });
+  const page = await browser.newPage({ viewport: { width: 1720, height: 1000 } });
+
+  try {
+    await page.goto(baseUrl + solutionRoute, { waitUntil: "load" });
+    assert.equal(await page.locator(".platform-live-toolbar").count(), 0);
+
+    const platformShell = page.locator(".platform-shell");
+    const previewLink = page.locator(".platform-preview-link");
+    await platformShell.scrollIntoViewIfNeeded();
+    assert.equal(await previewLink.getAttribute("href"), dashboardUrl);
+    assert.ok((await platformShell.boundingBox()).width >= 1500);
+
+    await page.waitForFunction(() => Array.from(window.frames).some((frame) => frame.location.href.endsWith("thermal-power-smart-platform-dashboard-v1.1.html")));
+    const dashboardFrame = page.frames().find((frame) => frame.url().endsWith("thermal-power-smart-platform-dashboard-v1.1.html"));
+    assert.ok(dashboardFrame);
+    const frameMetrics = await dashboardFrame.evaluate(() => ({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      scrollHeight: document.documentElement.scrollHeight,
+    }));
+    assert.ok(frameMetrics.width >= 2500);
+    assert.equal(frameMetrics.height, 1080);
+    assert.ok(frameMetrics.scrollHeight <= frameMetrics.height + 1);
+
+    const popupPromise = page.waitForEvent("popup");
+    await previewLink.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    assert.equal(popup.url(), dashboardUrl);
+    await popup.close();
+  } finally {
+    await browser.close();
+    await new Promise((done) => server.close(done));
+  }
+});
