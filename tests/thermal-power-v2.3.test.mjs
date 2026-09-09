@@ -135,10 +135,15 @@ test("platform preview is wide, headerless, complete, and opens the dashboard", 
     assert.equal(await page.locator(".platform-live-toolbar").count(), 0);
 
     const platformShell = page.locator(".platform-shell");
+    const referenceShell = page.locator("#architecture > .shell");
     const previewLink = page.locator(".platform-preview-link");
     await platformShell.scrollIntoViewIfNeeded();
     assert.equal(await previewLink.getAttribute("href"), dashboardUrl);
-    assert.ok((await platformShell.boundingBox()).width >= 1500);
+    const platformBox = await platformShell.boundingBox();
+    const referenceBox = await referenceShell.boundingBox();
+    assert.ok(platformBox && referenceBox);
+    assert.ok(Math.abs(platformBox.width - referenceBox.width) <= 1);
+    assert.ok(Math.abs(platformBox.width / platformBox.height - 64 / 27) < 0.01);
 
     await page.waitForFunction(() => Array.from(window.frames).some((frame) => frame.location.href.endsWith("thermal-power-smart-platform-dashboard-v1.1.html")));
     const dashboardFrame = page.frames().find((frame) => frame.url().endsWith("thermal-power-smart-platform-dashboard-v1.1.html"));
