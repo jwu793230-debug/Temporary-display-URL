@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="面向火电工程施工期的智慧建造通用解决方案，涵盖人员、机械车辆、AI巡检、绿色施工、危大工程、基建MIS与永临结合。">
+  <title>火电工程施工期智慧建造整体解决方案</title>
+  <style>
+    :root {
+      --bg: #07100f;
+      --bg-deep: #030807;
+      --surface: #0c1716;
+      --surface-2: #11211f;
+      --surface-3: #172a27;
+      --text: #f5f3ec;
+      --muted: #9eaeaa;
+      --line: rgba(184, 210, 202, .14);
+      --line-strong: rgba(184, 210, 202, .28);
+      --energy: #ff7138;
+      --energy-soft: #ffb26f;
+      --data: #5cebd5;
+      --data-soft: #a8fff1;
+      --warning: #ffc657;
+      --danger: #ff5d54;
+      --ok: #69e1a5;
+      --steel: #879995;
+      --radius: 6px;
+      --shadow: 0 28px 80px rgba(0, 0, 0, .38);
+      --container: 1180px;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 78px; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      background:
+        linear-gradient(rgba(92, 235, 213, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(92, 235, 213, .035) 1px, transparent 1px),
+        radial-gradient(circle at 85% 12%, rgba(255, 113, 56, .11), transparent 32rem),
+        radial-gradient(circle at 10% 42%, rgba(92, 235, 213, .07), transparent 28rem),
+        var(--bg);
+      background-size: 48px 48px, 48px 48px, auto, auto, auto;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    svg { display: block; width: 100%; height: auto; }
+    [hidden] { display: none !important; }
+
+    .shell {
+      width: min(var(--container), calc(100vw - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--line);
+      background: rgba(3, 8, 7, .9);
+      backdrop-filter: blur(18px);
+    }
+
+    .header-inner {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+      padding: 0;
+    }
+
+    .brand-logo { display: block; width: 141px; height: 30px; object-fit: contain; filter: brightness(0) invert(1); opacity: .96; }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .main-nav::-webkit-scrollbar { display: none; }
+    .main-nav a {
+      padding: 9px 11px;
+      color: #c5d0cd;
+      font-size: 12px;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color .2s ease, border-color .2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--text);
+      border-bottom-color: var(--energy);
+    }
+
+    .section {
+      position: relative;
+      padding: 104px 0;
+      border-top: 1px solid rgba(184, 210, 202, .08);
+      scroll-margin-top: 74px;
+    }
+
+    .section-head {
+      max-width: 820px;
+      margin-bottom: 44px;
+    }
+
+    .section-index {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--energy-soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .section-index::before {
+      content: "";
+      width: 36px;
+      height: 2px;
+      background: var(--energy);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin: 22px 0 24px;
+      font-size: clamp(44px, 5.3vw, 68px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      max-width: 820px;
+    }
+
+    h2 {
+      margin: 14px 0 16px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    h3 { letter-spacing: 0; }
+    .lead,
+    .section-head p {
+      color: #bfcbc8;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      min-height: calc(100vh - 66px);
+      display: grid;
+      align-items: center;
+      padding: 50px 0 34px;
+      overflow: hidden;
+      background: #050b0a;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(3,9,9,.98) 0%, rgba(3,9,9,.9) 29%, rgba(3,9,9,.55) 51%, rgba(3,9,9,.12) 77%, rgba(3,9,9,.08) 100%),
+        linear-gradient(180deg, rgba(3,9,9,.1), rgba(3,9,9,.1) 67%, rgba(3,9,9,.78));
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .28;
+      pointer-events: none;
+      background-image:
+        linear-gradient(90deg, rgba(92,235,213,.08) 1px, transparent 1px),
+        linear-gradient(rgba(92,235,213,.08) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(90deg, transparent 0, #000 38%, #000 100%);
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .hero-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 580px) 1fr;
+      gap: 48px;
+      align-items: center;
+      min-height: calc(100vh - 150px);
+    }
+
+    .hero-copy { position: relative; z-index: 1; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+    .hero .lead { max-width: 720px; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 10px 18px;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .035);
+      font-weight: 800;
+      font-size: 14px;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); border-color: rgba(92, 235, 213, .52); }
+    .button.primary { background: var(--energy); color: #1b0902; border-color: var(--energy); }
+    .button.primary:hover { background: #ff8758; border-color: #ff8758; }
+    .button svg { width: 16px; height: 16px; }
+
+    .plant-base { fill: #0d1d1b; stroke: rgba(168, 255, 241, .28); stroke-width: 1.5; }
+    .plant-line { fill: none; stroke: rgba(168, 255, 241, .55); stroke-width: 2; }
+    .plant-ghost { fill: rgba(92, 235, 213, .055); stroke: rgba(92, 235, 213, .34); stroke-width: 1.5; }
+    .plant-hot { fill: rgba(255, 113, 56, .12); stroke: rgba(255, 113, 56, .8); stroke-width: 2; }
+    .plant-data { fill: var(--data); filter: drop-shadow(0 0 6px rgba(92,235,213,.7)); }
+    .pulse { animation: pulse 2.8s ease-in-out infinite; transform-origin: center; }
+
+    .hero-rail {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+      margin-top: 26px;
+      background: rgba(3, 10, 9, .66);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-stat { padding: 18px 20px; border-right: 1px solid var(--line); }
+    .hero-stat:last-child { border-right: 0; }
+    .hero-stat strong { display: block; color: var(--energy-soft); font-size: 28px; line-height: 1; }
+    .hero-stat span { display: block; margin-top: 8px; color: #c6d1ce; font-size: 13px; }
+
+    .pain-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .pain-item {
+      min-height: 230px;
+      padding: 26px 20px;
+      border-right: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.025), transparent);
+    }
+
+    .pain-item:last-child { border-right: 0; }
+    .pain-item b { color: var(--energy); font-size: 13px; }
+    .pain-item h3 { margin: 48px 0 12px; font-size: 19px; }
+    .pain-item p { margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+
+    .strategy-map {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1.3fr 1fr;
+      gap: 1px;
+      background: var(--line-strong);
+      border: 1px solid var(--line-strong);
+    }
+
+    .strategy-node {
+      position: relative;
+      min-height: 270px;
+      padding: 30px 24px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .strategy-node::after {
+      content: attr(data-code);
+      position: absolute;
+      right: 14px;
+      bottom: -14px;
+      color: rgba(255,255,255,.035);
+      font-size: 104px;
+      font-weight: 950;
+    }
+
+    .strategy-node .num { color: var(--energy-soft); font-size: 44px; font-weight: 900; }
+    .strategy-node:nth-child(2) .num { color: var(--data); }
+    .strategy-node h3 { margin: 28px 0 12px; font-size: 20px; }
+    .strategy-node p { position: relative; z-index: 1; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+
+    .architecture-board {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      padding: 22px;
+      border: 1px solid var(--line-strong);
+      background: rgba(3, 8, 7, .66);
+      box-shadow: var(--shadow);
+    }
+
+    .arch-foundation { border: 1px solid rgba(255,113,56,.34); background: rgba(255,113,56,.045); }
+    .arch-foundation .arch-title { color: var(--energy-soft); }
+    .arch-foundation .arch-cell:first-child { color: #fff4ed; border-color: rgba(255,113,56,.44); }
+
+    .arch-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      align-items: stretch;
+      min-height: 84px;
+    }
+
+    .arch-title {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border-right: 1px solid var(--line-strong);
+      color: var(--energy-soft);
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .arch-cells {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(255,255,255,.018);
+    }
+
+    .arch-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      padding: 14px 10px;
+      border: 1px solid var(--line);
+      color: #d4ddda;
+      text-align: center;
+      font-size: 13px;
+      background: linear-gradient(145deg, rgba(20, 39, 36, .9), rgba(10, 19, 18, .72));
+    }
+
+    .arch-row:nth-child(3) .arch-cell { border-color: rgba(92, 235, 213, .25); }
+    .arch-row:nth-child(4) .arch-cell { border-color: rgba(255, 113, 56, .28); }
+
+    .platform-shell {
+      position: relative;
+      border: 1px solid rgba(92, 235, 213, .28);
+      background: #06100f;
+      box-shadow: 0 38px 100px rgba(0,0,0,.5), inset 0 0 80px rgba(92,235,213,.025);
+      overflow: hidden;
+    }
+
+    .platform-live-toolbar {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(92, 235, 213, .18);
+      background: linear-gradient(90deg, rgba(92,235,213,.06), rgba(255,113,56,.04));
+    }
+
+    .platform-live-copy { display: grid; gap: 4px; }
+    .platform-live-copy strong { font-size: 15px; }
+    .platform-live-copy span { color: var(--muted); font-size: 11px; }
+
+    .platform-open-link {
+      padding: 9px 14px;
+      border: 1px solid rgba(92, 235, 213, .42);
+      color: var(--data);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .platform-open-link:hover { color: var(--text); border-color: var(--data); }
+    .platform-frame {
+      display: block;
+      width: 100%;
+      height: 720px;
+      border: 0;
+      background: #020908;
+    }
+
+    .platform-topbar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-bottom: 1px solid rgba(92, 235, 213, .18);
+      background: linear-gradient(90deg, rgba(92,235,213,.05), rgba(255,113,56,.035));
+    }
+
+    .platform-topbar strong { font-size: 15px; }
+    .platform-mode { color: var(--data-soft); font-size: 11px; }
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr) 230px;
+      min-height: 580px;
+    }
+
+    .platform-sidebar { border-right: 1px solid rgba(92,235,213,.15); padding: 16px 10px; }
+    .platform-nav-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 12px;
+      border: 0;
+      border-left: 2px solid transparent;
+      color: #9fb3ae;
+      background: transparent;
+      text-align: left;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .platform-nav-button::before { content: ""; width: 7px; height: 7px; border: 1px solid currentColor; transform: rotate(45deg); }
+    .platform-nav-button:hover,
+    .platform-nav-button.active { color: var(--text); border-left-color: var(--energy); background: rgba(255,113,56,.07); }
+
+    .platform-stage { position: relative; padding: 24px; overflow: hidden; }
+    .stage-heading { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+    .stage-heading h3 { margin: 0; font-size: 22px; }
+    .stage-heading p { max-width: 480px; margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .stage-status { color: var(--data); font-size: 11px; white-space: nowrap; }
+
+    .twin-canvas {
+      position: absolute;
+      inset: 108px 24px 74px;
+      border-top: 1px solid rgba(92,235,213,.15);
+      border-bottom: 1px solid rgba(92,235,213,.15);
+      background:
+        linear-gradient(90deg, rgba(92,235,213,.045) 1px, transparent 1px),
+        linear-gradient(rgba(92,235,213,.045) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(92,235,213,.06), transparent 58%);
+      background-size: 28px 28px, 28px 28px, auto;
+    }
+
+    .twin-canvas svg { position: absolute; inset: 10% 6%; width: 88%; height: 80%; }
+    .twin-label {
+      position: absolute;
+      padding: 5px 8px;
+      border: 1px solid rgba(92,235,213,.24);
+      background: rgba(3,8,7,.82);
+      color: #ccece6;
+      font-size: 10px;
+    }
+
+    .label-boiler { left: 46%; top: 20%; }
+    .label-turbine { left: 56%; top: 62%; }
+    .label-coal { left: 8%; top: 66%; }
+    .label-env { right: 6%; top: 48%; }
+
+    .platform-strip {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .platform-strip span { padding: 11px 8px; border-top: 1px solid var(--line-strong); color: #aebfba; font-size: 11px; text-align: center; }
+    .platform-rail { border-left: 1px solid rgba(92,235,213,.15); padding: 16px; }
+    .rail-block { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .rail-block:last-child { border-bottom: 0; }
+    .rail-block small { color: var(--muted); font-size: 10px; }
+    .rail-block strong { display: block; margin-top: 8px; font-size: 14px; }
+    .rail-line { height: 3px; margin-top: 11px; background: rgba(255,255,255,.08); }
+    .rail-line::after { content: ""; display: block; width: var(--fill, 56%); height: 100%; background: var(--data); }
+
+    .domain-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .domain-tab {
+      min-height: 70px;
+      padding: 10px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255,255,255,.018);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .domain-tab:last-child { border-right: 0; }
+    .domain-tab:hover { color: var(--text); }
+    .domain-tab[aria-selected="true"] { color: #190b04; background: var(--energy); }
+
+    .domain-panel {
+      display: block;
+      min-height: 590px;
+      border-bottom: 1px solid var(--line-strong);
+      background: rgba(6, 16, 15, .56);
+    }
+
+    .domain-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
+      padding: 30px 34px 24px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(255,113,56,.055), transparent 58%);
+    }
+
+    .domain-intro h3 { margin: 0 0 9px; font-size: 27px; }
+    .domain-intro p { max-width: 800px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .domain-count { color: var(--energy-soft); font-family: Consolas, monospace; font-size: 12px; letter-spacing: .08em; white-space: nowrap; }
+
+    .subsystem-switcher {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(148px, 1fr);
+      gap: 8px;
+      padding: 12px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--line-strong);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(92,235,213,.28) transparent;
+    }
+
+    .subsystem-tab {
+      min-height: 64px;
+      padding: 10px 12px;
+      border: 1px solid rgba(184,210,202,.13);
+      border-radius: 4px;
+      background: rgba(255,255,255,.022);
+      color: #c9d4d1;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+
+    .subsystem-tab:hover { border-color: rgba(92,235,213,.36); transform: translateY(-1px); }
+    .subsystem-tab b { display: block; color: inherit; font-size: 12px; line-height: 1.35; }
+    .subsystem-tab span { display: block; margin-top: 5px; color: #748984; font-size: 10px; }
+    .subsystem-tab[aria-selected="true"] {
+      border-color: rgba(255,113,56,.65);
+      background: linear-gradient(135deg, rgba(255,113,56,.22), rgba(92,235,213,.08));
+      color: #fff7f1;
+      box-shadow: inset 0 0 18px rgba(255,113,56,.06);
+    }
+    .subsystem-tab[aria-selected="true"] span { color: var(--energy-soft); }
+
+    .subsystem-stage {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      min-height: 430px;
+    }
+
+    .subsystem-copy { padding: 36px 38px 32px; }
+    .subsystem-kicker { display: block; margin-bottom: 12px; color: var(--data); font-family: Consolas, monospace; font-size: 10px; letter-spacing: .12em; }
+    .subsystem-copy h4 { margin: 0 0 13px; font-size: 28px; }
+    .subsystem-description { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .subsystem-features { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; margin-top: 24px; }
+    .subsystem-feature { padding: 11px 0; border-top: 1px solid var(--line); color: #ccd6d3; font-size: 12px; line-height: 1.55; }
+    .subsystem-feature::before { content: "+"; margin-right: 8px; color: var(--data); font-weight: 900; }
+    .subsystem-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .subsystem-meta span { padding: 6px 8px; border: 1px solid rgba(255,113,56,.22); color: var(--energy-soft); font-size: 10px; }
+
+    .domain-diagram {
+      position: relative;
+      min-height: 430px;
+      border-left: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        #091311;
+      background-size: 34px 34px;
+      overflow: hidden;
+    }
+
+    .subsystem-image { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(.9) contrast(1.04) brightness(.86); }
+    .domain-diagram::after { content: ""; position: absolute; inset: 0; z-index: 6; pointer-events: none; background: linear-gradient(0deg, rgba(3,12,11,.58), transparent 34%); }
+    .subsystem-image-caption { position: absolute; left: 18px; right: 18px; bottom: 16px; z-index: 7; display: flex; justify-content: space-between; gap: 12px; color: rgba(232,242,239,.92); font-family: Consolas, monospace; font-size: 9px; letter-spacing: .1em; }
+    .subsystem-image-caption::before { content: "SCENARIO VISUAL"; color: var(--data); }
+    .domain-diagram.image-error .subsystem-image, .domain-diagram.image-error .subsystem-image-caption, .domain-diagram.image-error::after { display: none; }
+
+    .diagram-core {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      width: 142px;
+      height: 142px;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(255,113,56,.62);
+      background: rgba(255,113,56,.09);
+      box-shadow: 0 0 70px rgba(255,113,56,.11);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .diagram-node {
+      position: absolute;
+      width: 126px;
+      min-height: 54px;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      border: 1px solid rgba(92,235,213,.3);
+      background: rgba(6,16,15,.88);
+      color: #d4e2de;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .diagram-node::after {
+      content: "";
+      position: absolute;
+      width: 58px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(92,235,213,.65), transparent);
+    }
+
+    .node-a { left: 8%; top: 18%; }
+    .node-b { right: 8%; top: 18%; }
+    .node-c { left: 8%; bottom: 18%; }
+    .node-d { right: 8%; bottom: 18%; }
+    .node-a::after, .node-c::after { left: 100%; top: 50%; }
+    .node-b::after, .node-d::after { right: 100%; top: 50%; transform: rotate(180deg); }
+
+    .flow-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .flow-strip span {
+      padding: 7px 9px;
+      border: 1px solid rgba(92,235,213,.2);
+      color: var(--data-soft);
+      font-size: 11px;
+    }
+
+    .permanent-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line-strong);
+      background: var(--line-strong);
+    }
+
+    .permanent-item { min-height: 310px; padding: 28px 22px; background: var(--surface); }
+    .permanent-item b { color: var(--energy-soft); font-size: 12px; }
+    .permanent-item h3 { margin: 58px 0 14px; font-size: 20px; }
+    .permanent-item p { color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .permanent-gates {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .gate { padding: 17px; border-left: 2px solid var(--data); background: rgba(92,235,213,.045); }
+    .gate strong { display: block; margin-bottom: 7px; font-size: 13px; }
+    .gate span { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .roadmap-step { position: relative; padding: 34px 24px 26px; border-right: 1px solid var(--line); }
+    .roadmap-step:last-child { border-right: 0; }
+    .roadmap-step::before { content: ""; position: absolute; top: -4px; left: 24px; width: 8px; height: 8px; background: var(--energy); transform: rotate(45deg); }
+    .roadmap-step b { color: var(--energy-soft); font-size: 13px; }
+    .roadmap-step h3 { margin: 36px 0 12px; font-size: 19px; }
+    .roadmap-step p { color: var(--muted); font-size: 13px; line-height: 1.75; }
+
+    .boundary {
+      margin-top: 44px;
+      padding: 26px;
+      border-left: 3px solid var(--warning);
+      background: rgba(255,198,87,.045);
+      color: #d2d9d7;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    footer { padding: 34px 0 48px; color: #71817d; font-size: 11px; border-top: 1px solid var(--line); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 24px; }
+
+    @keyframes scan { to { transform: translateX(120%); } }
+    @keyframes pulse { 0%, 100% { opacity: .48; transform: scale(.86); } 50% { opacity: 1; transform: scale(1.22); } }
+
+    @media (max-width: 1020px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero::before { background: linear-gradient(90deg, rgba(3,9,9,.96), rgba(3,9,9,.66) 64%, rgba(3,9,9,.25)); }
+      .pain-list { grid-template-columns: repeat(2, 1fr); }
+      .pain-item { border-bottom: 1px solid var(--line); }
+      .strategy-map { grid-template-columns: repeat(2, 1fr); }
+      .platform-grid { grid-template-columns: 150px 1fr; }
+      .platform-rail { grid-column: 1 / -1; border-left: 0; border-top: 1px solid rgba(92,235,213,.15); display: grid; grid-template-columns: repeat(4, 1fr); }
+      .rail-block { padding: 14px; border-bottom: 0; border-right: 1px solid var(--line); }
+      .permanent-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 28px, var(--container)); }
+      .header-inner { min-height: 60px; display: grid; grid-template-columns: 1fr; padding: 10px 0 0; }
+      .brand { display: inline-flex; justify-self: start; }
+      .brand-logo { width: 118px; height: 25px; }
+      .main-nav { width: 100%; padding-bottom: 8px; }
+      .main-nav a { padding: 7px 9px; }
+      .section { padding: 74px 0; }
+      h1 { font-size: clamp(38px, 10.5vw, 50px); }
+      h2 { font-size: 32px; }
+      .hero { min-height: auto; padding-top: 54px; }
+      .hero-grid { min-height: 720px; gap: 30px; }
+      .hero::before { background: linear-gradient(180deg, rgba(3,9,9,.94) 0%, rgba(3,9,9,.78) 58%, rgba(3,9,9,.28) 100%); }
+      .hero-media img { object-position: 66% center; }
+      .hero-rail { grid-template-columns: repeat(2, 1fr); }
+      .hero-stat:nth-child(2) { border-right: 0; }
+      .hero-stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .pain-list { grid-template-columns: 1fr; }
+      .pain-item { min-height: auto; border-right: 0; }
+      .pain-item h3 { margin-top: 22px; }
+      .strategy-map { grid-template-columns: 1fr; }
+      .strategy-node { min-height: 220px; }
+      .arch-row { grid-template-columns: 1fr; }
+      .arch-title { border-right: 0; border-bottom: 1px solid var(--line); }
+      .arch-cells { grid-auto-flow: row; grid-auto-rows: auto; grid-auto-columns: auto; grid-template-columns: repeat(2, 1fr); }
+      .platform-grid { grid-template-columns: 1fr; }
+      .platform-sidebar { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid rgba(92,235,213,.15); }
+      .platform-nav-button { min-width: 118px; border-left: 0; border-bottom: 2px solid transparent; }
+      .platform-nav-button.active { border-left-color: transparent; border-bottom-color: var(--energy); }
+      .platform-stage { min-height: 500px; }
+      .platform-rail { grid-template-columns: repeat(2, 1fr); }
+      .domain-tabs { grid-template-columns: repeat(2, 1fr); }
+      .domain-tab { border-bottom: 1px solid var(--line); }
+      .domain-intro { grid-template-columns: 1fr; gap: 12px; padding: 26px 20px 20px; }
+      .subsystem-switcher { display: flex; width: 100%; padding: 10px; }
+      .subsystem-tab { flex: 0 0 152px; }
+      .subsystem-stage { grid-template-columns: 1fr; }
+      .subsystem-copy { padding: 30px 20px; }
+      .subsystem-features { grid-template-columns: 1fr; }
+      .domain-diagram { min-height: 380px; border-left: 0; border-top: 1px solid var(--line); }
+      .permanent-grid { grid-template-columns: 1fr; }
+      .permanent-item { min-height: auto; }
+      .permanent-item h3 { margin-top: 28px; }
+      .permanent-gates { grid-template-columns: 1fr; }
+      .roadmap { grid-template-columns: 1fr; }
+      .roadmap-step { border-right: 0; border-bottom: 1px solid var(--line); }
+      .footer-inner { display: grid; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#top" aria-label="返回方案首页">
+        <img class="brand-logo" src="assets/uniubi-logo.svg" alt="宇泛智能">
+      </a>
+      <nav class="main-nav" aria-label="方案章节">
+        <a href="#pain">项目痛点</a>
+        <a href="#strategy">建设思路</a>
+        <a href="#architecture">总体架构</a>
+        <a href="#platform">平台大屏</a>
+        <a href="#domains">五大业务域</a>
+        <a href="#permanent">永临结合</a>
+        <a href="#roadmap">实施路径</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-media"><img src="assets/thermal-power-panorama-v1.png" alt="大型火电厂施工期数字孪生全景效果图"></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <span class="section-index">火电工程 · 施工期通用方案</span>
+          <h1>火电工程施工期<br>智慧建造<br>整体解决方案</h1>
+          <p class="lead">以基建MIS为平台基座，围绕人员、机械车辆物资、AI应用、绿色环境和危大工程五大业务域，构建面向业主、监理、总包及分包协同的一体化智慧建造平台，并为生产期的数据、资产和设施移交预留永临结合路径。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#platform">查看平台大屏</a>
+            <a class="button" href="#domains">查看业务体系</a>
+            <a class="button" href="#permanent">查看永临结合</a>
+          </div>
+        </div>
+        <div aria-hidden="true"></div>
+
+        <div class="hero-rail" aria-label="方案架构摘要">
+          <div class="hero-stat"><strong>1</strong><span>基建MIS平台基座</span></div>
+          <div class="hero-stat"><strong>3</strong><span>AI、孪生、物联能力中枢</span></div>
+          <div class="hero-stat"><strong>5</strong><span>施工期核心业务域</span></div>
+          <div class="hero-stat"><strong>N</strong><span>现场智能终端与应用</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pain" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">01 · 项目痛点</span>
+          <h2>火电工程智慧建造，不是设备的简单叠加</h2>
+          <p>火电建设专业密集、参建单位多、交叉作业频繁，现场感知设备只有进入统一业务流程，才能把零散数据转化为可预警、可处置、可追溯、可验收的管理能力。</p>
+        </div>
+        <div class="pain-list">
+          <article class="pain-item"><b>01</b><h3>人员流动与资质复杂</h3><p>入场教育、考试、体检、资质、班组、区域权限和退场记录分散，难以形成完整人员档案。</p></article>
+          <article class="pain-item"><b>02</b><h3>大型机械风险集中</h3><p>塔机、升降机、移动机械和运输车辆并行作业，司机身份、运行状态与周边风险需要联动管理。</p></article>
+          <article class="pain-item"><b>03</b><h3>高风险作业交叉</h3><p>高处、吊装、动火、受限空间、脚手架和临时用电等作业，需要从许可到销项形成闭环。</p></article>
+          <article class="pain-item"><b>04</b><h3>现场数据彼此割裂</h3><p>视频、定位、传感、巡检、进度、质量和物资数据分散，无法支撑统一研判和调度。</p></article>
+          <article class="pain-item"><b>05</b><h3>建成后难以继承</h3><p>施工期系统若缺少永临结合规划，网络、设备、BIM模型、台账和质量数据难以向生产期有效移交。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">02 · 建设思路</span>
+          <h2>1个平台基座，3个能力中枢，5大业务域，N类终端</h2>
+          <p>以基建MIS承接业务与数据，以中枢整合AI、孪生和物联能力，以五大业务域形成现场闭环，以智能终端持续提供可信数据。</p>
+        </div>
+        <div class="strategy-map">
+          <article class="strategy-node" data-code="1"><span class="num">1</span><h3>基建MIS平台基座</h3><p>承载进度、质量、安全、工程、物资设备等业务，并提供统一门户、身份权限、流程、工单、报表和接口服务。</p></article>
+          <article class="strategy-node" data-code="3"><span class="num">3</span><h3>能力中枢</h3><p>U安智巡AI中枢、BIM+GIS数字孪生中枢、IoT+视频数据中枢。</p></article>
+          <article class="strategy-node" data-code="5"><span class="num">5</span><h3>核心业务域</h3><p>人员管理、机械车辆物资、AI应用、绿色和环境管理、危大工程管理。</p></article>
+          <article class="strategy-node" data-code="N"><span class="num">N</span><h3>智能终端</h3><p>门禁、定位、安全帽、塔机、升降机、车辆、地磅、视频、无人机、机器狗和传感器。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">03 · 总体架构</span>
+          <h2>平台基座承载业务，项目现场本地化部署</h2>
+          <p>基建MIS不是第六个业务域，而是智慧建造平台基座；上承五大业务域和三类能力中枢，下接现场终端与本地基础设施。系统部署于电厂项目现场，驾驶舱仅作为统一展示窗口。</p>
+        </div>
+        <div class="architecture-board">
+          <div class="arch-row"><div class="arch-title">驾驶舱展示层</div><div class="arch-cells"><div class="arch-cell">领导驾驶舱</div><div class="arch-cell">可视化大屏</div><div class="arch-cell">PC管理端</div><div class="arch-cell">移动协同端</div><div class="arch-cell">现场信息屏</div></div></div>
+          <div class="arch-row"><div class="arch-title">五大业务域</div><div class="arch-cells"><div class="arch-cell">人员管理</div><div class="arch-cell">机械车辆物资</div><div class="arch-cell">AI应用</div><div class="arch-cell">绿色和环境管理</div><div class="arch-cell">危大工程管理</div></div></div>
+          <div class="arch-row"><div class="arch-title">能力中枢层</div><div class="arch-cells"><div class="arch-cell">U安智巡AI中枢</div><div class="arch-cell">BIM+GIS数字孪生中枢</div><div class="arch-cell">IoT+视频数据中枢</div></div></div>
+          <div id="platform-foundation" class="arch-row arch-foundation"><div class="arch-title">平台基座层</div><div class="arch-cells"><div class="arch-cell">基建MIS平台基座</div><div class="arch-cell">进度与工程</div><div class="arch-cell">质量与安全</div><div class="arch-cell">物资与设备</div><div class="arch-cell">统一身份 · 编码 · 流程 · 工单 · 报表 · 接口</div></div></div>
+          <div class="arch-row"><div class="arch-title">边缘感知层</div><div class="arch-cells"><div class="arch-cell">定位门禁</div><div class="arch-cell">机械车辆</div><div class="arch-cell">视频AI</div><div class="arch-cell">环境传感</div><div class="arch-cell">结构监测</div></div></div>
+          <div class="arch-row"><div class="arch-title">基础设施层</div><div class="arch-cells"><div class="arch-cell">本地服务器</div><div class="arch-cell">边缘计算与物联接入</div><div class="arch-cell">现场光纤与无线网络</div><div class="arch-cell">本地存储与备份</div><div class="arch-cell">网络安全与运维</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="platform" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">04 · 平台大屏</span>
+          <h2>接入火电工程智慧建造平台，统一呈现施工现场态势</h2>
+          <p>基建MIS作为平台业务与数据基座，支持完整建设和既有系统集成两种模式；驾驶舱负责汇聚展示现场智能化、AI、视频、物联、工程业务和数字孪生数据。</p>
+        </div>
+
+        <div class="platform-shell" aria-label="火电工程智慧建造平台驾驶舱">
+          <div class="platform-live-toolbar">
+            <div class="platform-live-copy">
+              <strong>火电工程智慧建造平台驾驶舱</strong>
+              <span>独立平台界面 · 支持全屏访问</span>
+            </div>
+            <a class="platform-open-link" href="https://jwu793230-debug.github.io/Temporary-display-URL/thermal-power-project-solution-and-platform/thermal-power-smart-platform-dashboard-v1.1.html" target="_blank" rel="noopener noreferrer">打开完整平台界面 ↗</a>
+          </div>
+          <iframe class="platform-frame" src="thermal-power-smart-platform-dashboard-v1.1.html" title="火电工程智慧建造平台驾驶舱" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="domains" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">05 · 五大业务域</span>
+          <h2>五大业务域展开，数据统一沉淀</h2>
+          <p>选择业务域查看对应系统、终端与闭环。各业务域共享基建MIS平台基座提供的组织、权限、编码、告警、工单、报表和接口能力。</p>
+        </div>
+
+        <div class="domain-tabs" role="tablist" aria-label="五大业务域">
+          <button id="tab-people" class="domain-tab" role="tab" aria-selected="true" aria-controls="panel-people" data-panel="panel-people">人员管理</button>
+          <button id="tab-equipment" class="domain-tab" role="tab" aria-selected="false" aria-controls="panel-equipment" data-panel="panel-equipment">机械车辆物资</button>
+          <button id="tab-ai" class="domain-tab" role="tab" aria-selected="false" aria-controls="panel-ai" data-panel="panel-ai">AI应用</button>
+          <button id="tab-green" class="domain-tab" role="tab" aria-selected="false" aria-controls="panel-green" data-panel="panel-green">绿色和环境管理</button>
+          <button id="tab-risk" class="domain-tab" role="tab" aria-selected="false" aria-controls="panel-risk" data-panel="panel-risk">危大工程管理</button>
+        </div>
+
+        <article class="domain-panel" data-domain-panel="people" id="panel-people" role="tabpanel" aria-labelledby="tab-people">
+          <div class="domain-intro"><div><h3>人员管理</h3><p>以人员统一档案为主线，连接登记、体检、教育、考试、准入、定位、行为积分、兑换激励与分级惩戒，形成施工人员全生命周期管理。</p></div><span class="domain-count">06 SUBSYSTEMS</span></div>
+          <div class="subsystem-switcher" role="tablist" aria-label="人员管理子系统">
+            <button id="subtab-people-access" class="subsystem-tab" role="tab" aria-selected="true" aria-controls="subpanel-people" data-subsystem="people-access"><b>实名制门禁</b><span>身份准入</span></button>
+            <button id="subtab-people-beidou" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-people" data-subsystem="people-beidou"><b>北斗人员定位</b><span>轨迹与聚集</span></button>
+            <button id="subtab-people-helmet" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-people" data-subsystem="people-helmet"><b>智能安全帽</b><span>远程视频与定位</span></button>
+            <button id="subtab-people-training" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-people" data-subsystem="people-training"><b>一站式教考中心</b><span>教育考试</span></button>
+            <button id="subtab-people-health" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-people" data-subsystem="people-health"><b>健康体检与登记</b><span>健康档案</span></button>
+            <button id="subtab-people-points" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-people" data-subsystem="people-points"><b>安全积分超市</b><span>行为积分激励</span></button>
+          </div>
+          <div id="subpanel-people" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-people-access">
+            <div class="subsystem-copy"><span class="subsystem-kicker">PERSONNEL ACCESS</span><h4>实名制门禁</h4><p class="subsystem-description">把人员身份、班组、资质、安全教育和区域权限统一校验，形成“登记—授权—通行—追溯”的现场准入闭环。</p><div class="subsystem-features"><div class="subsystem-feature">人脸、身份证与实名档案绑定</div><div class="subsystem-feature">教育、体检、资质条件联动校验</div><div class="subsystem-feature">分区分时权限与访客审批</div><div class="subsystem-feature">进出记录、在场人数与异常告警</div></div><div class="subsystem-meta"><span>登记</span><span>校验</span><span>授权</span><span>通行</span><span>追溯</span></div></div>
+            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/01-people-access.png" alt="实名制门禁场景图"><span class="subsystem-image-caption">实名制门禁</span><span class="diagram-caption">BUSINESS CLOSED LOOP</span><div class="diagram-core">人员准入<br>闭环</div><div class="diagram-node node-a">实名档案</div><div class="diagram-node node-b">条件校验</div><div class="diagram-node node-c">门禁通行</div><div class="diagram-node node-d">在场统计</div></div>
+          </div>
+        </article>
+
+        <article class="domain-panel" data-domain-panel="machine" id="panel-equipment" role="tabpanel" aria-labelledby="tab-equipment" hidden>
+          <div class="domain-intro"><div><h3>机械车辆物资</h3><p>围绕机械安全、车辆管理和物资计量三条业务线，贯通司机身份、设备状态、作业风险、车辆轨迹与物资进出场数据。</p></div><span class="domain-count">06 SUBSYSTEMS</span></div>
+          <div class="subsystem-switcher" role="tablist" aria-label="机械车辆物资子系统">
+            <button id="subtab-machine-tower" class="subsystem-tab" role="tab" aria-selected="true" aria-controls="subpanel-machine" data-subsystem="machine-tower"><b>塔机安全监控</b><span>防碰撞吊钩可视</span></button>
+            <button id="subtab-machine-mobile" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-machine" data-subsystem="machine-mobile"><b>大型移动机械辅助</b><span>周界安全</span></button>
+            <button id="subtab-machine-lift" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-machine" data-subsystem="machine-lift"><b>施工升降机监控</b><span>状态与人数</span></button>
+            <button id="subtab-machine-vehicle" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-machine" data-subsystem="machine-vehicle"><b>车辆北斗与车况</b><span>轨迹油耗怠速</span></button>
+            <button id="subtab-machine-driver" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-machine" data-subsystem="machine-driver"><b>司机状态监测</b><span>疲劳与分心</span></button>
+            <button id="subtab-machine-weigh" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-machine" data-subsystem="machine-weigh"><b>智能地磅与物资台账</b><span>计量追溯</span></button>
+          </div>
+          <div id="subpanel-machine" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-machine-tower">
+            <div class="subsystem-copy"><span class="subsystem-kicker">MACHINERY SAFETY</span><h4>塔机安全监控</h4><p class="subsystem-description">对司机身份、塔机运行参数、相邻塔机与障碍物关系进行实时监控，并通过吊钩可视化降低盲吊风险。</p><div class="subsystem-features"><div class="subsystem-feature">司机人脸识别与持证校验</div><div class="subsystem-feature">幅度、高度、回转和载荷监测</div><div class="subsystem-feature">群塔防碰撞与区域限位</div><div class="subsystem-feature">吊钩视频、告警记录与回放</div></div><div class="subsystem-meta"><span>身份校验</span><span>状态监控</span><span>风险预警</span><span>处置留痕</span></div></div>
+            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/07-machine-tower-crane.png" alt="塔机安全监控场景图"><span class="subsystem-image-caption">塔机安全监控</span><span class="diagram-caption">MACHINERY SAFETY LOOP</span><div class="diagram-core">塔机安全<br>控制</div><div class="diagram-node node-a">司机识别</div><div class="diagram-node node-b">运行参数</div><div class="diagram-node node-c">群塔防碰撞</div><div class="diagram-node node-d">小车吊钩可视</div></div>
+          </div>
+        </article>
+
+        <article class="domain-panel" data-domain-panel="ai" id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" hidden>
+          <div class="domain-intro"><div><h3>AI应用 · U安智巡</h3><p>以安全生产大模型为能力中枢，接入固定视频和各类移动终端，把识别、研判、人工复核、告警、整改和报告串成闭环。</p></div><span class="domain-count">06 SUBSYSTEMS</span></div>
+          <div class="subsystem-switcher" role="tablist" aria-label="AI应用子系统">
+            <button id="subtab-ai-core" class="subsystem-tab" role="tab" aria-selected="true" aria-controls="subpanel-ai" data-subsystem="ai-core"><b>U安智巡能力中枢</b><span>安全生产大模型</span></button>
+            <button id="subtab-ai-sentry" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-ai" data-subsystem="ai-sentry"><b>AI哨兵</b><span>固定视频智巡</span></button>
+            <button id="subtab-ai-mobile" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-ai" data-subsystem="ai-mobile"><b>移动巡检</b><span>现场检查</span></button>
+            <button id="subtab-ai-video" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-ai" data-subsystem="ai-video"><b>影像智巡</b><span>执法仪分析</span></button>
+            <button id="subtab-ai-drone" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-ai" data-subsystem="ai-drone"><b>无人机巡查</b><span>空中巡检</span></button>
+            <button id="subtab-ai-dog" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-ai" data-subsystem="ai-dog"><b>机器狗巡检</b><span>复杂区域采集</span></button>
+          </div>
+          <div id="subpanel-ai" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-ai-core">
+            <div class="subsystem-copy"><span class="subsystem-kicker">U-SAFETY AI</span><h4>U安智巡能力中枢</h4><p class="subsystem-description">统一接入视频、图片、巡检记录、项目制度和风险知识，为各类巡检终端提供辅助识别、依据引用、处置建议与报告生成能力。</p><div class="subsystem-features"><div class="subsystem-feature">多模态隐患识别与风险描述</div><div class="subsystem-feature">结合制度规范给出参考依据</div><div class="subsystem-feature">人工复核、分级告警与任务派发</div><div class="subsystem-feature">整改复查、统计分析与报告生成</div></div><div class="subsystem-meta"><span>多端采集</span><span>AI识别</span><span>人工复核</span><span>告警推送</span><span>整改闭环</span></div></div>
+            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/13-ai-u-safety-core.png" alt="U安智巡能力中枢场景图"><span class="subsystem-image-caption">U安智巡能力中枢</span><span class="diagram-caption">AI SAFETY CLOSED LOOP</span><div class="diagram-core">U安智巡<br>AI中枢</div><div class="diagram-node node-a">数据接入</div><div class="diagram-node node-b">模型研判</div><div class="diagram-node node-c">人工复核</div><div class="diagram-node node-d">整改闭环</div></div>
+          </div>
+        </article>
+
+        <article class="domain-panel" data-domain-panel="green" id="panel-green" role="tabpanel" aria-labelledby="tab-green" hidden>
+          <div class="domain-intro"><div><h3>绿色和环境管理</h3><p>持续感知施工环境、气象水情、气体风险、资源消耗与污水排放水质，按照项目点位和阈值配置形成监测、预警、处置与趋势分析。</p></div><span class="domain-count">06 SUBSYSTEMS</span></div>
+          <div class="subsystem-switcher" role="tablist" aria-label="绿色和环境管理子系统">
+            <button id="subtab-green-env" class="subsystem-tab" role="tab" aria-selected="true" aria-controls="subpanel-green" data-subsystem="green-env"><b>环境监测</b><span>扬尘噪声</span></button>
+            <button id="subtab-green-weather" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-green" data-subsystem="green-weather"><b>水雨情气象站</b><span>气象水情</span></button>
+            <button id="subtab-green-gas" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-green" data-subsystem="green-gas"><b>有毒有害气体</b><span>作业环境安全</span></button>
+            <button id="subtab-green-smoke" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-green" data-subsystem="green-smoke"><b>烟感报警</b><span>临建设施预警</span></button>
+            <button id="subtab-green-energy" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-green" data-subsystem="green-energy"><b>水电能耗</b><span>分区计量</span></button>
+            <button id="subtab-green-water" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-green" data-subsystem="green-water"><b>污水排放监测</b><span>水质在线监测</span></button>
+          </div>
+          <div id="subpanel-green" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-green-env">
+            <div class="subsystem-copy"><span class="subsystem-kicker">GREEN CONSTRUCTION</span><h4>环境监测</h4><p class="subsystem-description">对施工区域扬尘、噪声和气象参数进行连续采集，支持超限告警、趋势统计及喷淋雾炮等治理设备联动。</p><div class="subsystem-features"><div class="subsystem-feature">PM2.5、PM10与噪声连续监测</div><div class="subsystem-feature">温湿度、风速风向等参数采集</div><div class="subsystem-feature">阈值告警与现场信息屏发布</div><div class="subsystem-feature">喷淋雾炮联动和趋势报表</div></div><div class="subsystem-meta"><span>采集</span><span>判断</span><span>预警</span><span>联动</span><span>分析</span></div></div>
+            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/20-green-environment-monitoring.png" alt="环境监测场景图"><span class="subsystem-image-caption">环境监测</span><span class="diagram-caption">ENVIRONMENTAL LOOP</span><div class="diagram-core">绿色施工<br>监测</div><div class="diagram-node node-a">环境感知</div><div class="diagram-node node-b">阈值判断</div><div class="diagram-node node-c">设备联动</div><div class="diagram-node node-d">趋势报表</div></div>
+          </div>
+        </article>
+
+        <article class="domain-panel" data-domain-panel="risk" id="panel-risk" role="tabpanel" aria-labelledby="tab-risk" hidden>
+          <div class="domain-intro"><div><h3>危大工程管理</h3><p>面向火电施工阶段的高支模、深基坑、脚手架、钢结构、大型吊装和高耸构筑物，形成专项方案、监测预警与责任处置闭环。</p></div><span class="domain-count">06 SUBSYSTEMS</span></div>
+          <div class="subsystem-switcher" role="tablist" aria-label="危大工程管理子系统">
+            <button id="subtab-risk-formwork" class="subsystem-tab" role="tab" aria-selected="true" aria-controls="subpanel-risk" data-subsystem="risk-formwork"><b>高支模监测</b><span>位移沉降受力</span></button>
+            <button id="subtab-risk-pit" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-risk" data-subsystem="risk-pit"><b>深基坑监测</b><span>变形水位</span></button>
+            <button id="subtab-risk-scaffold" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-risk" data-subsystem="risk-scaffold"><b>脚手架监测</b><span>结构与荷载</span></button>
+            <button id="subtab-risk-steel" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-risk" data-subsystem="risk-steel"><b>钢结构监测</b><span>吊装安装稳定</span></button>
+            <button id="subtab-risk-lifting" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-risk" data-subsystem="risk-lifting"><b>大型吊装监控</b><span>过程协同</span></button>
+            <button id="subtab-risk-tall" class="subsystem-tab" role="tab" aria-selected="false" aria-controls="subpanel-risk" data-subsystem="risk-tall"><b>高耸构筑物施工监测</b><span>烟囱冷却塔</span></button>
+          </div>
+          <div id="subpanel-risk" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-risk-formwork">
+            <div class="subsystem-copy"><span class="subsystem-kicker">HIGH-RISK WORKS</span><h4>高支模监测</h4><p class="subsystem-description">对高支模关键杆件受力、沉降、位移和倾角进行连续监测，在异常趋势达到设定阈值前发出分级预警。</p><div class="subsystem-features"><div class="subsystem-feature">轴力、沉降、位移与倾角采集</div><div class="subsystem-feature">监测点位与专项方案关联</div><div class="subsystem-feature">趋势分析和分级阈值预警</div><div class="subsystem-feature">责任通知、处置与复核验收</div></div><div class="subsystem-meta"><span>方案交底</span><span>监测布点</span><span>阈值预警</span><span>处置复核</span></div></div>
+            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/26-risk-high-formwork.png" alt="高支模监测场景图"><span class="subsystem-image-caption">高支模监测</span><span class="diagram-caption">HIGH-RISK WORKS LOOP</span><div class="diagram-core">危大工程<br>监测中心</div><div class="diagram-node node-a">方案对象</div><div class="diagram-node node-b">传感监测</div><div class="diagram-node node-c">分级预警</div><div class="diagram-node node-d">复核验收</div></div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="permanent" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">06 · 永临结合</span>
+          <h2>从施工期建设开始，为生产期保留可继承资产</h2>
+          <p>永临结合不是把临时设备直接留下，而是从设计、规格、网络分区、编码和验收开始判断哪些设施可永久使用、哪些可迁移复用、哪些数据应持续继承。</p>
+        </div>
+        <div class="permanent-grid">
+          <article class="permanent-item"><b>类型 A</b><h3>直接永久使用</h3><p>光纤骨干、部分机房与服务器资源、公共区域视频和部分门禁。需要纳入永久工程设计、采购与验收。</p></article>
+          <article class="permanent-item"><b>类型 B</b><h3>施工部署、生产迁移</h3><p>摄像机、边缘网关、显示屏及部分环境气象设备，提前规划安装接口、迁移位置和复用条件。</p></article>
+          <article class="permanent-item"><b>类型 C</b><h3>数据永久继承</h3><p>BIM模型、资产编码、设备台账、质量记录和竣工资料从施工期开始按移交标准建设。</p></article>
+          <article class="permanent-item"><b>类型 D</b><h3>施工专用配置</h3><p>塔机、升降机、高支模、深基坑等随施工阶段部署，完工后拆除、调拨或在其他项目复用。</p></article>
+        </div>
+        <div class="permanent-gates">
+          <div class="gate"><strong>设计与采购门槛</strong><span>是否纳入永久工程设计、采购范围及资产编码体系。</span></div>
+          <div class="gate"><strong>设备适配门槛</strong><span>精度、防护、防爆、消防、协议和认证是否满足永久使用要求。</span></div>
+          <div class="gate"><strong>网络安全门槛</strong><span>施工管理网络与生产控制网络分区，生产系统连接需经业主审核。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-index">07 · 实施路径</span>
+          <h2>先统一蓝图，再分阶段落地高价值场景</h2>
+          <p>通用方案在具体项目中需根据建设阶段、总平面、施工组织、既有系统和采购边界进行裁剪，避免一次性堆叠全部系统。</p>
+        </div>
+        <div class="roadmap">
+          <article class="roadmap-step"><b>阶段 01</b><h3>调研与总体蓝图</h3><p>盘点组织、施工阶段、重点风险、网络条件、既有平台和永临结合要求，形成分期建设清单。</p></article>
+          <article class="roadmap-step"><b>阶段 02</b><h3>平台与基础设施</h3><p>建设网络、边缘计算、统一身份、数据标准、物联接入、视频融合和平台大屏基础能力。</p></article>
+          <article class="roadmap-step"><b>阶段 03</b><h3>重点业务域落地</h3><p>依托基建MIS平台基座，优先实施人员准入、机械安全、AI巡检闭环和危大工程，再扩展绿色环境与物资协同场景。</p></article>
+          <article class="roadmap-step"><b>阶段 04</b><h3>运营优化与移交</h3><p>持续治理数据、优化AI应用，完成设施复用、模型轻量化、资产编码和工程档案移交。</p></article>
+        </div>
+        <div class="boundary"><strong>方案边界：</strong>本页面为施工期通用架构，不预设具体客户、项目规模、机组类型、设备数量、品牌型号、算法精度或生产系统接口。施工平台与DCS、SIS等生产控制系统的连接仅作受控接口预留，实际范围需经业主设计、网络安全和生产管理审查。</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner"><span>火电工程施工期智慧建造整体解决方案 V2.3</span></div>
+  </footer>
+
+  <script>
+    const subsystemImages = Object.freeze({
+      'people-access': 'assets/thermal-power-systems-v2.3/01-people-access.png',
+      'people-beidou': 'assets/thermal-power-systems-v2.3/02-people-beidou.png',
+      'people-helmet': 'assets/thermal-power-systems-v2.3/03-people-smart-helmet.png',
+      'people-training': 'assets/thermal-power-systems-v2.3/04-people-training-center.png',
+      'people-health': 'assets/thermal-power-systems-v2.3/05-people-health-registration.png',
+      'people-points': 'assets/thermal-power-systems-v2.3/06-people-points-store.png',
+      'machine-tower': 'assets/thermal-power-systems-v2.3/07-machine-tower-crane.png',
+      'machine-mobile': 'assets/thermal-power-systems-v2.3/08-machine-mobile-machinery.png',
+      'machine-lift': 'assets/thermal-power-systems-v2.3/09-machine-construction-hoist.png',
+      'machine-vehicle': 'assets/thermal-power-systems-v2.3/10-machine-fleet-telematics.png',
+      'machine-driver': 'assets/thermal-power-systems-v2.3/11-machine-driver-monitoring.png',
+      'machine-weigh': 'assets/thermal-power-systems-v2.3/12-machine-smart-weighbridge.png',
+      'ai-core': 'assets/thermal-power-systems-v2.3/13-ai-u-safety-core.png',
+      'ai-sentry': 'assets/thermal-power-systems-v2.3/14-ai-sentry.png',
+      'ai-mobile': 'assets/thermal-power-systems-v2.3/15-ai-mobile-inspection.png',
+      'ai-video': 'assets/thermal-power-systems-v2.3/16-ai-video-inspection.png',
+      'ai-drone': 'assets/thermal-power-systems-v2.3/17-ai-drone-inspection.png',
+      'ai-dog': 'assets/thermal-power-systems-v2.3/18-ai-robot-dog.png',
+      'green-env': 'assets/thermal-power-systems-v2.3/20-green-environment-monitoring.png',
+      'green-weather': 'assets/thermal-power-systems-v2.3/21-green-weather-hydrology.png',
+      'green-gas': 'assets/thermal-power-systems-v2.3/22-green-hazardous-gas.png',
+      'green-smoke': 'assets/thermal-power-systems-v2.3/23-green-smoke-alarm.png',
+      'green-energy': 'assets/thermal-power-systems-v2.3/24-green-water-energy.png',
+      'green-water': 'assets/thermal-power-systems-v2.3/25-green-wastewater-discharge.png',
+      'risk-formwork': 'assets/thermal-power-systems-v2.3/26-risk-high-formwork.png',
+      'risk-pit': 'assets/thermal-power-systems-v2.3/27-risk-deep-excavation.png',
+      'risk-scaffold': 'assets/thermal-power-systems-v2.3/28-risk-scaffold.png',
+      'risk-steel': 'assets/thermal-power-systems-v2.3/29-risk-steel-structure.png',
+      'risk-lifting': 'assets/thermal-power-systems-v2.3/30-risk-heavy-lifting.png',
+      'risk-tall': 'assets/thermal-power-systems-v2.3/31-risk-tall-structure.png'
+    });
+
+    const subsystemContent = {
+      'people-access': { kicker: 'PERSONNEL ACCESS', title: '实名制门禁', description: '把人员身份、班组、资质、安全教育和区域权限统一校验，形成“登记—授权—通行—追溯”的现场准入闭环。', features: ['人脸、身份证与实名档案绑定', '教育、体检、资质条件联动校验', '分区分时权限与访客审批', '进出记录、在场人数与异常告警'], flow: ['登记', '校验', '授权', '通行', '追溯'], core: '人员准入\n闭环', nodes: ['实名档案', '条件校验', '门禁通行', '在场统计'] },
+      'people-beidou': { kicker: 'BEIDOU POSITIONING', title: '北斗人员定位', description: '面向锅炉区域、主厂房、煤场和施工道路等室外作业面，实现人员位置、轨迹、电子围栏和应急调度。', features: ['北斗终端与人员实名档案绑定', '实时位置、历史轨迹和停留分析', '危险区域越界与人员聚集预警', '应急点名、搜救定位与调度辅助'], flow: ['终端绑定', '位置采集', '围栏判断', '预警处置'], core: '北斗定位\n服务', nodes: ['实时位置', '轨迹回放', '电子围栏', '应急调度'] },
+      'people-helmet': { kicker: 'SMART HELMET', title: '智能安全帽', description: '将人员定位、语音通信、远程视频、隐蔽工程录像和一键求助能力组合到现场可穿戴终端，适配高处、交叉和分散作业。', features: ['视频远程监控与现场音视频回传', '隐蔽工程作业过程录像留痕', '定位、轨迹与区域风险提示', '语音对讲、广播和一键求助'], flow: ['定位', '监控', '录像', '通信', '求助'], core: '智能安全帽', nodes: ['位置感知', '远程视频', '隐蔽工程录像', '应急求助'] },
+      'people-training': { kicker: 'TRAINING & EXAM', title: '一站式教考中心', description: '在同一场所完成多媒体教育、安全体验、VR培训、理论考试和结果归档，让进场教育与准入权限直接关联。', features: ['多媒体教室与标准课程管理', '安全体验设备和VR场景教育', '随机组卷、身份核验与电子考试', '成绩、补考记录和门禁授权联动'], flow: ['课程分配', '体验学习', '考试', '补考', '准入'], core: '教考中心', nodes: ['多媒体教育', '安全体验', 'VR培训', '考试归档'] },
+      'people-health': { kicker: 'HEALTH PROFILE', title: '健康体检与登记', description: '在人员进场环节登记基础信息、工种和健康检查结果，形成可查询、可预警、可追溯的职业健康档案。', features: ['身份证读取和基础信息快速登记', '体检结果、禁忌事项和有效期管理', '工种与健康条件适配校验', '到期提醒、异常标记和复检记录'], flow: ['登记', '体检', '校验', '提醒', '复检'], core: '健康档案', nodes: ['身份登记', '体检结果', '工种适配', '到期提醒'] },
+      'people-points': { kicker: 'SAFETY POINTS STORE', title: '安全积分超市', description: '将安全培训、隐患上报、规范作业、违章行为等转化为个人行为积分；正向积分可在无人售货柜刷脸或扫码兑换商品和饮料，负向积分触发警告、惩戒，严重或持续违章经人工复核后可纳入黑名单管理。', features: ['正向行为积分记录与个人积分账户', '无人售货柜刷脸或扫码积分兑换', '商品、饮料库存和兑换记录', '负向积分警告、惩戒与黑名单复核'], flow: ['行为记录', '积分核算', '刷脸扫码', '商品兑换', '负向惩戒'], core: '安全积分\n超市', nodes: ['正向积分', '无人售货柜', '负向积分', '警告与黑名单'] },
+
+      'machine-tower': { kicker: 'MACHINERY SAFETY', title: '塔机安全监控', description: '对司机身份、塔机运行参数和相邻塔机空间关系进行实时监控；主机与通信模块部署在驾驶舱内，小车摄像头向下提供吊钩可视画面。', features: ['司机人脸识别与持证校验', '幅度、高度、回转和载荷监测', '群塔防碰撞与区域限位', '小车吊钩可视、告警记录与回放'], flow: ['身份校验', '状态监控', '风险预警', '处置留痕'], core: '塔机安全\n控制', nodes: ['司机识别', '运行参数', '群塔防碰撞', '小车吊钩可视'] },
+      'machine-mobile': { kicker: 'MOBILE MACHINERY', title: '大型移动机械辅助', description: '在履带吊、汽车吊、装载机、挖掘机等移动机械的驾驶室和机身周边布置多路视频和感知设备，为司机提供盲区可视与人员靠近预警。', features: ['司机身份识别与授权启动', '机械周边多路视频显示', 'AI识别人员靠近和危险距离', '声光提醒、事件抓拍与平台告警'], flow: ['身份识别', '周界感知', '距离判断', '车端提醒', '平台留痕'], core: '移动机械\n辅助', nodes: ['司机识别', '多路视频', '人员检测', '靠近预警'] },
+      'machine-lift': { kicker: 'CONSTRUCTION HOIST', title: '施工升降机监控', description: '监测升降机司机、运行楼层、速度、载荷、门锁和笼内人数，辅助预防超员、超载和违规操作。', features: ['司机身份识别与持证校验', '高度、速度、载荷和门锁状态监测', '笼内人数AI识别与超员提示', '异常停机、告警上报和维保记录'], flow: ['身份校验', '状态采集', '人数识别', '超限预警'], core: '升降机\n安全监控', nodes: ['司机身份', '运行状态', '笼内人数', '维保记录'] },
+      'machine-vehicle': { kicker: 'FLEET TELEMATICS', title: '车辆北斗与车况', description: '对土方车、材料运输车、工程车辆进行北斗定位，并关联怠速、油位、里程和作业区域，掌握车辆使用效率。', features: ['车辆北斗位置与历史轨迹', '电子围栏、线路偏离和超速告警', '怠速时长、里程与利用率统计', '油位变化、异常下降和油耗分析'], flow: ['车辆绑定', '轨迹采集', '车况分析', '异常预警'], core: '车辆管理', nodes: ['北斗轨迹', '电子围栏', '怠速分析', '油位监测'] },
+      'machine-driver': { kicker: 'DRIVER MONITORING', title: '司机状态监测', description: '通过驾驶室摄像机识别闭眼、打哈欠、分心、抽烟和使用手机等状态，在高风险运输和夜间作业中及时提醒。', features: ['疲劳驾驶和长时间闭眼识别', '分心、接打电话和抽烟识别', '驾驶室本地语音即时提醒', '事件视频上传、统计和安全约谈'], flow: ['状态采集', 'AI识别', '车端提醒', '事件上报'], core: '司机状态', nodes: ['疲劳识别', '分心识别', '本地提醒', '事件分析'] },
+      'machine-weigh': { kicker: 'SMART WEIGHBRIDGE', title: '智能地磅与物资台账', description: '将车牌识别、称重、抓拍、供应计划和收发料台账联动，减少人工录入，形成物资进出场计量证据链。', features: ['车牌自动识别与预约车辆校验', '无人值守称重和防作弊判断', '过磅过程多角度图片与视频留存', '称重数据自动生成收发料台账'], flow: ['车辆识别', '自动称重', '影像取证', '计量入账', '对账追溯'], core: '智能地磅', nodes: ['车辆预约', '称重计量', '防作弊', '物资台账'] },
+
+      'ai-core': { kicker: 'U-SAFETY AI', title: 'U安智巡能力中枢', description: '统一接入视频、图片、巡检记录、项目制度和风险知识，为各类巡检终端提供辅助识别、依据引用、处置建议与报告生成能力。', features: ['多模态隐患识别与风险描述', '结合制度规范给出参考依据', '人工复核、分级告警与任务派发', '整改复查、统计分析与报告生成'], flow: ['多端采集', 'AI识别', '人工复核', '告警推送', '整改闭环'], core: 'U安智巡\nAI中枢', nodes: ['数据接入', '模型研判', '人工复核', '整改闭环'] },
+      'ai-sentry': { kicker: 'AI SENTRY', title: 'AI哨兵', description: '复用现场固定摄像机，对重点区域和典型违章进行定时抓拍、持续识别与重复复核，减少无效告警。', features: ['按区域、时段和风险配置巡检任务', '安全帽、反光衣、烟火等目标识别', '同一事件持续复核和告警收敛', '告警截图、位置与责任区域关联'], flow: ['任务配置', '视频抓拍', 'AI识别', '重复复核', '告警'], core: 'AI哨兵', nodes: ['固定视频', '任务策略', '智能识别', '持续复核'] },
+      'ai-mobile': { kicker: 'MOBILE INSPECTION', title: '移动巡检', description: '安全员使用手机完成巡更、拍照检查、隐患记录和整改复查，大模型辅助生成风险描述、依据和建议。', features: ['巡检路线、点位和检查表配置', '现场拍照、语音输入与定位留痕', 'AI辅助描述隐患和匹配检查依据', '责任派发、整改反馈与复查销项'], flow: ['到点巡查', '拍照记录', 'AI辅助', '任务派发', '复查销项'], core: '移动巡检', nodes: ['路线点位', '现场采集', '隐患工单', '整改复查'] },
+      'ai-video': { kicker: 'VIDEO INTELLIGENCE', title: '影像智巡', description: '接入移动执法仪等影像设备，提取巡查过程中的关键画面和风险片段，形成可检索、可复核的巡查记录。', features: ['执法记录仪视频自动回传与归档', '长视频抽帧和风险片段定位', '人员、行为和场景辅助识别', '风险片段转隐患记录并进入闭环'], flow: ['视频回传', '智能抽帧', '风险识别', '人工复核', '闭环'], core: '影像智巡', nodes: ['移动执法仪', '视频抽帧', '风险片段', '事件归档'] },
+      'ai-drone': { kicker: 'UAV INSPECTION', title: '无人机巡查', description: '针对烟囱、冷却塔、输煤栈桥、边坡和大范围施工面开展空中巡查，补充人工难到达区域的影像数据。', features: ['航线任务、飞行区域和周期管理', '全景照片、倾斜影像与视频回传', '高处作业、临边防护和进度辅助识别', '问题定位、截图标注与整改任务生成'], flow: ['航线规划', '飞行采集', 'AI分析', '问题定位', '任务闭环'], core: '无人机巡查', nodes: ['航线任务', '空中影像', '风险分析', '问题定位'] },
+      'ai-dog': { kicker: 'ROBOT INSPECTION', title: '机器狗巡检', description: '面向人员进入受限、地形复杂或需重复巡查的区域，预留机器狗视频、热成像、气体和路线任务接入能力，按项目条件选配。', features: ['预设路线与远程操控两类巡检方式', '可见光、热成像和环境传感接入', '现场音视频回传与双向语音', '异常片段识别、标注和任务上报'], flow: ['路线配置', '自主巡检', '多传感采集', '异常上报'], core: '机器狗巡检', nodes: ['路线导航', '视频回传', '多传感器', '异常上报'] },
+
+      'green-env': { kicker: 'GREEN CONSTRUCTION', title: '环境监测', description: '对施工区域扬尘、噪声和气象参数进行连续采集，支持超限告警、趋势统计及喷淋雾炮等治理设备联动。', features: ['PM2.5、PM10与噪声连续监测', '温湿度、风速风向等参数采集', '阈值告警与现场信息屏发布', '喷淋雾炮联动和趋势报表'], flow: ['采集', '判断', '预警', '联动', '分析'], core: '绿色施工\n监测', nodes: ['环境感知', '阈值判断', '设备联动', '趋势报表'] },
+      'green-weather': { kicker: 'WEATHER & HYDROLOGY', title: '水雨情气象站', description: '采集降雨、风速、风向、温湿度和水位等信息，为吊装、高处作业、基坑排水和极端天气响应提供依据。', features: ['降雨量、风速风向和温湿度监测', '基坑、排水沟等重点水位接入', '大风、暴雨和高温分级预警', '联动吊装停工提示与应急通知'], flow: ['气象采集', '水位监测', '趋势判断', '分级预警'], core: '水雨情\n气象站', nodes: ['风雨监测', '水位感知', '气象预警', '作业联动'] },
+      'green-gas': { kicker: 'HAZARDOUS GAS', title: '有毒有害气体', description: '对有限空间、焊接区域、地下设施和临时储存区的可燃、有毒和缺氧风险进行监测，并按现场工况配置探头。', features: ['氧气、一氧化碳、硫化氢等按需配置', '固定式与便携式检测数据接入', '超限声光、短信和平台告警', '通风联动、撤离通知和处置记录'], flow: ['布点', '采集', '超限判断', '声光告警', '处置'], core: '气体安全', nodes: ['气体探头', '实时浓度', '超限告警', '通风联动'] },
+      'green-smoke': { kicker: 'SMOKE ALARM', title: '烟感报警', description: '面向办公生活区、仓库、配电间和可燃材料临时存放区布置烟感报警，补充施工期临建设施早期火情感知。', features: ['烟雾探测器与区域位置绑定', '电池、通信和离线状态监测', '本地声光与平台消息同步告警', '值守确认、现场处置和记录归档'], flow: ['烟雾感知', '本地报警', '平台推送', '现场处置'], core: '烟感报警', nodes: ['烟雾探测', '设备状态', '消息推送', '处置留痕'] },
+      'green-energy': { kicker: 'WATER & ENERGY', title: '水电能耗', description: '按生活区、加工区、主厂房施工区等对象进行用水用电分区计量，支撑绿色施工统计、异常用能发现和成本分析。', features: ['智能水表、电表与回路分项计量', '区域、单位和施工阶段能耗统计', '跑冒滴漏、异常高耗和夜间用能提醒', '能耗趋势、对标和报表自动生成'], flow: ['分项计量', '数据汇总', '异常识别', '统计分析'], core: '水电能耗', nodes: ['智能表计', '分区计量', '异常用能', '能耗报表'] },
+      'green-water': { kicker: 'WASTEWATER DISCHARGE', title: '污水排放监测', description: '在施工废水经沉淀、处理后的排放口或回用口布置在线水质与流量监测，持续掌握排放水质，异常时告警并留存采样、处置和报表记录。', features: ['排放口流量、pH、浊度等在线监测', '悬浮物等指标按项目要求接入', '水质超限、本地声光与平台告警', '采样、处置、复测和排放报表留痕'], flow: ['排放采样', '在线监测', '超限预警', '处置复测', '报表留痕'], core: '污水排放\n监测', nodes: ['排放口采样', '水质监测', '超限预警', '处置报表'] },
+
+      'risk-formwork': { kicker: 'HIGH-RISK WORKS', title: '高支模监测', description: '对高支模关键杆件受力、沉降、位移和倾角进行连续监测，在异常趋势达到设定阈值前发出分级预警。', features: ['轴力、沉降、位移与倾角采集', '监测点位与专项方案关联', '趋势分析和分级阈值预警', '责任通知、处置与复核验收'], flow: ['方案交底', '监测布点', '阈值预警', '处置复核'], core: '危大工程\n监测中心', nodes: ['方案对象', '传感监测', '分级预警', '复核验收'] },
+      'risk-pit': { kicker: 'DEEP EXCAVATION', title: '深基坑监测', description: '围绕主厂房、泵房、地下设施等深基坑，监测围护结构变形、周边沉降、支撑轴力和地下水位。', features: ['水平位移、竖向沉降和倾斜监测', '支撑轴力、锚索应力等按需配置', '地下水位和周边环境变化监测', '预警趋势、现场巡查和处置闭环'], flow: ['点位布设', '自动采集', '趋势分析', '分级预警', '复核'], core: '深基坑监测', nodes: ['围护变形', '周边沉降', '支撑轴力', '地下水位'] },
+      'risk-scaffold': { kicker: 'SCAFFOLD MONITORING', title: '脚手架监测', description: '针对锅炉钢架、厂房外架和高处作业脚手架，监测整体倾斜、关键节点变形、荷载和基础沉降。', features: ['脚手架倾角、位移和沉降监测', '作业层荷载和局部超载预警', '验收、巡检和使用状态关联', '大风天气联动提示与停用记录'], flow: ['验收建档', '在线监测', '超限预警', '加固复查'], core: '脚手架监测', nodes: ['验收档案', '结构状态', '荷载监测', '天气联动'] },
+      'risk-steel': { kicker: 'STEEL STRUCTURE', title: '钢结构监测', description: '服务于锅炉钢架、主厂房和输煤结构安装阶段，对关键构件变形、节点状态和临时稳定体系进行监测。', features: ['关键构件位移、倾斜和沉降监测', '临时支撑与安装阶段状态管理', '测量结果与构件编码、工序关联', '偏差预警、调整记录和验收归档'], flow: ['构件建档', '安装测量', '偏差分析', '调整验收'], core: '钢结构监测', nodes: ['构件编码', '安装测量', '偏差预警', '验收归档'] },
+      'risk-lifting': { kicker: 'HEAVY LIFTING', title: '大型吊装监控', description: '围绕锅炉大板梁、发电机定子、变压器等重大设备吊装，对方案、人员、机械、环境与关键工序进行协同管控。', features: ['吊装方案、审批和作业条件核验', '指挥、司索、司机等人员身份确认', '吊装机械状态与现场视频联动', '风速、警戒区和关键节点过程留痕'], flow: ['方案审批', '条件确认', '过程监控', '异常处置', '完成归档'], core: '大型吊装', nodes: ['方案条件', '人员机械', '环境警戒', '过程留痕'] },
+      'risk-tall': { kicker: 'TALL STRUCTURES', title: '高耸构筑物施工监测', description: '针对烟囱、冷却塔等高耸构筑物施工阶段，监测垂直度、位移、沉降、风环境和关键施工平台状态。', features: ['结构垂直度、位移与沉降监测', '高处施工平台关键状态接入', '大风、雷电等环境风险联动提示', '监测趋势、超限处置与阶段验收'], flow: ['施工分段', '在线监测', '环境联动', '纠偏验收'], core: '高耸构筑物', nodes: ['烟囱施工', '冷却塔施工', '风环境', '偏差纠正'] }
+    };
+
+    function activateSubsystem(tab) {
+      const domain = tab.closest('.domain-panel');
+      const stage = domain.querySelector('.subsystem-stage');
+      const content = subsystemContent[tab.dataset.subsystem];
+      if (!content || !stage) return;
+
+      domain.querySelectorAll('.subsystem-tab').forEach(function(item) {
+        item.setAttribute('aria-selected', String(item === tab));
+      });
+      stage.setAttribute('aria-labelledby', tab.id);
+      stage.querySelector('.subsystem-kicker').textContent = content.kicker;
+      stage.querySelector('h4').textContent = content.title;
+      stage.querySelector('.subsystem-description').textContent = content.description;
+      stage.querySelectorAll('.subsystem-feature').forEach(function(item, index) {
+        item.textContent = content.features[index] || '';
+      });
+
+      const meta = stage.querySelector('.subsystem-meta');
+      meta.replaceChildren();
+      content.flow.forEach(function(label) {
+        const chip = document.createElement('span');
+        chip.textContent = label;
+        meta.appendChild(chip);
+      });
+
+      const diagram = stage.querySelector('.domain-diagram');
+      const image = stage.querySelector('.subsystem-image');
+      const imageCaption = stage.querySelector('.subsystem-image-caption');
+      const imageSource = subsystemImages[tab.dataset.subsystem];
+      if (diagram && image && imageSource) {
+        diagram.classList.remove('image-error');
+        image.src = imageSource;
+        image.alt = content.title + '场景图';
+        if (imageCaption) imageCaption.textContent = content.title;
+      }
+
+      stage.querySelector('.diagram-core').innerHTML = content.core.replace('\n', '<br>');
+      stage.querySelectorAll('.diagram-node').forEach(function(item, index) {
+        item.textContent = content.nodes[index] || '';
+      });
+    }
+
+    document.querySelectorAll('.subsystem-image').forEach(function(image) {
+      const diagram = image.closest('.domain-diagram');
+      image.addEventListener('load', function() { diagram.classList.remove('image-error'); });
+      image.addEventListener('error', function() { diagram.classList.add('image-error'); });
+      if (image.complete && image.naturalWidth === 0) diagram.classList.add('image-error');
+    });
+
+    document.querySelectorAll('.subsystem-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() { activateSubsystem(tab); });
+    });
+
+    const domainTabs = Array.from(document.querySelectorAll('.domain-tab'));
+    const domainPanels = Array.from(document.querySelectorAll('.domain-panel'));
+
+    domainTabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        const panelId = tab.dataset.panel;
+        domainTabs.forEach(function(item) {
+          item.setAttribute('aria-selected', String(item === tab));
+        });
+        domainPanels.forEach(function(panel) {
+          panel.hidden = panel.id !== panelId;
+        });
+      });
+    });
+
+    const platformButtons = Array.from(document.querySelectorAll('.platform-nav-button'));
+    const platformTitle = document.getElementById('platform-view-title');
+    const platformDescription = document.getElementById('platform-view-description');
+
+    platformButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        platformButtons.forEach(function(item) { item.classList.toggle('active', item === button); });
+        platformTitle.textContent = button.dataset.view;
+        platformDescription.textContent = button.dataset.description;
+      });
+    });
+
+    const navLinks = Array.from(document.querySelectorAll('.main-nav a'));
+    const observedSections = navLinks.map(function(link) {
+      return document.querySelector(link.getAttribute('href'));
+    }).filter(Boolean);
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(function(link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        });
+      }, { rootMargin: '-30% 0px -62% 0px' });
+      observedSections.forEach(function(section) { observer.observe(section); });
+    }
+  </script>
+</body>
+</html>

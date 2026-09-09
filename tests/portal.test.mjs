@@ -7,6 +7,7 @@ import { chromium } from "file:///C:/Users/Jerry/.cache/codex-runtimes/codex-pri
 
 const expectedSolutions = [
   "pump-storage-smart-construction-v2.0.9.html",
+  "thermal-power-project-solution-and-platform/thermal-power-smart-construction-v2.3.html",
   "road-project-smart-construction-solution/",
 ];
 
@@ -55,8 +56,8 @@ test("portal groups the approved engineering assets and keeps the hero compact",
 
     const stats = await page.locator(".summary-item").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
     assert.deepEqual(stats, [
-      "7 项展示成果",
-      "2 项方案类成果",
+      "8 项展示成果",
+      "3 项方案类成果",
       "5 项大屏与三维展示",
     ]);
 
@@ -69,8 +70,8 @@ test("portal groups the approved engineering assets and keeps the hero compact",
       target: node.getAttribute("target"),
       rel: node.getAttribute("rel")?.split(/\s+/).sort(),
     })));
-    assert.equal(destinationLinkBehavior.length, 8);
-    assert.deepEqual(destinationLinkBehavior, Array.from({ length: 8 }, () => ({
+    assert.equal(destinationLinkBehavior.length, 9);
+    assert.deepEqual(destinationLinkBehavior, Array.from({ length: 9 }, () => ({
       target: "_blank",
       rel: ["noopener", "noreferrer"],
     })));
