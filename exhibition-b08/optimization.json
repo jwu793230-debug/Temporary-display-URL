@@ -1,0 +1,44 @@
+{
+  "baselineBytes": 66870454,
+  "publishedBytes": 24765159,
+  "reductionPercent": 62.96546902463081,
+  "files": [
+    {
+      "path": "assets/ec52ce2047f0-viewer.js",
+      "bytes": 745469
+    },
+    {
+      "path": "assets/ea4c0b50c8e4-styles.css",
+      "bytes": 13758
+    },
+    {
+      "path": "assets/a6ca045058e8-exhibition.glb.gz",
+      "bytes": 22191892
+    },
+    {
+      "path": "assets/3cfb5cd5af64-promo.mp4",
+      "bytes": 1160216
+    },
+    {
+      "path": "assets/af7541b29244-exhibits.json.gz",
+      "bytes": 647122
+    },
+    {
+      "path": "index.html",
+      "bytes": 6702
+    }
+  ],
+  "model": {
+    "lossless": true,
+    "sourceBytes": 45979796,
+    "optimizedBytes": 31912032,
+    "downloadBytes": 22191892,
+    "bufferViewsVerified": 5043,
+    "duplicateViewsShared": 3129,
+    "imagesPreserved": 84,
+    "nodesPreserved": 1670,
+    "meshesPreserved": 1617,
+    "sourceSHA256": "dd0ac7316b458e2a779935e5aacdd3ffcdf70319286aaf3e3e9d2ffcbe36f0d5",
+    "optimizedSHA256": "522cdddcaa781d1808445330f2ddb9584f5c2abf7e1b45ea0d27670ca6d911f7"
+  }
+}

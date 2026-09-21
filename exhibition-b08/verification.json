@@ -1,0 +1,173 @@
+{
+  "checks": [
+    {
+      "name": "original model metadata preserved: sourceMeshes",
+      "passed": true
+    },
+    {
+      "name": "original model metadata preserved: renderMeshes",
+      "passed": true
+    },
+    {
+      "name": "original model metadata preserved: collisionMeshes",
+      "passed": true
+    },
+    {
+      "name": "original model metadata preserved: terrainColorVertices",
+      "passed": true
+    },
+    {
+      "name": "original model metadata preserved: materials",
+      "passed": true
+    },
+    {
+      "name": "original model metadata preserved: dashboardScreens",
+      "passed": true
+    },
+    {
+      "name": "pixel comparison A",
+      "passed": true,
+      "detail": {
+        "meanChannelError": 0,
+        "changedPixelFraction": 0,
+        "maxChannelError": 0
+      }
+    },
+    {
+      "name": "pixel comparison B",
+      "passed": true,
+      "detail": {
+        "meanChannelError": 0,
+        "changedPixelFraction": 0,
+        "maxChannelError": 0
+      }
+    },
+    {
+      "name": "pixel comparison C",
+      "passed": true,
+      "detail": {
+        "meanChannelError": 0,
+        "changedPixelFraction": 0,
+        "maxChannelError": 0
+      }
+    },
+    {
+      "name": "pixel comparison D",
+      "passed": true,
+      "detail": {
+        "meanChannelError": 0,
+        "changedPixelFraction": 0,
+        "maxChannelError": 0
+      }
+    },
+    {
+      "name": "pixel comparison E",
+      "passed": true,
+      "detail": {
+        "meanChannelError": 0,
+        "changedPixelFraction": 0,
+        "maxChannelError": 0
+      }
+    },
+    {
+      "name": "all platform screens and seven experience screens loaded",
+      "passed": true
+    },
+    {
+      "name": "external video plays",
+      "passed": true
+    },
+    {
+      "name": "external video pauses",
+      "passed": true
+    },
+    {
+      "name": "keyboard movement remains active",
+      "passed": true
+    },
+    {
+      "name": "lettering collision still blocks camera",
+      "passed": true,
+      "detail": [
+        -0.4126898510441796,
+        1.65,
+        -4.029981274018666
+      ]
+    },
+    {
+      "name": "bim television is clickable",
+      "passed": true
+    },
+    {
+      "name": "bim decompressed secondary model rotates",
+      "passed": true
+    },
+    {
+      "name": "dam television is clickable",
+      "passed": true
+    },
+    {
+      "name": "dam decompressed secondary model rotates",
+      "passed": true
+    },
+    {
+      "name": "electric physical screen opens",
+      "passed": true
+    },
+    {
+      "name": "quiz physical screen opens",
+      "passed": true
+    },
+    {
+      "name": "signs physical screen opens",
+      "passed": true
+    },
+    {
+      "name": "vr physical screen opens",
+      "passed": true
+    },
+    {
+      "name": "helmet physical screen opens",
+      "passed": true
+    },
+    {
+      "name": "fire physical screen opens",
+      "passed": true
+    },
+    {
+      "name": "mobile page stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "all asset requests stay in deployment folder",
+      "passed": true
+    },
+    {
+      "name": "bundled gzip fallback renders model",
+      "passed": true
+    },
+    {
+      "name": "download failure offers a retry",
+      "passed": true
+    },
+    {
+      "name": "retry recovers after failed download",
+      "passed": true
+    },
+    {
+      "name": "no application runtime errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "requests": [
+    "http://b08.test/exhibition-b08/",
+    "http://b08.test/exhibition-b08/assets/ea4c0b50c8e4-styles.css",
+    "http://b08.test/exhibition-b08/assets/ec52ce2047f0-viewer.js",
+    "http://b08.test/exhibition-b08/assets/a6ca045058e8-exhibition.glb.gz",
+    "http://b08.test/exhibition-b08/assets/af7541b29244-exhibits.json.gz",
+    "http://b08.test/exhibition-b08/assets/3cfb5cd5af64-promo.mp4"
+  ],
+  "status": "passed"
+}

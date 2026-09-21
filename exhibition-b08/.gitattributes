@@ -1,0 +1,4 @@
+# Preserve the exact bytes used to generate content-hashed asset names.
+assets/** -text
+# Generated Three.js bundles contain shader template-string whitespace.
+assets/*-viewer.js -whitespace
