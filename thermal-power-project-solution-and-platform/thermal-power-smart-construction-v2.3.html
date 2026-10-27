@@ -623,6 +623,8 @@
     .subsystem-image-caption { position: absolute; left: 18px; right: 18px; bottom: 16px; z-index: 7; display: flex; justify-content: space-between; gap: 12px; color: rgba(232,242,239,.92); font-family: Consolas, monospace; font-size: 9px; letter-spacing: .1em; }
     .subsystem-image-caption::before { content: "SCENARIO VISUAL"; color: var(--data); }
     .domain-diagram.image-error .subsystem-image, .domain-diagram.image-error .subsystem-image-caption, .domain-diagram.image-error::after { display: none; }
+    .domain-diagram.image-loading::before { content: ""; position: absolute; top: 16px; right: 16px; z-index: 8; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.25); border-top-color: var(--data); border-radius: 50%; animation: image-loading .7s linear infinite; }
+    @keyframes image-loading { to { transform: rotate(360deg); } }
 
     .diagram-core {
       position: absolute;
@@ -821,7 +823,7 @@
 
   <main id="top">
     <section class="hero">
-      <div class="hero-media"><img src="assets/thermal-power-panorama-v1.png" alt="大型火电厂施工期数字孪生全景效果图"></div>
+      <div class="hero-media"><img width="1672" height="941" fetchpriority="high" decoding="async" src="assets/thermal-power-web/thermal-power-panorama-v1.webp" alt="大型火电厂施工期数字孪生全景效果图"></div>
       <div class="shell hero-grid">
         <div class="hero-copy">
           <span class="section-index">火电工程 · 施工期通用方案</span>
@@ -938,7 +940,7 @@
           </div>
           <div id="subpanel-people" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-people-access">
             <div class="subsystem-copy"><span class="subsystem-kicker">PERSONNEL ACCESS</span><h4>实名制门禁</h4><p class="subsystem-description">把人员身份、班组、资质、安全教育和区域权限统一校验，形成“登记—授权—通行—追溯”的现场准入闭环。</p><div class="subsystem-features"><div class="subsystem-feature">人脸、身份证与实名档案绑定</div><div class="subsystem-feature">教育、体检、资质条件联动校验</div><div class="subsystem-feature">分区分时权限与访客审批</div><div class="subsystem-feature">进出记录、在场人数与异常告警</div></div><div class="subsystem-meta"><span>登记</span><span>校验</span><span>授权</span><span>通行</span><span>追溯</span></div></div>
-            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/01-people-access.png" alt="实名制门禁场景图"><span class="subsystem-image-caption">实名制门禁</span><span class="diagram-caption">BUSINESS CLOSED LOOP</span><div class="diagram-core">人员准入<br>闭环</div><div class="diagram-node node-a">实名档案</div><div class="diagram-node node-b">条件校验</div><div class="diagram-node node-c">门禁通行</div><div class="diagram-node node-d">在场统计</div></div>
+            <div class="domain-diagram"><img width="1672" height="941" loading="lazy" decoding="async" class="subsystem-image" src="assets/thermal-power-web/01-people-access.webp" alt="实名制门禁场景图"><span class="subsystem-image-caption">实名制门禁</span><span class="diagram-caption">BUSINESS CLOSED LOOP</span><div class="diagram-core">人员准入<br>闭环</div><div class="diagram-node node-a">实名档案</div><div class="diagram-node node-b">条件校验</div><div class="diagram-node node-c">门禁通行</div><div class="diagram-node node-d">在场统计</div></div>
           </div>
         </article>
 
@@ -954,7 +956,7 @@
           </div>
           <div id="subpanel-machine" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-machine-tower">
             <div class="subsystem-copy"><span class="subsystem-kicker">MACHINERY SAFETY</span><h4>塔机安全监控</h4><p class="subsystem-description">对司机身份、塔机运行参数、相邻塔机与障碍物关系进行实时监控，并通过吊钩可视化降低盲吊风险。</p><div class="subsystem-features"><div class="subsystem-feature">司机人脸识别与持证校验</div><div class="subsystem-feature">幅度、高度、回转和载荷监测</div><div class="subsystem-feature">群塔防碰撞与区域限位</div><div class="subsystem-feature">吊钩视频、告警记录与回放</div></div><div class="subsystem-meta"><span>身份校验</span><span>状态监控</span><span>风险预警</span><span>处置留痕</span></div></div>
-            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/07-machine-tower-crane.png" alt="塔机安全监控场景图"><span class="subsystem-image-caption">塔机安全监控</span><span class="diagram-caption">MACHINERY SAFETY LOOP</span><div class="diagram-core">塔机安全<br>控制</div><div class="diagram-node node-a">司机识别</div><div class="diagram-node node-b">运行参数</div><div class="diagram-node node-c">群塔防碰撞</div><div class="diagram-node node-d">小车吊钩可视</div></div>
+            <div class="domain-diagram"><img width="1672" height="941" loading="lazy" decoding="async" class="subsystem-image" src="assets/thermal-power-web/07-machine-tower-crane.webp" alt="塔机安全监控场景图"><span class="subsystem-image-caption">塔机安全监控</span><span class="diagram-caption">MACHINERY SAFETY LOOP</span><div class="diagram-core">塔机安全<br>控制</div><div class="diagram-node node-a">司机识别</div><div class="diagram-node node-b">运行参数</div><div class="diagram-node node-c">群塔防碰撞</div><div class="diagram-node node-d">小车吊钩可视</div></div>
           </div>
         </article>
 
@@ -970,7 +972,7 @@
           </div>
           <div id="subpanel-ai" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-ai-core">
             <div class="subsystem-copy"><span class="subsystem-kicker">U-SAFETY AI</span><h4>U安智巡能力中枢</h4><p class="subsystem-description">统一接入视频、图片、巡检记录、项目制度和风险知识，为各类巡检终端提供辅助识别、依据引用、处置建议与报告生成能力。</p><div class="subsystem-features"><div class="subsystem-feature">多模态隐患识别与风险描述</div><div class="subsystem-feature">结合制度规范给出参考依据</div><div class="subsystem-feature">人工复核、分级告警与任务派发</div><div class="subsystem-feature">整改复查、统计分析与报告生成</div></div><div class="subsystem-meta"><span>多端采集</span><span>AI识别</span><span>人工复核</span><span>告警推送</span><span>整改闭环</span></div></div>
-            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/13-ai-u-safety-core.png" alt="U安智巡能力中枢场景图"><span class="subsystem-image-caption">U安智巡能力中枢</span><span class="diagram-caption">AI SAFETY CLOSED LOOP</span><div class="diagram-core">U安智巡<br>AI中枢</div><div class="diagram-node node-a">数据接入</div><div class="diagram-node node-b">模型研判</div><div class="diagram-node node-c">人工复核</div><div class="diagram-node node-d">整改闭环</div></div>
+            <div class="domain-diagram"><img width="1672" height="941" loading="lazy" decoding="async" class="subsystem-image" src="assets/thermal-power-web/13-ai-u-safety-core.webp" alt="U安智巡能力中枢场景图"><span class="subsystem-image-caption">U安智巡能力中枢</span><span class="diagram-caption">AI SAFETY CLOSED LOOP</span><div class="diagram-core">U安智巡<br>AI中枢</div><div class="diagram-node node-a">数据接入</div><div class="diagram-node node-b">模型研判</div><div class="diagram-node node-c">人工复核</div><div class="diagram-node node-d">整改闭环</div></div>
           </div>
         </article>
 
@@ -986,7 +988,7 @@
           </div>
           <div id="subpanel-green" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-green-env">
             <div class="subsystem-copy"><span class="subsystem-kicker">GREEN CONSTRUCTION</span><h4>环境监测</h4><p class="subsystem-description">对施工区域扬尘、噪声和气象参数进行连续采集，支持超限告警、趋势统计及喷淋雾炮等治理设备联动。</p><div class="subsystem-features"><div class="subsystem-feature">PM2.5、PM10与噪声连续监测</div><div class="subsystem-feature">温湿度、风速风向等参数采集</div><div class="subsystem-feature">阈值告警与现场信息屏发布</div><div class="subsystem-feature">喷淋雾炮联动和趋势报表</div></div><div class="subsystem-meta"><span>采集</span><span>判断</span><span>预警</span><span>联动</span><span>分析</span></div></div>
-            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/20-green-environment-monitoring.png" alt="环境监测场景图"><span class="subsystem-image-caption">环境监测</span><span class="diagram-caption">ENVIRONMENTAL LOOP</span><div class="diagram-core">绿色施工<br>监测</div><div class="diagram-node node-a">环境感知</div><div class="diagram-node node-b">阈值判断</div><div class="diagram-node node-c">设备联动</div><div class="diagram-node node-d">趋势报表</div></div>
+            <div class="domain-diagram"><img width="1672" height="941" loading="lazy" decoding="async" class="subsystem-image" src="assets/thermal-power-web/20-green-environment-monitoring.webp" alt="环境监测场景图"><span class="subsystem-image-caption">环境监测</span><span class="diagram-caption">ENVIRONMENTAL LOOP</span><div class="diagram-core">绿色施工<br>监测</div><div class="diagram-node node-a">环境感知</div><div class="diagram-node node-b">阈值判断</div><div class="diagram-node node-c">设备联动</div><div class="diagram-node node-d">趋势报表</div></div>
           </div>
         </article>
 
@@ -1002,7 +1004,7 @@
           </div>
           <div id="subpanel-risk" class="subsystem-stage" role="tabpanel" aria-labelledby="subtab-risk-formwork">
             <div class="subsystem-copy"><span class="subsystem-kicker">HIGH-RISK WORKS</span><h4>高支模监测</h4><p class="subsystem-description">对高支模关键杆件受力、沉降、位移和倾角进行连续监测，在异常趋势达到设定阈值前发出分级预警。</p><div class="subsystem-features"><div class="subsystem-feature">轴力、沉降、位移与倾角采集</div><div class="subsystem-feature">监测点位与专项方案关联</div><div class="subsystem-feature">趋势分析和分级阈值预警</div><div class="subsystem-feature">责任通知、处置与复核验收</div></div><div class="subsystem-meta"><span>方案交底</span><span>监测布点</span><span>阈值预警</span><span>处置复核</span></div></div>
-            <div class="domain-diagram"><img class="subsystem-image" src="assets/thermal-power-systems-v2.3/26-risk-high-formwork.png" alt="高支模监测场景图"><span class="subsystem-image-caption">高支模监测</span><span class="diagram-caption">HIGH-RISK WORKS LOOP</span><div class="diagram-core">危大工程<br>监测中心</div><div class="diagram-node node-a">方案对象</div><div class="diagram-node node-b">传感监测</div><div class="diagram-node node-c">分级预警</div><div class="diagram-node node-d">复核验收</div></div>
+            <div class="domain-diagram"><img width="1672" height="941" loading="lazy" decoding="async" class="subsystem-image" src="assets/thermal-power-web/26-risk-high-formwork.webp" alt="高支模监测场景图"><span class="subsystem-image-caption">高支模监测</span><span class="diagram-caption">HIGH-RISK WORKS LOOP</span><div class="diagram-core">危大工程<br>监测中心</div><div class="diagram-node node-a">方案对象</div><div class="diagram-node node-b">传感监测</div><div class="diagram-node node-c">分级预警</div><div class="diagram-node node-d">复核验收</div></div>
           </div>
         </article>
 
@@ -1054,36 +1056,36 @@
 
   <script>
     const subsystemImages = Object.freeze({
-      'people-access': 'assets/thermal-power-systems-v2.3/01-people-access.png',
-      'people-beidou': 'assets/thermal-power-systems-v2.3/02-people-beidou.png',
-      'people-helmet': 'assets/thermal-power-systems-v2.3/03-people-smart-helmet.png',
-      'people-training': 'assets/thermal-power-systems-v2.3/04-people-training-center.png',
-      'people-health': 'assets/thermal-power-systems-v2.3/05-people-health-registration.png',
-      'people-points': 'assets/thermal-power-systems-v2.3/06-people-points-store.png',
-      'machine-tower': 'assets/thermal-power-systems-v2.3/07-machine-tower-crane.png',
-      'machine-mobile': 'assets/thermal-power-systems-v2.3/08-machine-mobile-machinery.png',
-      'machine-lift': 'assets/thermal-power-systems-v2.3/09-machine-construction-hoist.png',
-      'machine-vehicle': 'assets/thermal-power-systems-v2.3/10-machine-fleet-telematics.png',
-      'machine-driver': 'assets/thermal-power-systems-v2.3/11-machine-driver-monitoring.png',
-      'machine-weigh': 'assets/thermal-power-systems-v2.3/12-machine-smart-weighbridge.png',
-      'ai-core': 'assets/thermal-power-systems-v2.3/13-ai-u-safety-core.png',
-      'ai-sentry': 'assets/thermal-power-systems-v2.3/14-ai-sentry.png',
-      'ai-mobile': 'assets/thermal-power-systems-v2.3/15-ai-mobile-inspection.png',
-      'ai-video': 'assets/thermal-power-systems-v2.3/16-ai-video-inspection.png',
-      'ai-drone': 'assets/thermal-power-systems-v2.3/17-ai-drone-inspection.png',
-      'ai-dog': 'assets/thermal-power-systems-v2.3/18-ai-robot-dog.png',
-      'green-env': 'assets/thermal-power-systems-v2.3/20-green-environment-monitoring.png',
-      'green-weather': 'assets/thermal-power-systems-v2.3/21-green-weather-hydrology.png',
-      'green-gas': 'assets/thermal-power-systems-v2.3/22-green-hazardous-gas.png',
-      'green-smoke': 'assets/thermal-power-systems-v2.3/23-green-smoke-alarm.png',
-      'green-energy': 'assets/thermal-power-systems-v2.3/24-green-water-energy.png',
-      'green-water': 'assets/thermal-power-systems-v2.3/25-green-wastewater-discharge.png',
-      'risk-formwork': 'assets/thermal-power-systems-v2.3/26-risk-high-formwork.png',
-      'risk-pit': 'assets/thermal-power-systems-v2.3/27-risk-deep-excavation.png',
-      'risk-scaffold': 'assets/thermal-power-systems-v2.3/28-risk-scaffold.png',
-      'risk-steel': 'assets/thermal-power-systems-v2.3/29-risk-steel-structure.png',
-      'risk-lifting': 'assets/thermal-power-systems-v2.3/30-risk-heavy-lifting.png',
-      'risk-tall': 'assets/thermal-power-systems-v2.3/31-risk-tall-structure.png'
+      'people-access': 'assets/thermal-power-web/01-people-access.webp',
+      'people-beidou': 'assets/thermal-power-web/02-people-beidou.webp',
+      'people-helmet': 'assets/thermal-power-web/03-people-smart-helmet.webp',
+      'people-training': 'assets/thermal-power-web/04-people-training-center.webp',
+      'people-health': 'assets/thermal-power-web/05-people-health-registration.webp',
+      'people-points': 'assets/thermal-power-web/06-people-points-store.webp',
+      'machine-tower': 'assets/thermal-power-web/07-machine-tower-crane.webp',
+      'machine-mobile': 'assets/thermal-power-web/08-machine-mobile-machinery.webp',
+      'machine-lift': 'assets/thermal-power-web/09-machine-construction-hoist.webp',
+      'machine-vehicle': 'assets/thermal-power-web/10-machine-fleet-telematics.webp',
+      'machine-driver': 'assets/thermal-power-web/11-machine-driver-monitoring.webp',
+      'machine-weigh': 'assets/thermal-power-web/12-machine-smart-weighbridge.webp',
+      'ai-core': 'assets/thermal-power-web/13-ai-u-safety-core.webp',
+      'ai-sentry': 'assets/thermal-power-web/14-ai-sentry.webp',
+      'ai-mobile': 'assets/thermal-power-web/15-ai-mobile-inspection.webp',
+      'ai-video': 'assets/thermal-power-web/16-ai-video-inspection.webp',
+      'ai-drone': 'assets/thermal-power-web/17-ai-drone-inspection.webp',
+      'ai-dog': 'assets/thermal-power-web/18-ai-robot-dog.webp',
+      'green-env': 'assets/thermal-power-web/20-green-environment-monitoring.webp',
+      'green-weather': 'assets/thermal-power-web/21-green-weather-hydrology.webp',
+      'green-gas': 'assets/thermal-power-web/22-green-hazardous-gas.webp',
+      'green-smoke': 'assets/thermal-power-web/23-green-smoke-alarm.webp',
+      'green-energy': 'assets/thermal-power-web/24-green-water-energy.webp',
+      'green-water': 'assets/thermal-power-web/25-green-wastewater-discharge.webp',
+      'risk-formwork': 'assets/thermal-power-web/26-risk-high-formwork.webp',
+      'risk-pit': 'assets/thermal-power-web/27-risk-deep-excavation.webp',
+      'risk-scaffold': 'assets/thermal-power-web/28-risk-scaffold.webp',
+      'risk-steel': 'assets/thermal-power-web/29-risk-steel-structure.webp',
+      'risk-lifting': 'assets/thermal-power-web/30-risk-heavy-lifting.webp',
+      'risk-tall': 'assets/thermal-power-web/31-risk-tall-structure.webp'
     });
 
     const subsystemContent = {
@@ -1123,7 +1125,90 @@
       'risk-tall': { kicker: 'TALL STRUCTURES', title: '高耸构筑物施工监测', description: '针对烟囱、冷却塔等高耸构筑物施工阶段，监测垂直度、位移、沉降、风环境和关键施工平台状态。', features: ['结构垂直度、位移与沉降监测', '高处施工平台关键状态接入', '大风、雷电等环境风险联动提示', '监测趋势、超限处置与阶段验收'], flow: ['施工分段', '在线监测', '环境联动', '纠偏验收'], core: '高耸构筑物', nodes: ['烟囱施工', '冷却塔施工', '风环境', '偏差纠正'] }
     };
 
-    function activateSubsystem(tab) {
+    // Keep a small decoded working set; the HTTP cache retains the other WebPs.
+    const sceneImageCache = new Map();
+    const stageRequests = new WeakMap();
+    const connection = navigator.connection;
+    const canPrefetch = !connection || (!connection.saveData && !/^(slow-)?2g$/.test(connection.effectiveType));
+
+    function loadSceneImage(source, priority) {
+      if (sceneImageCache.has(source)) {
+        const cached = sceneImageCache.get(source);
+        cached.image.fetchPriority = priority;
+        sceneImageCache.delete(source);
+        sceneImageCache.set(source, cached);
+        return cached.promise;
+      }
+      const image = new Image(1672, 941);
+      image.className = 'subsystem-image';
+      image.decoding = 'async';
+      image.fetchPriority = priority;
+      const promise = new Promise(function(resolve, reject) {
+        image.onload = async function() {
+          try {
+            if (image.decode) await image.decode();
+            resolve(image);
+          } catch (error) {
+            sceneImageCache.delete(source);
+            reject(error);
+          } finally {
+            image.onload = null;
+            image.onerror = null;
+          }
+        };
+        image.onerror = function() {
+          sceneImageCache.delete(source);
+          image.onload = null;
+          image.onerror = null;
+          reject(new Error('Scene image unavailable'));
+        };
+      });
+      sceneImageCache.set(source, { image: image, promise: promise });
+      while (sceneImageCache.size > 6) sceneImageCache.delete(sceneImageCache.keys().next().value);
+      image.src = source;
+      return promise;
+    }
+
+    function warmNeighbours(tab) {
+      if (!canPrefetch) return;
+      const domain = tab.closest('.domain-panel');
+      const selectedKey = tab.dataset.subsystem;
+      const tabs = Array.from(domain.querySelectorAll('.subsystem-tab'));
+      const index = tabs.indexOf(tab);
+      const run = function() {
+        if (domain.hidden || tab.getAttribute('aria-selected') !== 'true') return;
+        [tabs[(index + 1) % tabs.length], tabs[(index + 2) % tabs.length]].forEach(function(next) {
+          if (next.dataset.subsystem !== selectedKey) {
+            loadSceneImage(subsystemImages[next.dataset.subsystem], 'low').catch(function() {});
+          }
+        });
+      };
+      if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 1000 });
+      else window.setTimeout(run, 150);
+    }
+
+    function renderSubsystem(stage, content) {
+      stage.querySelector('.subsystem-kicker').textContent = content.kicker;
+      stage.querySelector('h4').textContent = content.title;
+      stage.querySelector('.subsystem-description').textContent = content.description;
+      stage.querySelectorAll('.subsystem-feature').forEach(function(item, index) {
+        item.textContent = content.features[index] || '';
+      });
+      const meta = stage.querySelector('.subsystem-meta');
+      meta.replaceChildren();
+      content.flow.forEach(function(label) {
+        const chip = document.createElement('span');
+        chip.textContent = label;
+        meta.appendChild(chip);
+      });
+      stage.querySelector('.diagram-core').innerHTML = content.core.replace('\n', '<br>');
+      stage.querySelectorAll('.diagram-node').forEach(function(item, index) {
+        item.textContent = content.nodes[index] || '';
+      });
+      stage.querySelector('.subsystem-image-caption').textContent = content.title;
+    }
+
+    async function activateSubsystem(tab) {
       const domain = tab.closest('.domain-panel');
       const stage = domain.querySelector('.subsystem-stage');
       const content = subsystemContent[tab.dataset.subsystem];
@@ -1132,37 +1217,28 @@
       domain.querySelectorAll('.subsystem-tab').forEach(function(item) {
         item.setAttribute('aria-selected', String(item === tab));
       });
-      stage.setAttribute('aria-labelledby', tab.id);
-      stage.querySelector('.subsystem-kicker').textContent = content.kicker;
-      stage.querySelector('h4').textContent = content.title;
-      stage.querySelector('.subsystem-description').textContent = content.description;
-      stage.querySelectorAll('.subsystem-feature').forEach(function(item, index) {
-        item.textContent = content.features[index] || '';
-      });
-
-      const meta = stage.querySelector('.subsystem-meta');
-      meta.replaceChildren();
-      content.flow.forEach(function(label) {
-        const chip = document.createElement('span');
-        chip.textContent = label;
-        meta.appendChild(chip);
-      });
-
       const diagram = stage.querySelector('.domain-diagram');
-      const image = stage.querySelector('.subsystem-image');
-      const imageCaption = stage.querySelector('.subsystem-image-caption');
-      const imageSource = subsystemImages[tab.dataset.subsystem];
-      if (diagram && image && imageSource) {
-        diagram.classList.remove('image-error');
-        image.src = imageSource;
+      const request = (stageRequests.get(stage) || 0) + 1;
+      stageRequests.set(stage, request);
+      stage.setAttribute('aria-busy', 'true');
+      diagram.classList.add('image-loading');
+      try {
+        const image = await loadSceneImage(subsystemImages[tab.dataset.subsystem], 'high');
+        // A slow earlier request must never overwrite a newer selection.
+        if (stageRequests.get(stage) !== request) return;
         image.alt = content.title + '场景图';
-        if (imageCaption) imageCaption.textContent = content.title;
+        const previous = diagram.querySelector('.subsystem-image');
+        if (previous !== image) previous.replaceWith(image);
+        diagram.classList.remove('image-error');
+      } catch (error) {
+        if (stageRequests.get(stage) !== request) return;
+        diagram.classList.add('image-error');
       }
-
-      stage.querySelector('.diagram-core').innerHTML = content.core.replace('\n', '<br>');
-      stage.querySelectorAll('.diagram-node').forEach(function(item, index) {
-        item.textContent = content.nodes[index] || '';
-      });
+      renderSubsystem(stage, content);
+      stage.setAttribute('aria-labelledby', tab.id);
+      stage.setAttribute('aria-busy', 'false');
+      diagram.classList.remove('image-loading');
+      warmNeighbours(tab);
     }
 
     document.querySelectorAll('.subsystem-image').forEach(function(image) {
@@ -1174,7 +1250,23 @@
 
     document.querySelectorAll('.subsystem-tab').forEach(function(tab) {
       tab.addEventListener('click', function() { activateSubsystem(tab); });
+      function warmTarget() {
+        if (canPrefetch) loadSceneImage(subsystemImages[tab.dataset.subsystem], 'low').catch(function() {});
+      }
+      tab.addEventListener('pointerenter', warmTarget, { passive: true });
+      tab.addEventListener('focus', warmTarget);
     });
+
+    const domainSection = document.getElementById('domains');
+    if ('IntersectionObserver' in window) {
+      const domainObserver = new IntersectionObserver(function(entries) {
+        if (!entries.some(function(entry) { return entry.isIntersecting; })) return;
+        const selected = domainSection.querySelector('.domain-panel:not([hidden]) .subsystem-tab[aria-selected="true"]');
+        warmNeighbours(selected);
+        domainObserver.disconnect();
+      }, { rootMargin: '300px' });
+      domainObserver.observe(domainSection);
+    }
 
     const domainTabs = Array.from(document.querySelectorAll('.domain-tab'));
     const domainPanels = Array.from(document.querySelectorAll('.domain-panel'));
@@ -1188,7 +1280,16 @@
         domainPanels.forEach(function(panel) {
           panel.hidden = panel.id !== panelId;
         });
+        const panel = document.getElementById(panelId);
+        activateSubsystem(panel.querySelector('.subsystem-tab[aria-selected="true"]'));
       });
+      function warmDomain() {
+        if (!canPrefetch) return;
+        const selected = document.getElementById(tab.dataset.panel).querySelector('.subsystem-tab[aria-selected="true"]');
+        loadSceneImage(subsystemImages[selected.dataset.subsystem], 'low').catch(function() {});
+      }
+      tab.addEventListener('pointerenter', warmDomain, { passive: true });
+      tab.addEventListener('focus', warmDomain);
     });
 
     const platformButtons = Array.from(document.querySelectorAll('.platform-nav-button'));
